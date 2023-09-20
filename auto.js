@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -31,6 +31,8 @@ window.toggleDrink = JSON.parse(localStorage.getItem('toggleDrink')) || false//
 window.toggleBrew = JSON.parse(localStorage.getItem('toggleBrew')) || false//
 window.toggleExplore = JSON.parse(localStorage.getItem('toggleExplore')) || false
 window.toggleFight = JSON.parse(localStorage.getItem('toggleFight')) || false
+window.toggleSpell = JSON.parse(localStorage.getItem('toggleSpell')) || false
+window.toggleShiny = JSON.parse(localStorage.getItem('toggleShiny')) || false
 window.toggleCousin = JSON.parse(localStorage.getItem('toggleCousin')) || false
 window.toggleStatue = JSON.parse(localStorage.getItem('toggleStatue')) || false
 window.toggleArtifact = JSON.parse(localStorage.getItem('toggleArtifact')) || false
@@ -45,6 +47,7 @@ window.scriptTreeIgnore = {tree:JSON.parse(localStorage.getItem('scriptTreeIgnor
 window.scriptBonesIgnore = {bones:JSON.parse(localStorage.getItem('scriptBonesIgnore.bones'))||true,ashes:JSON.parse(localStorage.getItem('scriptBonesIgnore.ashes'))||false,iceBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.iceBones'))||true,zombieBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.zombieBones'))||true,bloodBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.bloodBones'))||true,fishBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.fishBones'))||true}
 //Exploring Vars
 window.scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
+window.scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
 window.scriptArea = JSON.parse(localStorage.getItem('scriptArea')) || 'fields'
 window.scriptCousinArea = JSON.parse(localStorage.getItem('scriptCousinArea')) || 'fields'
 //Cooking Vars
@@ -136,7 +139,7 @@ function autoNecklaceCharge() {
 }
 
 function autoTrain() {
-	if (train > 0 && trainTimer == 0 && oil == 500000 * train) {
+	if (train > 0 && trainTimer < 2 && oil == 500000 * train) {
 		sendBytes('MANAGE_TRAIN='+train)
 		closeSmittysDialogue('dialogue-confirm')
 	}
@@ -144,29 +147,27 @@ function autoTrain() {
 
 function autoSmelt() {
 	if (smeltingCurrentOreType == 'none') {
-	let scriptSmeltingOreLocal = scriptSmeltingOre
-	if (scriptSmeltingOreLocal < 1 && scriptSmeltingOre !== 'rarest') {scriptSmeltingOre = 'rarest'}
-	if (scriptSmeltingOreLocal == 'rarest') {
-		ancientOre > 50 && plasma > 50 ? scriptSmeltingOreLocal = 'ancientOre'
-		: titanium > 200 && charcoal > 200 ? scriptSmeltingOreLocal = 'titanium'
-		: promethium > 500 && lava > 500 ? scriptSmeltingOreLocal = 'promethium'
-		: gold > 500 ? scriptSmeltingOreLocal = 'gold'
-		: silver > 1000 ? scriptSmeltingOreLocal = 'silver'
-		: iron > 2000 ? scriptSmeltingOreLocal = 'iron'
-		: scriptSmeltingOre = 'copper'
-	}
-	chooseOreForFurnace(scriptSmeltingOreLocal)
-	startSmelting()
-	closeSmittysDialogue('dialogue-furnace2')
+    var oreItems = document.getElementById("sortableOres").getElementsByTagName("li")
+
+    for (var i = 0; i < oreItems.length; i++) {
+      var minimumOre = oreItems[i].querySelector(".oreMinimum").value;
+      var selectedOre = oreItems[i].getAttribute("value");
+      if (smeltingCurrentOreType == 'none' && selectedOre >= minimumOre) {
+		chooseOreForFurnace(selectedOre)
+		startSmelting()
+		closeSmittysDialogue('dialogue-furnace2')
+		console.log(selectedOre)
+      }
+    }
 	}
 }
 
 function autoRefine() {
-	if (scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
+	if (barRefineryTimer < 2 && scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
 		sendBytes('REFINE_GOLD_BARS=goldBars')
 		closeSmittysDialogue('dialogue-confirm')
 
-	} else if (oil > 2000000 && promethiumBars > 99) {
+	} else if (barRefineryTimer < 2 && scriptRefinaryBar == 'promethium' && oil > 2000000 && promethiumBars > 99) {
 		sendBytes('REFINE_GOLD_BARS=promethiumBars')
 		closeSmittysDialogue('dialogue-confirm')
 	}
@@ -223,7 +224,7 @@ function autoPlant() {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
         sendBytes("HARVEST_AND_PLANT_ALL");
-        closeSmittysDialogue("dialogue-confirm");
+        setTimeout(closeSmittysDialogue('dialogue-confirm'),1000)
       }
     }
   }
@@ -281,10 +282,30 @@ function autoExplore() {
 	}
 }
 
+window.scriptWaitTeleport = false
 function autoFight() {
-	if (exploringArea !== 'none' && fightDone == 0) {
-		sendBytes('LOOK_FOR_FIGHT')
+	if (exploringArea !== 'none' && fightDone === 0) {
+		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
+			sendBytes('LOOK_FOR_FIGHT');
+		}
 	}
+}
+
+function autoShiny() {
+	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+	if (explorerCooldown > teleportCooldown + 10)
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+	if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
+		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+	}
+}
+
+function autoSpell() {
+	if (fireSpell == 1 && fireSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
+	if (reflectSpell == 1 && reflectSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
+	if (thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
+	if (lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
+	if (sandstormSpell == 1 && sandstormSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
 }
 
 function autoCousin() {
@@ -308,24 +329,42 @@ function autoArtifact() {
 }
 
 function autoBoat() {
-	if (rowBoat == 1 && scriptBoatSend.rowBoat == true && rowBoatTimer < 2 && bait > 4) {
+	if (rowBoat == 1 && scriptBoatSend.rowBoat == true && rowBoatTimer < 2) {
+		if (bait > 4){
 		sendBytes('CLICKS_BOAT=rowBoat')
+		closeSmittysDialogue('dialogue-confirm')
+		} else {clicksItem('rowBoat')}
 	}
-	if (canoeBoat == 1 && scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2 && bait > 24) {
+	if (canoeBoat == 1 && scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2) {
+		if (bait > 24) {
 		sendBytes('CLICKS_BOAT=canoeBoat')
+		closeSmittysDialogue('dialogue-confirm')
+		} else {clicksItem('canoeBoat')}
 	}
 	if (scriptBoatSend.highWind == true) {
-		if (sailBoat == 1 && scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2 && bait > 99) {
+		if (sailBoat == 1 && scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2) {
+		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
+		closeSmittysDialogue('dialogue-confirm')
+		} else {clicksItem('sailBoat')}
 		}
-	} else if (sailBoat == 1 && scriptBoatSend.sailBoat == true && sailBoatTimer < 2 && bait > 99) {
+	} else if (sailBoat == 1 && scriptBoatSend.sailBoat == true && sailBoatTimer < 2) {
+		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
+		closeSmittysDialogue('dialogue-confirm')
+		} else {clicksItem('sailBoat')}
 	}
-	if (steamBoat == 1 && scriptBoatSend.steamBoat == true && steamBoatTimer < 2 && bait > 249) {
+	if (steamBoat == 1 && scriptBoatSend.steamBoat == true && steamBoatTimer < 2) {
+		if (bait > 249) {
 		sendBytes('CLICKS_BOAT=steamBoat')
+		closeSmittysDialogue('dialogue-confirm')
+		} else {clicksItem('steamBoat')}
 	}
-	if (trawler == 1 && scriptBoatSend.trawler == true && trawlerTimer < 2 && bait > 499) {
+	if (trawler == 1 && scriptBoatSend.trawler == true && trawlerTimer < 2) {
+		if (bait > 499) {
 		sendBytes('CLICKS_BOAT=trawler')
+		closeSmittysDialogue('dialogue-confirm')
+	} else {clicksItem('trawler')}
 	}
 }
 
@@ -450,14 +489,21 @@ function scriptAddTabs() {
 	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptSmeltingToggle" onclick="window.autoChangeVar2('toggleSmelting',!toggleSmelting,this.id)" style="cursor: pointer; color: green;">
 	<td style="padding-left: 10px;"><img src="images/ancientFurnace.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">SMELTING</td></tr></tbody></table>
-	<table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptSmeltingOre" style="color: white;">
-	<td style="padding-left: 10px;"><img src="images/gold.png" class="img-small"></td>
-	<td style="padding-left: 50px;"><select name="scriptSmeltingOreOptions" onchange="window.autoChangeVar2('scriptSmeltingOre',this.value)" id="scriptSmeltingOreOptions">
-        <option value="rarest">Rarest</option>
-        <option value="copper">Copper</option>
-        <option value="iron">Iron</option>
-        <option value="silver">Silver</option>
-    <option value="gold">Gold</option><option value="promethium">Promethium</option><option value="titanium">Titanium</option><option value="ancientOre">Ancient</option></select></td><td style="text-align:right;padding-right:20px;width:100%">SMELTING ORE</td></tr></tbody></table>
+	<ol id="sortableOres" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;" class="ui-sortable"><li class="ui-state-default ui-sortable-handle" value="copper" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/bronzeBars.png" class="img-small" style="padding-right: 10px;">Bronze Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="iron" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/ironBars.png" class="img-small" style="padding-right: 10px;">Iron Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="silver" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/silverBars.png" class="img-small" style="padding-right: 10px;">Silver Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="gold" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/goldBars.png" class="img-small" style="padding-right: 10px;">Gold Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="promethium" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/promethiumBars.png" class="img-small" style="padding-right: 10px;">Promethium Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="titanium" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/titaniumBars.png" class="img-small" style="padding-right: 10px;">Titanium Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li><li class="ui-state-default ui-sortable-handle" value="ancientOre" style="border-radius: 6px; background: rgb(26, 26, 26); color: white; justify-content: space-between; display: flex;">
+    <img src="images/ancientBars.png" class="img-small" style="padding-right: 10px;">Ancient Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
+</li></ol>
 <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptRefinaryToggle" onclick="window.autoChangeVar2('toggleRefinary',!toggleRefinary,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/goldBarRefinery.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">REFINARY</td></tr></tbody></table><table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptRefinaryBar" style="color: white;">
@@ -704,8 +750,8 @@ function scriptAddTabs() {
     <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FARMING XP POTION<img src="images/farmingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
 </li>
 
-<li class="ui-state-default" value="superCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-    <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">SUPER COMPOST POTION<img src="images/superCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+<li class="ui-state-default" value="fastCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
+    <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">Fast COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
 </li>
 
 <li class="ui-state-default" value="oilPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
@@ -775,6 +821,12 @@ function scriptAddTabs() {
 </select></td><td style="text-align:right;padding-right:20px;width:100%">EXPLORER AREA</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptFightToggle" onclick="window.autoChangeVar2('toggleFight',!toggleFight,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/combat.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">FIGHT</td></tr></tbody></table>
+	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px; display:none"><tbody><tr id="scriptShinyToggle" onclick="window.autoChangeVar2('toggleShiny',!toggleShiny,this.id)" style="cursor: pointer; color: red;">
+	<td style="padding-left: 10px;"><img src="images/shiny.gif" class="img-small"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">SHINY/GEM GOBLIN HUNT</td></tr></tbody></table>
+	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptSpellToggle" onclick="window.autoChangeVar2('toggleSpell',!toggleSpell,this.id)" style="cursor: pointer; color: red;">
+	<td style="padding-left: 10px;"><img src="images/fireSpell.png" class="img-small"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">SPELL</td></tr></tbody></table>
 <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptCousinToggle" onclick="window.autoChangeVar2('toggleCousin',!toggleCousin,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/goblinCousin.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">GOBLIN COUSIN</td></tr></tbody></table>
@@ -846,7 +898,6 @@ function scriptStyleTabs() {
 	document.getElementById('scriptNecklaceToggle').style.color = toggleNecklaceCharge ? 'green' : 'red';
 	document.getElementById('scriptTrainToggle').style.color = toggleTrain ? 'green' : 'red';
 	document.getElementById('scriptSmeltingToggle').style.color = toggleSmelting ? 'green' : 'red';
-	document.getElementById('scriptSmeltingOreOptions').value = scriptSmeltingOre;
 	document.getElementById('scriptRefinaryToggle').style.color = toggleRefinary ? 'green' : 'red';
 	document.getElementById('scriptRefinaryOptions').value = scriptRefinaryBar;
 	document.getElementById('scriptFoundryToggle').style.color = toggleCharcoal ? 'green' : 'red';
@@ -882,6 +933,8 @@ function scriptStyleTabs() {
 	document.getElementById('scriptExploreToggle').style.color = toggleExplore ? 'green' : 'red';
 	document.getElementById('scriptAreaOptions').value = scriptArea;
 	document.getElementById('scriptFightToggle').style.color = toggleFight ? 'green' : 'red';
+	document.getElementById('scriptShinyToggle').style.color = toggleShiny ? 'green' : 'red';
+	document.getElementById('scriptSpellToggle').style.color = toggleSpell ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = toggleCousin ? 'green' : 'red';
 	document.getElementById('scriptCousinArea').value = scriptCousinArea;
 	document.getElementById('scriptStatueToggle').style.color = toggleStatue ? 'green' : 'red';
@@ -893,6 +946,40 @@ function scriptStyleTabs() {
 	document.getElementById('highWindSendToggle').style.color = scriptBoatSend.highWind ? 'green' : 'red';
 	document.getElementById('steamBoatSendToggle').style.color = scriptBoatSend.steamBoat ? 'green' : 'red';
 	document.getElementById('trawlerSendToggle').style.color = scriptBoatSend.trawler ? 'green' : 'red';
+}
+
+function saveOreOrder() {
+  var oreItems = document.getElementById("sortableOres").getElementsByTagName("li");
+  var oreOrder = [];
+
+  for (var i = 0; i < oreItems.length; i++) {
+    var oreValue = oreItems[i].getAttribute("value");
+    var oreMinimum = oreItems[i].querySelector(".oreMinimum").value;
+
+
+    oreOrder.push({ value: oreValue, minimum: oreMinimum });
+  }
+
+  localStorage.setItem("oreOrder", JSON.stringify(oreOrder));
+}
+
+function loadOreOrder() {
+  var oreOrderData = localStorage.getItem("oreOrder");
+
+  if (oreOrderData) {
+    oreOrderData = JSON.parse(oreOrderData);
+    var oreOrderList = document.getElementById("sortableOres");
+
+    for (var i = 0; i < oreOrderData.length; i++) {
+      var oreValue = oreOrderData[i].value;
+      var minimum = oreOrderData[i].minimum;
+      var oreItem = oreOrderList.querySelector("[value='" + oreValue + "']");
+      
+
+      oreMinimum.value = minimum
+      oreOrderList.appendChild(oreItem);
+    }
+  }
 }
 
 function saveSeedOrder() {
@@ -988,8 +1075,13 @@ window.onload = function() {
 		update: function(event, ui) {saveSeedOrder()}
 	});
 	$("#sortableSeeds").disableSelection();
+	$("#sortableOres").sortable({
+		update: function(event, ui) {saveOreOrder()}
+	});
+	$("#sortableOres").disableSelection();
 	});
 	loadSeedOrder();
+	loadOreOrder();
 	loadPotions();
 };
 
@@ -1008,15 +1100,26 @@ function autoGameLoop() {
         if (toggleDrink === true) autoDrink();
         if (toggleBrew === true) autoBrew();
         if (toggleExplore === true) autoExplore();
-        if (toggleFight === true) autoFight();
         if (toggleCousin === true) autoCousin();
         if (toggleStatue === true) autoStatue();
         if (toggleArtifact === true) autoArtifact();
         if (toggleBoat === true) autoBoat();
+        if (toggleFight === true) autoFight();
     }
 }
 
-setInterval(function(){
+function autoGameLoopFast() {
+	if (toggleGlobal === true) {
+		if (toggleSpell === true) autoSpell();
+		//if (toggleShiny === true) autoShiny();
+	}
+}
+
+const gameLoopInterval = setInterval(function(){
     autoGameLoop()
 }, 5000);
+
+const gameLoopFastInterval = setInterval(function(){
+    autoGameLoopFast()
+}, 1000);
 })();
