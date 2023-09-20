@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.1.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -15,7 +15,7 @@
 (function() {
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
-    //Toggles
+//Toggles
 window.toggleGlobal = JSON.parse(localStorage.getItem('toggleGlobal')) || true
 window.toggleGeodeOpen = JSON.parse(localStorage.getItem('toggleGeodeOpen')) || false
 window.toggleMineralIdentify = JSON.parse(localStorage.getItem('toggleMineralIdentify')) || false
@@ -48,6 +48,8 @@ window.scriptBonesIgnore = {bones:JSON.parse(localStorage.getItem('scriptBonesIg
 //Exploring Vars
 window.scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 window.scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
+window.scriptWaitTeleport = false
+const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 window.scriptArea = JSON.parse(localStorage.getItem('scriptArea')) || 'fields'
 window.scriptCousinArea = JSON.parse(localStorage.getItem('scriptCousinArea')) || 'fields'
 //Cooking Vars
@@ -152,11 +154,12 @@ function autoSmelt() {
     for (var i = 0; i < oreItems.length; i++) {
       var minimumOre = oreItems[i].querySelector(".oreMinimum").value;
       var selectedOre = oreItems[i].getAttribute("value");
-      if (smeltingCurrentOreType == 'none' && selectedOre >= minimumOre) {
+      if (smeltingCurrentOreType == 'none' && window[selectedOre] >= minimumOre) {
 		chooseOreForFurnace(selectedOre)
 		startSmelting()
 		closeSmittysDialogue('dialogue-furnace2')
 		console.log(selectedOre)
+		break;
       }
     }
 	}
@@ -279,10 +282,10 @@ function autoExplore() {
 	let scriptAreaLocal = scriptArea
 	if (energy < scriptAreaEnergy.scriptAreaLocal) {scriptAreaLocal = 'fields'}
 	sendBytes('EXPLORE='+scriptAreaLocal)
+	if (toggleShiny == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
 }
 
-window.scriptWaitTeleport = false
 function autoFight() {
 	if (exploringArea !== 'none' && fightDone === 0) {
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
@@ -292,11 +295,10 @@ function autoFight() {
 }
 
 function autoShiny() {
-	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-	if (explorerCooldown > teleportCooldown + 10)
-	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 	if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+		var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+		scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 	}
 }
 
@@ -319,13 +321,25 @@ function autoCousin() {
 }
 
 function autoStatue() {
-	sendBytes('SELL_ALL_STATUES')
-	closeSmittysDialogue('dialogue-confirm')
+	for (var i = 0; i < exploringMetalDetectorStatuesGlobal.length; i++) {
+		var statue = exploringMetalDetectorStatuesGlobal[i];
+		if (window[statue] > 0) {
+			sendBytes('SELL_ALL_STATUES');
+			closeSmittysDialogue('dialogue-confirm');
+			break;
+		}
+	}
 }
 
 function autoArtifact() {
-	sendBytes('CONVERT_ALL_ARTIFACTS')
-	closeSmittysDialogue('dialogue-confirm')
+	for (var i = 0; i < artifactArray.length; i++) {
+		var artifact = artifactArray[i];
+		if (window[artifact] > 0) {
+			sendBytes('CONVERT_ALL_ARTIFACTS')
+			closeSmittysDialogue('dialogue-confirm')
+			break;
+		}
+	}
 }
 
 function autoBoat() {
@@ -821,7 +835,7 @@ function scriptAddTabs() {
 </select></td><td style="text-align:right;padding-right:20px;width:100%">EXPLORER AREA</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptFightToggle" onclick="window.autoChangeVar2('toggleFight',!toggleFight,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/combat.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">FIGHT</td></tr></tbody></table>
-	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px; display:none"><tbody><tr id="scriptShinyToggle" onclick="window.autoChangeVar2('toggleShiny',!toggleShiny,this.id)" style="cursor: pointer; color: red;">
+	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptShinyToggle" onclick="window.autoChangeVar2('toggleShiny',!toggleShiny,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/shiny.gif" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">SHINY/GEM GOBLIN HUNT</td></tr></tbody></table>
 	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptSpellToggle" onclick="window.autoChangeVar2('toggleSpell',!toggleSpell,this.id)" style="cursor: pointer; color: red;">
@@ -975,9 +989,9 @@ function loadOreOrder() {
       var minimum = oreOrderData[i].minimum;
       var oreItem = oreOrderList.querySelector("[value='" + oreValue + "']");
       
-
-      oreMinimum.value = minimum
       oreOrderList.appendChild(oreItem);
+	  var oreMinimum = oreItem.querySelector(".oreMinimum");
+      oreMinimum.value = minimum
     }
   }
 }
@@ -1111,7 +1125,7 @@ function autoGameLoop() {
 function autoGameLoopFast() {
 	if (toggleGlobal === true) {
 		if (toggleSpell === true) autoSpell();
-		//if (toggleShiny === true) autoShiny();
+		if (toggleShiny === true) autoShiny();
 	}
 }
 
