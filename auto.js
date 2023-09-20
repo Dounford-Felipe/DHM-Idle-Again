@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.1.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -141,9 +141,15 @@ function autoNecklaceCharge() {
 }
 
 function autoTrain() {
-	if (train > 0 && trainTimer < 2 && oil == 500000 * train) {
-		sendBytes('MANAGE_TRAIN='+train)
-		closeSmittysDialogue('dialogue-confirm')
+	if (train > 0 && trainTimer < 2) {
+		var amount = document.getElementById('scriptTrainAmount').value
+		if (oil == 500000 * amount) {
+			sendBytes('MANAGE_TRAIN='+amount)
+			closeSmittysDialogue('dialogue-confirm')
+		} else {
+			clicksItem('train')
+			confirmedDialogue(this, document.getElementById('dialogue-confirm-cmd').value);closeSmittysDialogue('dialogue-confirm')
+		}
 	}
 }
 
@@ -279,10 +285,10 @@ function autoBrew() {
 
 function autoExplore() {
 	if (explorerCooldown == 0) {
-	let scriptAreaLocal = scriptArea
-	if (energy < scriptAreaEnergy.scriptAreaLocal) {scriptAreaLocal = 'fields'}
-	sendBytes('EXPLORE='+scriptAreaLocal)
-	if (toggleShiny == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
+		let scriptAreaLocal = scriptArea
+		if (energy < scriptAreaEnergy.window[scriptAreaLocal]) {scriptAreaLocal = 'fields'}
+		sendBytes('EXPLORE='+scriptAreaLocal)
+		if (toggleShiny == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
 }
 
@@ -492,7 +498,9 @@ function scriptAddTabs() {
 	<td style="text-align:right;padding-right:20px;width:100%">NECKLACE CHARGE</td></tr></tbody></table>
 <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptTrainToggle" onclick="window.autoChangeVar2('toggleTrain',!toggleTrain,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/train.png" class="img-small"></td>
-	<td style="text-align:right;padding-right:20px;width:100%">TRAIN</td></tr></tbody></table></div>`
+	<td style="text-align:right;padding-right:20px;width:100%">TRAIN</td></tr></tbody></table><table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr style="color: white;width: 100%;">
+	<td style="padding-left: 10px;"><img src="images/trainTracks.png" class="img-small"></td>
+	<td><input type="number" min="1" placeholder="Minimum to Smelt" value="1" max="5" id="scriptTrainAmount"></td><td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td></tr></tbody></table></div>`
 
 	scriptConfCraftingTab.innerHTML= `<div id="tab-scriptConfigCrafting" style="display:none">
 	<div class="main-button-lighter">
