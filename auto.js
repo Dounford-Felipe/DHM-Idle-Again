@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.1.3
+// @version      1.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -31,9 +31,11 @@ window.toggleDrink = JSON.parse(localStorage.getItem('toggleDrink')) || false//
 window.toggleBrew = JSON.parse(localStorage.getItem('toggleBrew')) || false//
 window.toggleExplore = JSON.parse(localStorage.getItem('toggleExplore')) || false
 window.toggleFight = JSON.parse(localStorage.getItem('toggleFight')) || false
+window.toggleMonsterFind = JSON.parse(localStorage.getItem('toggleMonsterFind')) || false
 window.toggleSpell = JSON.parse(localStorage.getItem('toggleSpell')) || false
 window.toggleShiny = JSON.parse(localStorage.getItem('toggleShiny')) || false
 window.toggleCousin = JSON.parse(localStorage.getItem('toggleCousin')) || false
+window.toggleBags = JSON.parse(localStorage.getItem('toggleBags')) || false
 window.toggleStatue = JSON.parse(localStorage.getItem('toggleStatue')) || false
 window.toggleArtifact = JSON.parse(localStorage.getItem('toggleArtifact')) || false
 window.toggleBoat = JSON.parse(localStorage.getItem('toggleBoat')) || true
@@ -50,7 +52,9 @@ window.scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,norther
 window.scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
 window.scriptWaitTeleport = false
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
+const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
 window.scriptArea = JSON.parse(localStorage.getItem('scriptArea')) || 'fields'
+window.scriptMonster = JSON.parse(localStorage.getItem('scriptMonster')) || 'chicken'
 window.scriptCousinArea = JSON.parse(localStorage.getItem('scriptCousinArea')) || 'fields'
 //Cooking Vars
 window.scriptBoatSend = {rowBoat:JSON.parse(localStorage.getItem('scriptBoatSend.rowBoat'))||true,canoeBoat:JSON.parse(localStorage.getItem('scriptBoatSend.canoeBoat'))||true,sailBoat:JSON.parse(localStorage.getItem('scriptBoatSend.sailBoat'))||true,highWind:JSON.parse(localStorage.getItem('scriptBoatSend.highWind'))||true,steamBoat:JSON.parse(localStorage.getItem('scriptBoatSend.steamBoat'))||true,trawler:JSON.parse(localStorage.getItem('scriptBoatSend.trawler'))||true}
@@ -143,12 +147,12 @@ function autoNecklaceCharge() {
 function autoTrain() {
 	if (train > 0 && trainTimer < 2) {
 		var amount = document.getElementById('scriptTrainAmount').value
-		if (oil == 500000 * amount) {
+		if (oil >= 500000 * amount) {
 			sendBytes('MANAGE_TRAIN='+amount)
 			closeSmittysDialogue('dialogue-confirm2')
 		} else {
-			clicksItem('train')
-			confirmedDialogue(this, document.getElementById('dialogue-confirm2-cmd').value)
+			clicksItem('train');
+			confirmedDialogue(this, document.getElementById('dialogue-confirm2-cmd').value);
 			closeSmittysDialogue('dialogue-confirm2')
 		}
 	}
@@ -287,7 +291,7 @@ function autoBrew() {
 function autoExplore() {
 	if (explorerCooldown == 0) {
 		let scriptAreaLocal = scriptArea
-		if (energy < scriptAreaEnergy.window[scriptAreaLocal]) {scriptAreaLocal = 'fields'}
+		if (energy < scriptAreaEnergy.scriptAreaLocal) {scriptAreaLocal = 'fields'}
 		sendBytes('EXPLORE='+scriptAreaLocal)
 		if (toggleShiny == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
@@ -301,11 +305,19 @@ function autoFight() {
 	}
 }
 
-function autoShiny() {
-	if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
-		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-		var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-		scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+function autoMonsterHunt() {
+	if (toggleShiny === true) {
+		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
+			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+			var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+			scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+		}
+	} else if (toggleMonsterFind === true){
+		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0 || monsterName !== scriptMonster)) {
+			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+			var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+			scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+		}
 	}
 }
 
@@ -324,6 +336,16 @@ function autoCousin() {
 		goblinCousin=1;
 		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)
 		setTimeout(closeSmittysDialogue('dialogue-confirm'),2000)
+	}
+}
+
+function autoBags() {
+	for (var i = 0; i < bagsArray.length; i++) {
+		var bag = bagsArray[i];
+		if (window[bag] > 0) {
+			sendBytes('OPEN_LOOT_MULTI='+bag+'~'+window[bag])
+			closeSmittysDialogue('dialogue-confirm')
+		}
 	}
 }
 
@@ -824,7 +846,7 @@ function scriptAddTabs() {
 	<td style="text-align:right;padding-right:20px;width:100%">EXPLORER</td></tr></tbody></table>
 <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptExplorerArea" style="color: white;">
 	<td style="padding-left: 10px;"><img src="images/caves.png" class="img-small"></td>
-	<td style="padding-left: 50px;"><select name="scriptAreaOptions" onchange="window.autoChangeVar2('scriptArea',this.value)" id="scriptAreaOptions">
+	<td style="padding-left: 50px;"><select name="scriptAreaOptions" onchange="window.autoChangeVar2('scriptArea',this.value);window.monsterOptions2(this.value)" id="scriptAreaOptions">
     <option value="fields">Fields</option>
     <option value="forests">Forests</option>
     <option value="caves">Caves</option>
@@ -843,7 +865,12 @@ function scriptAddTabs() {
     <option value="deepOcean">Deep Ocean</option>
 </select></td><td style="text-align:right;padding-right:20px;width:100%">EXPLORER AREA</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptFightToggle" onclick="window.autoChangeVar2('toggleFight',!toggleFight,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/combat.png" class="img-small"></td>
-	<td style="text-align:right;padding-right:20px;width:100%">FIGHT</td></tr></tbody></table>
+	<td style="text-align:right;padding-right:20px;width:100%">FIGHT</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptMonsterFindToggle" onclick="window.autoChangeVar2('toggleMonsterFind',!toggleMonsterFind,this.id)" style="cursor: pointer; color: green;">
+	<td style="padding-left: 10px;"><img src="images/skeletonMonster.png" class="img-small"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">SEARCH FOR MONSTER</td></tr></tbody></table><table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptExplorerArea" style="color: white;">
+	<td style="padding-left: 10px;"><img src="images/exploringSkill.png" class="img-small"></td>
+	<td style="padding-left: 50px;"><select name="scriptMonsterOptions" onchange="window.autoChangeVar2('scriptMonster',this.value)" id="scriptMonsterOptions">
+</select></td><td style="text-align:right;padding-right:20px;width:100%">MONSTER TO SEARCH</td></tr></tbody></table>
 	<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptShinyToggle" onclick="window.autoChangeVar2('toggleShiny',!toggleShiny,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/shiny.gif" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">SHINY/GEM GOBLIN HUNT</td></tr></tbody></table>
@@ -872,7 +899,9 @@ function scriptAddTabs() {
     <option value="factory">Factory</option>
     <option value="hauntedWoods">Haunted Woods</option>
     <option value="deepOcean">Deep Ocean</option>
-</select></td><td style="text-align:right;padding-right:20px;width:100%">COUSIN AREA</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptStatueToggle" onclick="window.autoChangeVar2('toggleStatue',!toggleStatue,this.id)" style="cursor: pointer; color: red;">
+</select></td><td style="text-align:right;padding-right:20px;width:100%">COUSIN AREA</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptBagsToggle" onclick="window.autoChangeVar2('toggleBags',!toggleBags,this.id)" style="cursor: pointer; color: red;">
+	<td style="padding-left: 10px;"><img src="images/fieldsLoot.png" class="img-small"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">BAGS OPENING</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptStatueToggle" onclick="window.autoChangeVar2('toggleStatue',!toggleStatue,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/bronzeStatueMetalDetector.png" class="img-small"></td>
 	<td style="text-align:right;padding-right:20px;width:100%">STATUE SELL</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptArtifactToggle" onclick="window.autoChangeVar2('toggleArtifact',!toggleArtifact,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/skullArtifact.png" class="img-small"></td>
@@ -956,6 +985,8 @@ function scriptStyleTabs() {
 	document.getElementById('scriptExploreToggle').style.color = toggleExplore ? 'green' : 'red';
 	document.getElementById('scriptAreaOptions').value = scriptArea;
 	document.getElementById('scriptFightToggle').style.color = toggleFight ? 'green' : 'red';
+	document.getElementById('scriptMonsterOptions').value = scriptMonster;
+	document.getElementById('scriptMonsterFindToggle').style.color = toggleMonsterFind ? 'green' : 'red';
 	document.getElementById('scriptShinyToggle').style.color = toggleShiny ? 'green' : 'red';
 	document.getElementById('scriptSpellToggle').style.color = toggleSpell ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = toggleCousin ? 'green' : 'red';
@@ -1090,8 +1121,60 @@ function loadPotions() {
   }
 }
 
+function monsterOptions(monsterArea) {
+    var select = document.getElementById("scriptMonsterOptions");
+    select.innerHTML = "";
+
+    if (monsterArea === "fields") {
+        addOptions(select, ["chicken", "rat", "bee"]);
+    } else if (monsterArea === "forests") {
+        addOptions(select, ["snake", "ent", "thief"]);
+    } else if (monsterArea === "caves") {
+        addOptions(select, ["bear", "bat", "skeleton"]);
+    } else if (monsterArea === "volcano") {
+        addOptions(select, ["lavaSnake", "fireHawk", "fireMage"]);
+    } else if (monsterArea === "northernFields") {
+        addOptions(select, ["iceHawk", "frozenEnt", "golem"]);
+    } else if (monsterArea === "hauntedMansion") {
+        addOptions(select, ["ghost", "skeletonGhost", "reaper"]);
+    } else if (monsterArea === "desert") {
+        addOptions(select, ["desertLizard2", "scorpion", "lizard"]);
+    } else if (monsterArea === "ocean") {
+        addOptions(select, ["squid", "oceanShark", "pufferFish"]);
+    } else if (monsterArea === "jungle") {
+        addOptions(select, ["gorilla", "elephant", "tribe"]);
+    } else if (monsterArea === "dungeonEntrance") {
+        addOptions(select, ["gargoyle", "poisonTribe", "statue"]);
+    } else if (monsterArea === "dungeon") {
+        addOptions(select, ["skeletonMonks", "darkMage", "skeletonPrisoner"]);
+    } else if (monsterArea === "castle") {
+        addOptions(select, ["castleKnight", "dragon", "castleMage"]);
+    } else if (monsterArea === "cemetery") {
+        addOptions(select, ["angel", "zombie", "babySkeleton"]);
+    } else if (monsterArea === "factory") {
+        addOptions(select, ["robotArcher", "robotMage", "robotWheelie"]);
+    } else if (monsterArea === "hauntedWoods") {
+        addOptions(select, ["reaper2", "skeletonGhost2", "ghostPack"]);
+    } else if (monsterArea === "deepOcean") {
+        addOptions(select, ["poisonSquid", "tridentSoldier", "piranhas"]);
+    }
+}
+
+window.monsterOptions2 = monsterOptions
+
+function addOptions(select, optionsArray) {
+    for (var i = 0; i < optionsArray.length; i++) {
+        var option = document.createElement("option");
+        var optionText = optionsArray[i].replace(/([A-Z0-9])/g, ' $1').trim();
+        option.value = optionsArray[i];
+        option.text = optionText.charAt(0).toUpperCase() + optionText.slice(1);
+        select.appendChild(option);
+    }
+}
+
 window.onload = function() {
   scriptAddTabs();
+  monsterOptions(scriptArea);
   scriptStyleTabs();
   $(function() {
 	$("#sortableSeeds").sortable({
@@ -1110,37 +1193,47 @@ window.onload = function() {
 
 function autoGameLoop() {
     if (toggleGlobal === true) {
-        if (toggleGeodeOpen === true) autoGeodeOpen();
-        if (toggleMineralIdentify === true) autoIdentify();
-        if (toggleNecklaceCharge === true) autoNecklaceCharge();
         if (toggleTrain === true) autoTrain();
         if (toggleSmelting === true) autoSmelt();
         if (toggleRefinary === true) autoRefine();
         if (toggleCharcoal === true) autoFoundry();
         if (toggleWoodcutting === true) autoLumber();
         if (toggleFarming === true) autoPlant();
-        if (toggleBones === true) autoBones();
         if (toggleDrink === true) autoDrink();
         if (toggleBrew === true) autoBrew();
         if (toggleExplore === true) autoExplore();
+        if (toggleFight === true) autoFight();
         if (toggleCousin === true) autoCousin();
+        if (toggleBoat === true) autoBoat();
+    }
+}
+
+function autoGameLoopSlow() {
+    if (toggleGlobal === true) {
+        if (toggleGeodeOpen === true) autoGeodeOpen();
+        if (toggleMineralIdentify === true) autoIdentify();
+        if (toggleNecklaceCharge === true) autoNecklaceCharge();
+        if (toggleBones === true) autoBones();
+		if (toggleBags === true) autoBags();
         if (toggleStatue === true) autoStatue();
         if (toggleArtifact === true) autoArtifact();
-        if (toggleBoat === true) autoBoat();
-        if (toggleFight === true) autoFight();
     }
 }
 
 function autoGameLoopFast() {
 	if (toggleGlobal === true) {
 		if (toggleSpell === true) autoSpell();
-		if (toggleShiny === true) autoShiny();
+		if (toggleShiny === true || toggleMonsterFind === true) autoMonsterHunt();
 	}
 }
 
 const gameLoopInterval = setInterval(function(){
     autoGameLoop()
 }, 5000);
+
+const gameLoopSlowInterval = setInterval(function(){
+    autoGameLoopSlow()
+}, 60000);
 
 const gameLoopFastInterval = setInterval(function(){
     autoGameLoopFast()
