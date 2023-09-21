@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.1.2
+// @version      1.1.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -145,10 +145,11 @@ function autoTrain() {
 		var amount = document.getElementById('scriptTrainAmount').value
 		if (oil == 500000 * amount) {
 			sendBytes('MANAGE_TRAIN='+amount)
-			closeSmittysDialogue('dialogue-confirm')
+			closeSmittysDialogue('dialogue-confirm2')
 		} else {
 			clicksItem('train')
-			confirmedDialogue(this, document.getElementById('dialogue-confirm-cmd').value);closeSmittysDialogue('dialogue-confirm')
+			confirmedDialogue(this, document.getElementById('dialogue-confirm2-cmd').value)
+			closeSmittysDialogue('dialogue-confirm2')
 		}
 	}
 }
@@ -322,7 +323,7 @@ function autoCousin() {
 		if (energy < scriptAreaEnergy.scriptCousinAreaLocal) {scriptCousinAreaLocal = 'fields'}
 		goblinCousin=1;
 		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)
-		setTimeout(closeSmittysDialogue('dialogue-confirm'),1000)
+		setTimeout(closeSmittysDialogue('dialogue-confirm'),2000)
 	}
 }
 
@@ -352,39 +353,39 @@ function autoBoat() {
 	if (rowBoat == 1 && scriptBoatSend.rowBoat == true && rowBoatTimer < 2) {
 		if (bait > 4){
 		sendBytes('CLICKS_BOAT=rowBoat')
-		closeSmittysDialogue('dialogue-confirm')
-		} else {clicksItem('rowBoat')}
+		closeSmittysDialogue('dialogue-confirm2')
+		} else {clicksItem('rowBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
 	if (canoeBoat == 1 && scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2) {
 		if (bait > 24) {
 		sendBytes('CLICKS_BOAT=canoeBoat')
-		closeSmittysDialogue('dialogue-confirm')
-		} else {clicksItem('canoeBoat')}
+		closeSmittysDialogue('dialogue-confirm2')
+		} else {clicksItem('canoeBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
 	if (scriptBoatSend.highWind == true) {
 		if (sailBoat == 1 && scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2) {
 		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
-		closeSmittysDialogue('dialogue-confirm')
-		} else {clicksItem('sailBoat')}
+		closeSmittysDialogue('dialogue-confirm2')
+		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
 		}
 	} else if (sailBoat == 1 && scriptBoatSend.sailBoat == true && sailBoatTimer < 2) {
 		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
-		closeSmittysDialogue('dialogue-confirm')
-		} else {clicksItem('sailBoat')}
+		closeSmittysDialogue('dialogue-confirm2')
+		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
 	if (steamBoat == 1 && scriptBoatSend.steamBoat == true && steamBoatTimer < 2) {
 		if (bait > 249) {
 		sendBytes('CLICKS_BOAT=steamBoat')
-		closeSmittysDialogue('dialogue-confirm')
-		} else {clicksItem('steamBoat')}
+		closeSmittysDialogue('dialogue-confirm2')
+		} else {clicksItem('steamBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
 	if (trawler == 1 && scriptBoatSend.trawler == true && trawlerTimer < 2) {
 		if (bait > 499) {
 		sendBytes('CLICKS_BOAT=trawler')
-		closeSmittysDialogue('dialogue-confirm')
-	} else {clicksItem('trawler')}
+		closeSmittysDialogue('dialogue-confirm2')
+	} else {clicksItem('trawler');closeSmittysDialogue('dialogue-confirm2')}
 	}
 }
 
