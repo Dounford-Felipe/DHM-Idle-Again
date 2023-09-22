@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -39,6 +39,7 @@ window.toggleBags = JSON.parse(localStorage.getItem('toggleBags')) || false
 window.toggleStatue = JSON.parse(localStorage.getItem('toggleStatue')) || false
 window.toggleArtifact = JSON.parse(localStorage.getItem('toggleArtifact')) || false
 window.toggleBoat = JSON.parse(localStorage.getItem('toggleBoat')) || true
+window.toggleEvent = JSON.parse(localStorage.getItem('toggleEvent')) || true
 //Crafting Vars
 window.scriptSmeltingOre = JSON.parse(localStorage.getItem('scriptSmeltingOre')) || 'copper'
 window.scriptRefinaryBar = JSON.parse(localStorage.getItem('scriptRefinaryBar')) || 'gold'
@@ -59,6 +60,12 @@ window.scriptCousinArea = JSON.parse(localStorage.getItem('scriptCousinArea')) |
 //Cooking Vars
 window.scriptBoatSend = {rowBoat:JSON.parse(localStorage.getItem('scriptBoatSend.rowBoat'))||true,canoeBoat:JSON.parse(localStorage.getItem('scriptBoatSend.canoeBoat'))||true,sailBoat:JSON.parse(localStorage.getItem('scriptBoatSend.sailBoat'))||true,highWind:JSON.parse(localStorage.getItem('scriptBoatSend.highWind'))||true,steamBoat:JSON.parse(localStorage.getItem('scriptBoatSend.steamBoat'))||true,trawler:JSON.parse(localStorage.getItem('scriptBoatSend.trawler'))||true}
 const oldHideAllTabs = hideAllTabs
+
+function autoEvent() {
+	if (eventName !== 'none' && (eventStatus == 'active' || eventStatus == 'fullActive') && eventLastClicked == 0) {
+        sendBytes('CLICKS_EVENT')
+    }
+}
 
 function autoGeodeOpen() {
 	if (geode1 > 0) {
@@ -145,16 +152,14 @@ function autoNecklaceCharge() {
 }
 
 function autoTrain() {
-	if (train > 0 && trainTimer < 2) {
-		var amount = document.getElementById('scriptTrainAmount').value
-		if (oil >= 500000 * amount) {
-			sendBytes('MANAGE_TRAIN='+amount)
-			closeSmittysDialogue('dialogue-confirm2')
-		} else {
-			clicksItem('train');
-			confirmedDialogue(this, document.getElementById('dialogue-confirm2-cmd').value);
-			closeSmittysDialogue('dialogue-confirm2')
-		}
+	var amount = document.getElementById('scriptTrainAmount').value
+	if (train > 0 && trainTimer < 2 && oil >= 500000 * amount) {
+		sendBytes("MANAGE_TRAIN=0");
+		sendBytes('MANAGE_TRAIN='+amount);
+		closeSmittysDialogue('dialogue-confirm2');
+	} else if (train > 0 && trainTimer == 1 && oil < 500000 * amount) {
+		sendBytes("MANAGE_TRAIN=0");
+		closeSmittysDialogue('dialogue-confirm2');
 	}
 }
 
@@ -291,9 +296,9 @@ function autoBrew() {
 function autoExplore() {
 	if (explorerCooldown == 0) {
 		let scriptAreaLocal = scriptArea
-		if (energy < scriptAreaEnergy.scriptAreaLocal) {scriptAreaLocal = 'fields'}
+		if (energy < scriptAreaEnergy[scriptAreaLocal]) {scriptAreaLocal = 'fields'}
 		sendBytes('EXPLORE='+scriptAreaLocal)
-		if (toggleShiny == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
+		if (toggleShiny == true || toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
 }
 
@@ -302,6 +307,7 @@ function autoFight() {
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			sendBytes('LOOK_FOR_FIGHT');
 		}
+		if (toggleShiny == false && toggleMonsterFind == false) {scriptWaitTeleport === false}
 	}
 }
 
@@ -309,16 +315,15 @@ function autoMonsterHunt() {
 	if (toggleShiny === true) {
 		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
 			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-			var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-			scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 		}
 	} else if (toggleMonsterFind === true){
 		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0 || monsterName !== scriptMonster)) {
 			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-			var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-			scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+			
 		}
 	}
+	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 }
 
 function autoSpell() {
@@ -1126,15 +1131,15 @@ function monsterOptions(monsterArea) {
     select.innerHTML = "";
 
     if (monsterArea === "fields") {
-        addOptions(select, ["chicken", "rat", "bee"]);
+        addOptions(select, ["chicken", "rat", "bee", "chickenGroup"]);
     } else if (monsterArea === "forests") {
         addOptions(select, ["snake", "ent", "thief"]);
     } else if (monsterArea === "caves") {
         addOptions(select, ["bear", "bat", "skeleton"]);
     } else if (monsterArea === "volcano") {
-        addOptions(select, ["lavaSnake", "fireHawk", "fireMage"]);
+        addOptions(select, ["lavaSnake", "fireHawk", "fireMage", "fireHawkGroup"]);
     } else if (monsterArea === "northernFields") {
-        addOptions(select, ["iceHawk", "frozenEnt", "golem"]);
+        addOptions(select, ["iceHawk", "frozenEnt", "golem", "iceHawkGroup"]);
     } else if (monsterArea === "hauntedMansion") {
         addOptions(select, ["ghost", "skeletonGhost", "reaper"]);
     } else if (monsterArea === "desert") {
@@ -1189,6 +1194,8 @@ window.onload = function() {
 	loadSeedOrder();
 	loadOreOrder();
 	loadPotions();
+	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 };
 
 function autoGameLoop() {
@@ -1217,6 +1224,7 @@ function autoGameLoopSlow() {
 		if (toggleBags === true) autoBags();
         if (toggleStatue === true) autoStatue();
         if (toggleArtifact === true) autoArtifact();
+		if (toggleEvent === true) autoEvent();
     }
 }
 
