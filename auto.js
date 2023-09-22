@@ -1212,6 +1212,7 @@ function autoGameLoop() {
         if (toggleFight === true) autoFight();
         if (toggleCousin === true) autoCousin();
         if (toggleBoat === true) autoBoat();
+		if (toggleEvent === true) autoEvent();
     }
 }
 
@@ -1224,7 +1225,6 @@ function autoGameLoopSlow() {
 		if (toggleBags === true) autoBags();
         if (toggleStatue === true) autoStatue();
         if (toggleArtifact === true) autoArtifact();
-		if (toggleEvent === true) autoEvent();
     }
 }
 
