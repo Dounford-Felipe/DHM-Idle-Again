@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.3
+// @version      1.2.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -40,6 +40,8 @@ window.toggleStatue = JSON.parse(localStorage.getItem('toggleStatue')) || false
 window.toggleArtifact = JSON.parse(localStorage.getItem('toggleArtifact')) || false
 window.toggleBoat = JSON.parse(localStorage.getItem('toggleBoat')) || true
 window.toggleEvent = JSON.parse(localStorage.getItem('toggleEvent')) || true
+//Mining Vars
+window.scriptTrainAmount = JSON.parse(localStorage.getItem('scriptTrainAmount')) || 1
 //Crafting Vars
 window.scriptSmeltingOre = JSON.parse(localStorage.getItem('scriptSmeltingOre')) || 'copper'
 window.scriptRefinaryBar = JSON.parse(localStorage.getItem('scriptRefinaryBar')) || 'gold'
@@ -152,13 +154,14 @@ function autoNecklaceCharge() {
 }
 
 function autoTrain() {
-	var amount = document.getElementById('scriptTrainAmount').value
-	if (train > 0 && trainTimer < 2 && oil >= 500000 * amount) {
+	if (train > 0 && trainTimer < 2 && oil >= 500000 * scriptTrainAmount) {
 		sendBytes("MANAGE_TRAIN=0");
-		sendBytes('MANAGE_TRAIN='+amount);
+		sendBytes('COLLECT_TRAIN_FORCE');
+		sendBytes('MANAGE_TRAIN='+scriptTrainAmount);
 		closeSmittysDialogue('dialogue-confirm2');
-	} else if (train > 0 && trainTimer == 1 && oil < 500000 * amount) {
+	} else if (train > 0 && trainTimer == 1 && oil < 500000 * scriptTrainAmount) {
 		sendBytes("MANAGE_TRAIN=0");
+		sendBytes('COLLECT_TRAIN_FORCE');
 		closeSmittysDialogue('dialogue-confirm2');
 	}
 }
@@ -313,11 +316,11 @@ function autoFight() {
 
 function autoMonsterHunt() {
 	if (toggleShiny === true) {
-		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0)) {
+		if (monsterName !== 'none' && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 		}
 	} else if (toggleMonsterFind === true){
-		if (monsterName !== 'none' && (monsterName !== 'gemGoblin' || monsterName !== 'bloodGemGoblin' || shinyMonster == 0 || monsterName !== scriptMonster)) {
+		if (monsterName !== 'none' && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0 && monsterName !== scriptMonster) {
 			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 			
 		}
@@ -526,9 +529,13 @@ function scriptAddTabs() {
 	<td style="text-align:right;padding-right:20px;width:100%">NECKLACE CHARGE</td></tr></tbody></table>
 <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptTrainToggle" onclick="window.autoChangeVar2('toggleTrain',!toggleTrain,this.id)" style="cursor: pointer; color: red;">
 	<td style="padding-left: 10px;"><img src="images/train.png" class="img-small"></td>
-	<td style="text-align:right;padding-right:20px;width:100%">TRAIN</td></tr></tbody></table><table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr style="color: white;width: 100%;">
-	<td style="padding-left: 10px;"><img src="images/trainTracks.png" class="img-small"></td>
-	<td><input type="number" min="1" placeholder="Minimum to Smelt" value="1" max="5" id="scriptTrainAmount"></td><td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td></tr></tbody></table></div>`
+	<td style="text-align:right;padding-right:20px;width:100%">TRAIN</td></tr></tbody></table><table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr style="color: white;width: 100%;"><td style="padding-left: 10px;"><img src="images/trainTracks.png" class="img-small"></td><td><select name="scriptTrainAmount" onchange="window.autoChangeVar2('scriptTrainAmount',this.value)" id="scriptTrainAmount">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select></td><td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td></tr></tbody></table></div>`
 
 	scriptConfCraftingTab.innerHTML= `<div id="tab-scriptConfigCrafting" style="display:none">
 	<div class="main-button-lighter">
@@ -851,7 +858,7 @@ function scriptAddTabs() {
 	<td style="text-align:right;padding-right:20px;width:100%">EXPLORER</td></tr></tbody></table>
 <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptExplorerArea" style="color: white;">
 	<td style="padding-left: 10px;"><img src="images/caves.png" class="img-small"></td>
-	<td style="padding-left: 50px;"><select name="scriptAreaOptions" onchange="window.autoChangeVar2('scriptArea',this.value);window.monsterOptions2(this.value)" id="scriptAreaOptions">
+	<td style="padding-left: 50px;"><select name="scriptAreaOptions" onchange="window.autoChangeVar2('scriptArea',this.value);window.monsterOptions2(this.value);window.autoChangeVar2('scriptMonster',document.getElementById('scriptMonsterOptions').value)" id="scriptAreaOptions">
     <option value="fields">Fields</option>
     <option value="forests">Forests</option>
     <option value="caves">Caves</option>
@@ -954,6 +961,7 @@ function scriptStyleTabs() {
 	document.getElementById('scriptMineralToggle').style.color = toggleMineralIdentify ? 'green' : 'red';
 	document.getElementById('scriptNecklaceToggle').style.color = toggleNecklaceCharge ? 'green' : 'red';
 	document.getElementById('scriptTrainToggle').style.color = toggleTrain ? 'green' : 'red';
+	document.getElementById('scriptTrainAmount').value = scriptTrainAmount;
 	document.getElementById('scriptSmeltingToggle').style.color = toggleSmelting ? 'green' : 'red';
 	document.getElementById('scriptRefinaryToggle').style.color = toggleRefinary ? 'green' : 'red';
 	document.getElementById('scriptRefinaryOptions').value = scriptRefinaryBar;
