@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.4
+// @version      1.2.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -21,6 +21,7 @@ window.toggleGeodeOpen = JSON.parse(localStorage.getItem('toggleGeodeOpen')) || 
 window.toggleMineralIdentify = JSON.parse(localStorage.getItem('toggleMineralIdentify')) || false
 window.toggleNecklaceCharge = JSON.parse(localStorage.getItem('toggleNecklaceCharge')) || false
 window.toggleTrain = JSON.parse(localStorage.getItem('toggleTrain')) || false
+window.toggleRocket = JSON.parse(localStorage.getItem('toggleRocket')) || false
 window.toggleSmelting = JSON.parse(localStorage.getItem('toggleSmelting')) || true
 window.toggleRefinary = JSON.parse(localStorage.getItem('toggleRefinary')) || false
 window.toggleCharcoal = JSON.parse(localStorage.getItem('toggleCharcoal')) || false
@@ -42,6 +43,7 @@ window.toggleBoat = JSON.parse(localStorage.getItem('toggleBoat')) || true
 window.toggleEvent = JSON.parse(localStorage.getItem('toggleEvent')) || true
 //Mining Vars
 window.scriptTrainAmount = JSON.parse(localStorage.getItem('scriptTrainAmount')) || 1
+window.scriptRocket = JSON.parse(localStorage.getItem('scriptRocket')) || 'Moon'
 //Crafting Vars
 window.scriptSmeltingOre = JSON.parse(localStorage.getItem('scriptSmeltingOre')) || 'copper'
 window.scriptRefinaryBar = JSON.parse(localStorage.getItem('scriptRefinaryBar')) || 'gold'
@@ -163,6 +165,20 @@ function autoTrain() {
 		sendBytes("MANAGE_TRAIN=0");
 		sendBytes('COLLECT_TRAIN_FORCE');
 		closeSmittysDialogue('dialogue-confirm2');
+	}
+}
+
+function autoRocket() {
+	if (rocket == 1 && rocketKm < 2) {
+		if (rocketReturning == 0) {
+			sendBytes('MANAGE_ROCKET=collect2')
+		} else if (scriptRocket == 'Moon' && oil >= 4000000) {
+			sendBytes('MANAGE_ROCKET=send')
+		} else if (scriptRocket == 'Mars' && oil >= 15000000) {
+			sendBytes('MANAGE_ROCKET=send_mars')
+		} else if (scriptRocket == 'Sun' & oil >= 30000000 && charcoal >= 100) {
+			sendBytes('MANAGE_ROCKET=send_sun')
+		}
 	}
 }
 
@@ -315,15 +331,8 @@ function autoFight() {
 }
 
 function autoMonsterHunt() {
-	if (toggleShiny === true) {
-		if (monsterName !== 'none' && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
-			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-		}
-	} else if (toggleMonsterFind === true){
-		if (monsterName !== 'none' && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0 && monsterName !== scriptMonster) {
-			sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-			
-		}
+	if (monsterName !== 'none' && (toggleMonsterFind == false || monsterName !== scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
+		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
@@ -421,9 +430,10 @@ function autoBoat() {
 
 function autoCityUnlock() {
 	sendBytes('CLICKS_SHOP_VOTE=9');
-	sendBytes('CLICKS_SHOP_VOTE=6');
-	closeSmittysDialogue('dialogue-confirm')
+	sendBytes("COLLECT_VOTES")
 }
+
+window.autoCityUnlock = autoCityUnlock
 
 function hideAllTabs2() {
 	oldHideAllTabs()
@@ -510,7 +520,10 @@ function scriptAddTabs() {
 		<td style="padding-left: 10px;"><img src="images/exploringSkill.png" class="img-medium"></td>
 		<td style="text-align:right;padding-right:20px;width:100%">EXPLORING TOGGLES</td></tr></tbody></table><table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptCookingTogglesBar" onclick="navigate('scriptConfigCooking')" style="cursor: pointer; color: white;">
 		<td style="padding-left: 10px;"><img src="images/cookingSkill.png" class="img-medium"></td>
-		<td style="text-align:right;padding-right:20px;width:100%">COOKING TOGGLES</td></tr></tbody></table></div>`
+		<td style="text-align:right;padding-right:20px;width:100%">COOKING TOGGLES</td></tr></tbody></table>
+		<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptCityUnlock" onclick="if(isMayor == 0) {window.autoCityUnlock();console.log('City Unlocked')}" style="cursor: pointer; color: white;">
+	<td style="padding-left: 10px;"><img src="images/mayorsHouse.png" class="img-medium"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">CITY UNLOCK</td></tr></tbody></table></div>`
 
 
 	scriptConfMiningTab.innerHTML = `<div id="tab-scriptConfigMining" style="display:none">
@@ -535,7 +548,15 @@ function scriptAddTabs() {
     <option value="3">3</option>
     <option value="4">4</option>
     <option value="5">5</option>
-</select></td><td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td></tr></tbody></table></div>`
+</select></td><td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td></tr></tbody></table>
+<table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr id="scriptRocketToggle" onclick="window.autoChangeVar2('toggleRocket',!toggleRocket,this.id)" style="cursor: pointer; color: red;">
+	<td style="padding-left: 10px;"><img src="images/rocket.png" class="img-small"></td>
+	<td style="text-align:right;padding-right:20px;width:100%">ROCKET</td></tr></tbody></table>
+<table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;"><tbody><tr style="color: white;width: 100%;"><td style="padding-left: 10px;"><img src="images/mars.png" class="img-small"></td><td><select name="scriptRocketDestination" onchange="window.autoChangeVar2('scriptRocket',this.value)" id="scriptRocketDestination">
+    <option value="Moon">Moon</option>
+    <option value="Mars">Mars</option>
+    <option value="Sun">Sun</option>
+</select></td><td style="text-align:right;padding-right:20px;width:100%">ROCKET DESTINATION</td></tr></tbody></table></div>`
 
 	scriptConfCraftingTab.innerHTML= `<div id="tab-scriptConfigCrafting" style="display:none">
 	<div class="main-button-lighter">
@@ -808,7 +829,7 @@ function scriptAddTabs() {
 </li>
 
 <li class="ui-state-default" value="fastCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-    <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">Fast COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+    <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FAST COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
 </li>
 
 <li class="ui-state-default" value="oilPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
@@ -847,7 +868,7 @@ function scriptAddTabs() {
     <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">SUPER ROCKET SPEED POTION<img src="images/superRocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
 </li></ol></div>`
 
-	scriptConfExploringTab.innerHTML= `<div id="tab-scriptConfigExploring" style="">
+	scriptConfExploringTab.innerHTML= `<div id="tab-scriptConfigExploring" style="display:none">
 	<div class="main-button-lighter">
 	<table><tbody><tr onclick="navigate('scriptConfig');playPreviousMenuSound();" style="cursor: pointer;">
 		<td><img src="images/back.png" class="img-small"></td>
@@ -962,6 +983,8 @@ function scriptStyleTabs() {
 	document.getElementById('scriptNecklaceToggle').style.color = toggleNecklaceCharge ? 'green' : 'red';
 	document.getElementById('scriptTrainToggle').style.color = toggleTrain ? 'green' : 'red';
 	document.getElementById('scriptTrainAmount').value = scriptTrainAmount;
+	document.getElementById('scriptRocketToggle').style.color = toggleRocket ? 'green' : 'red';
+	document.getElementById('scriptRocketDestination').value = scriptRocket;
 	document.getElementById('scriptSmeltingToggle').style.color = toggleSmelting ? 'green' : 'red';
 	document.getElementById('scriptRefinaryToggle').style.color = toggleRefinary ? 'green' : 'red';
 	document.getElementById('scriptRefinaryOptions').value = scriptRefinaryBar;
@@ -1209,6 +1232,7 @@ window.onload = function() {
 function autoGameLoop() {
     if (toggleGlobal === true) {
         if (toggleTrain === true) autoTrain();
+        if (toggleRocket === true) autoRocket();
         if (toggleSmelting === true) autoSmelt();
         if (toggleRefinary === true) autoRefine();
         if (toggleCharcoal === true) autoFoundry();
