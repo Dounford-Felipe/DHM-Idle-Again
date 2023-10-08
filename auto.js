@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2.6
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -169,10 +169,11 @@ function autoTrain() {
 }
 
 function autoRocket() {
-	if (rocket == 1 && rocketKm < 2) {
-		if (rocketReturning == 0) {
-			sendBytes('MANAGE_ROCKET=collect2')
-		} else if (scriptRocket == 'Moon' && oil >= 4000000) {
+	if (rocketKm == 1) {
+		sendBytes('MANAGE_ROCKET=collect2')
+		closeSmittysDialogue('dialogue-confirm')
+	} else if (rocket == 1 && rocketKm == 0) {
+		if (scriptRocket == 'Moon' && oil >= 4000000) {
 			sendBytes('MANAGE_ROCKET=send')
 		} else if (scriptRocket == 'Mars' && oil >= 15000000) {
 			sendBytes('MANAGE_ROCKET=send_mars')
@@ -190,6 +191,9 @@ function autoSmelt() {
       var minimumOre = oreItems[i].querySelector(".oreMinimum").value;
       var selectedOre = oreItems[i].getAttribute("value");
       if (smeltingCurrentOreType == 'none' && window[selectedOre] >= minimumOre) {
+		if (selectedOre == 'promethium' && lava <= minimumOre) {break}
+		if (selectedOre == 'titanium' && charcoal <= minimumOre) {break}
+		if (selectedOre == 'ancientOre' && plasma <= minimumOre) {break}
 		chooseOreForFurnace(selectedOre)
 		startSmelting()
 		closeSmittysDialogue('dialogue-furnace2')
