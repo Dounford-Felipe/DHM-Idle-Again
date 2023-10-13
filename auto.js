@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.6
+// @version      1.2.7
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -190,10 +190,7 @@ function autoSmelt() {
     for (var i = 0; i < oreItems.length; i++) {
       var minimumOre = oreItems[i].querySelector(".oreMinimum").value;
       var selectedOre = oreItems[i].getAttribute("value");
-      if (smeltingCurrentOreType == 'none' && window[selectedOre] >= minimumOre) {
-		if (selectedOre == 'promethium' && lava <= minimumOre) {break}
-		if (selectedOre == 'titanium' && charcoal <= minimumOre) {break}
-		if (selectedOre == 'ancientOre' && plasma <= minimumOre) {break}
+      if (smeltingCurrentOreType == 'none' && window[selectedOre] >= minimumOre && (selectedOre !== 'promethium' || lava >= minimumOre) && (selectedOre !== 'titanium' || charcoal >= minimumOre) && (selectedOre !== 'ancientOre' || plasma >= minimumOre)) {
 		chooseOreForFurnace(selectedOre)
 		startSmelting()
 		closeSmittysDialogue('dialogue-furnace2')
