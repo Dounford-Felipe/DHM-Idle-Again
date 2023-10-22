@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.8
+// @version      1.2.9
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -16,55 +16,59 @@
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
 //Toggles
-window.toggleGlobal = JSON.parse(localStorage.getItem('toggleGlobal')) || true
-window.toggleGeodeOpen = JSON.parse(localStorage.getItem('toggleGeodeOpen')) || false
-window.toggleMineralIdentify = JSON.parse(localStorage.getItem('toggleMineralIdentify')) || false
-window.toggleNecklaceCharge = JSON.parse(localStorage.getItem('toggleNecklaceCharge')) || false
-window.toggleTrain = JSON.parse(localStorage.getItem('toggleTrain')) || false
-window.toggleRocket = JSON.parse(localStorage.getItem('toggleRocket')) || false
-window.toggleSmelting = JSON.parse(localStorage.getItem('toggleSmelting')) || true
-window.toggleRefinary = JSON.parse(localStorage.getItem('toggleRefinary')) || false
-window.toggleCharcoal = JSON.parse(localStorage.getItem('toggleCharcoal')) || false
-window.toggleWoodcutting = JSON.parse(localStorage.getItem('toggleWoodcutting')) || true
-window.toggleFarming = JSON.parse(localStorage.getItem('toggleFarming')) || false//
-window.toggleBones = JSON.parse(localStorage.getItem('toggleBones')) || false
-window.toggleDrink = JSON.parse(localStorage.getItem('toggleDrink')) || false//
-window.toggleBrew = JSON.parse(localStorage.getItem('toggleBrew')) || false//
-window.toggleExplore = JSON.parse(localStorage.getItem('toggleExplore')) || false
-window.toggleFight = JSON.parse(localStorage.getItem('toggleFight')) || false
-window.toggleResetFight = JSON.parse(localStorage.getItem('toggleResetFight')) || false
-window.toggleMonsterFind = JSON.parse(localStorage.getItem('toggleMonsterFind')) || false
-window.toggleSpell = JSON.parse(localStorage.getItem('toggleSpell')) || false
-window.toggleShiny = JSON.parse(localStorage.getItem('toggleShiny')) || false
-window.toggleCousin = JSON.parse(localStorage.getItem('toggleCousin')) || false
-window.toggleBags = JSON.parse(localStorage.getItem('toggleBags')) || false
-window.toggleStatue = JSON.parse(localStorage.getItem('toggleStatue')) || false
-window.toggleArtifact = JSON.parse(localStorage.getItem('toggleArtifact')) || false
-window.toggleBoat = JSON.parse(localStorage.getItem('toggleBoat')) || true
-window.toggleEvent = JSON.parse(localStorage.getItem('toggleEvent')) || true
+window.toggleGlobalLoad = localStorage.getItem('toggleGlobalLoad') !== null ? JSON.parse(localStorage.getItem('toggleGlobalLoad')) : true
+window.toggleGlobal = window.toggleGlobalLoad ? true : false
+window.toggleGeodeOpen = localStorage.getItem('toggleGeodeOpen') !== null ? JSON.parse(localStorage.getItem('toggleGeodeOpen')) : false
+window.toggleMineralIdentify = localStorage.getItem('toggleMineralIdentify') !== null ? JSON.parse(localStorage.getItem('toggleMineralIdentify')) : false
+window.toggleNecklaceCharge = localStorage.getItem('toggleNecklaceCharge') !== null ? JSON.parse(localStorage.getItem('toggleNecklaceCharge')) : false
+window.toggleTrain = localStorage.getItem('toggleTrain') !== null ? JSON.parse(localStorage.getItem('toggleTrain')) : false
+window.toggleRocket = localStorage.getItem('toggleRocket') !== null ? JSON.parse(localStorage.getItem('toggleRocket')) : false
+window.toggleSmelting = localStorage.getItem('toggleSmelting') !== null ? JSON.parse(localStorage.getItem('toggleSmelting')) : true
+window.toggleRefinary = localStorage.getItem('toggleRefinary') !== null ? JSON.parse(localStorage.getItem('toggleRefinary')) : false
+window.toggleCharcoal = localStorage.getItem('toggleCharcoal') !== null ? JSON.parse(localStorage.getItem('toggleCharcoal')) : false
+window.toggleWoodcutting = localStorage.getItem('toggleWoodcutting') !== null ? JSON.parse(localStorage.getItem('toggleWoodcutting')) : true
+window.toggleFarming = localStorage.getItem('toggleFarming') !== null ? JSON.parse(localStorage.getItem('toggleFarming')) : false
+window.toggleBones = localStorage.getItem('toggleBones') !== null ? JSON.parse(localStorage.getItem('toggleBones')) : false
+window.toggleDrink = localStorage.getItem('toggleDrink') !== null ? JSON.parse(localStorage.getItem('toggleDrink')) : false
+window.toggleTreeUpgrade = localStorage.getItem('toggleTreeUpgrade') !== null ? JSON.parse(localStorage.getItem('toggleTreeUpgrade')) : false
+window.toggleBrew = localStorage.getItem('toggleBrew') !== null ? JSON.parse(localStorage.getItem('toggleBrew')) : false
+window.toggleExplore = localStorage.getItem('toggleExplore') !== null ? JSON.parse(localStorage.getItem('toggleExplore')) : false
+window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(localStorage.getItem('toggleFight')) : false
+window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
+window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
+window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
+window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
+window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
+window.toggleBags = localStorage.getItem('toggleBags') !== null ? JSON.parse(localStorage.getItem('toggleBags')) : false
+window.toggleStatue = localStorage.getItem('toggleStatue') !== null ? JSON.parse(localStorage.getItem('toggleStatue')) : false
+window.toggleArtifact = localStorage.getItem('toggleArtifact') !== null ? JSON.parse(localStorage.getItem('toggleArtifact')) : false
+window.toggleBoat = localStorage.getItem('toggleBoat') !== null ? JSON.parse(localStorage.getItem('toggleBoat')) : true
+window.toggleEvent = true
 //Mining Vars
-window.scriptTrainAmount = JSON.parse(localStorage.getItem('scriptTrainAmount')) || 1
-window.scriptRocket = JSON.parse(localStorage.getItem('scriptRocket')) || 'Moon'
+window.scriptTrainAmount = localStorage.getItem('scriptTrainAmount') !== null ? JSON.parse(localStorage.getItem('scriptTrainAmount')) : 1
+window.scriptRocket = localStorage.getItem('scriptRocket') !== null ? JSON.parse(localStorage.getItem('scriptRocket')) : 'Moon'
 //Crafting Vars
-window.scriptSmeltingOre = JSON.parse(localStorage.getItem('scriptSmeltingOre')) || 'copper'
-window.scriptRefinaryBar = JSON.parse(localStorage.getItem('scriptRefinaryBar')) || 'gold'
-window.scriptFoundryWood = JSON.parse(localStorage.getItem('scriptFoundryWood')) || 'cheapest'
+window.scriptSmeltingOre = localStorage.getItem('scriptSmeltingOre') !== null ? JSON.parse(localStorage.getItem('scriptSmeltingOre')) : 'copper'
+window.scriptRefinaryBar = localStorage.getItem('scriptRefinaryBar') !== null ? JSON.parse(localStorage.getItem('scriptRefinaryBar')) : 'gold'
+window.scriptFoundryWood = localStorage.getItem('scriptFoundryWood') !== null ? JSON.parse(localStorage.getItem('scriptFoundryWood')) : 'cheapest'
 //Woodicutting Vars
-window.scriptTreeIgnore = {tree:JSON.parse(localStorage.getItem('scriptTreeIgnore.tree'))||false,oakTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.oakTree'))||false,willowTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.willowTree'))||false,mapleTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.mapleTree'))||false,redwoodTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.redwoodTree'))||false,pineTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.pineTree'))||false,hauntedTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.hauntedTree'))||false,jungleTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.jungleTree'))||true,lavaTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.lavaTree'))||false,goldTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.goldTree'))||true,magicTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.magicTree'))||false,appleTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.appleTree'))||false,cactusTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.cactusTree'))||false,bananaTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.bananaTree'))||false,palmTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.palmTree'))||false,pineappleTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.pineappleTree'))||true,starfruitTree:JSON.parse(localStorage.getItem('scriptTreeIgnore.starfruitTree'))||false,none:true}
+window.scriptTreeIgnore = {tree:localStorage.getItem('scriptTreeIgnore.tree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.tree')) : false,oakTree:localStorage.getItem('scriptTreeIgnore.oakTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.oakTree')) : false,willowTree:localStorage.getItem('scriptTreeIgnore.willowTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.willowTree')) : false,mapleTree:localStorage.getItem('scriptTreeIgnore.mapleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.mapleTree')) : false,redwoodTree:localStorage.getItem('scriptTreeIgnore.redwoodTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.redwoodTree')) : false,pineTree:localStorage.getItem('scriptTreeIgnore.pineTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.pineTree')) : false,hauntedTree:localStorage.getItem('scriptTreeIgnore.hauntedTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.hauntedTree')) : false,jungleTree:localStorage.getItem('scriptTreeIgnore.jungleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.jungleTree')) : true,lavaTree:localStorage.getItem('scriptTreeIgnore.lavaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.lavaTree')) : false,goldTree:localStorage.getItem('scriptTreeIgnore.goldTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.goldTree')) : true,magicTree:localStorage.getItem('scriptTreeIgnore.magicTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.magicTree')) : false,appleTree:localStorage.getItem('scriptTreeIgnore.appleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.appleTree')) : false,cactusTree:localStorage.getItem('scriptTreeIgnore.cactusTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.cactusTree')) : false,bananaTree:localStorage.getItem('scriptTreeIgnore.bananaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.bananaTree')) : false,palmTree:localStorage.getItem('scriptTreeIgnore.palmTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.palmTree')) : false,pineappleTree:localStorage.getItem('scriptTreeIgnore.pineappleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.pineappleTree')) : true,starfruitTree:localStorage.getItem('scriptTreeIgnore.starfruitTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.starfruitTree')) : false,none:true}
 //Farming Vars
-window.scriptBonesIgnore = {bones:JSON.parse(localStorage.getItem('scriptBonesIgnore.bones'))||true,ashes:JSON.parse(localStorage.getItem('scriptBonesIgnore.ashes'))||false,iceBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.iceBones'))||true,zombieBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.zombieBones'))||true,bloodBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.bloodBones'))||true,fishBones:JSON.parse(localStorage.getItem('scriptBonesIgnore.fishBones'))||true}
+window.scriptBonesIgnore = {bones:localStorage.getItem('scriptBonesIgnore.bones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.bones')) : true,ashes:localStorage.getItem('scriptBonesIgnore.ashes') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.ashes')) : false,iceBones:localStorage.getItem('scriptBonesIgnore.iceBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.iceBones')) : true,zombieBones:localStorage.getItem('scriptBonesIgnore.zombieBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.zombieBones')) : true,bloodBones:localStorage.getItem('scriptBonesIgnore.bloodBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.bloodBones')) : true,fishBones:localStorage.getItem('scriptBonesIgnore.fishBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.fishBones')) : true}
+//Brewing Vars
+window.scriptTreeUpgrade = {tree:localStorage.getItem('scriptTreeUpgrade.tree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.tree')) : false,oakTree:localStorage.getItem('scriptTreeUpgrade.oakTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.oakTree')) : false,willowTree:localStorage.getItem('scriptTreeUpgrade.willowTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.willowTree')) : false,mapleTree:localStorage.getItem('scriptTreeUpgrade.mapleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.mapleTree')) : false,redwoodTree:localStorage.getItem('scriptTreeUpgrade.redwoodTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.redwoodTree')) : false,pineTree:localStorage.getItem('scriptTreeUpgrade.pineTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.pineTree')) : false,hauntedTree:localStorage.getItem('scriptTreeUpgrade.hauntedTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.hauntedTree')) : false,jungleTree:localStorage.getItem('scriptTreeUpgrade.jungleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.jungleTree')) : true,lavaTree:localStorage.getItem('scriptTreeUpgrade.lavaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.lavaTree')) : false,goldTree:localStorage.getItem('scriptTreeUpgrade.goldTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.goldTree')) : true,magicTree:localStorage.getItem('scriptTreeUpgrade.magicTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.magicTree')) : false,appleTree:localStorage.getItem('scriptTreeUpgrade.appleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.appleTree')) : false,cactusTree:localStorage.getItem('scriptTreeUpgrade.cactusTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.cactusTree')) : false,bananaTree:localStorage.getItem('scriptTreeUpgrade.bananaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.bananaTree')) : false,palmTree:localStorage.getItem('scriptTreeUpgrade.palmTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.palmTree')) : false,pineappleTree:localStorage.getItem('scriptTreeUpgrade.pineappleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.pineappleTree')) : true,starfruitTree:localStorage.getItem('scriptTreeUpgrade.starfruitTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.starfruitTree')) : false,none:true}
 //Exploring Vars
 window.scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 window.scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
 window.scriptWaitTeleport = false
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
-window.scriptArea = JSON.parse(localStorage.getItem('scriptArea')) || 'fields'
-window.scriptMonster = JSON.parse(localStorage.getItem('scriptMonster')) || 'chicken'
-window.scriptResetArea = {fields:JSON.parse(localStorage.getItem('scriptResetArea.fields'))||false,forests:JSON.parse(localStorage.getItem('scriptResetArea.forests'))||false,caves:JSON.parse(localStorage.getItem('scriptResetArea.caves'))||false,volcano:JSON.parse(localStorage.getItem('scriptResetArea.volcano'))||false,northernFields:JSON.parse(localStorage.getItem('scriptResetArea.northernFields'))||false,hauntedMansion:JSON.parse(localStorage.getItem('scriptResetArea.hauntedMansion'))||false,desert:JSON.parse(localStorage.getItem('scriptResetArea.desert'))||false,ocean:JSON.parse(localStorage.getItem('scriptResetArea.ocean'))||false,jungle:JSON.parse(localStorage.getItem('scriptResetArea.jungle'))||false,dungeonEntrance:JSON.parse(localStorage.getItem('scriptResetArea.dungeonEntrance'))||false,dungeon:JSON.parse(localStorage.getItem('scriptResetArea.dungeon'))||false,castle:JSON.parse(localStorage.getItem('scriptResetArea.castle'))||false,cemetery:JSON.parse(localStorage.getItem('scriptResetArea.cemetery'))||false,factory:JSON.parse(localStorage.getItem('scriptResetArea.factory'))||false,hauntedWoods:JSON.parse(localStorage.getItem('scriptResetArea.hauntedWoods'))||false,deepOcean:JSON.parse(localStorage.getItem('scriptResetArea.deepOcean'))||false}
-window.scriptCousinArea = JSON.parse(localStorage.getItem('scriptCousinArea')) || 'fields'
+window.scriptArea = localStorage.getItem('scriptArea') !== null ? JSON.parse(localStorage.getItem('scriptArea')) : 'fields'
+window.scriptMonster = localStorage.getItem('scriptMonster') !== null ? JSON.parse(localStorage.getItem('scriptMonster')) : 'chicken'
+window.scriptResetArea = {fields:localStorage.getItem('scriptResetArea.fields') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.fields')) : false,forests:localStorage.getItem('scriptResetArea.forests') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.forests')) : false,caves:localStorage.getItem('scriptResetArea.caves') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.caves')) : false,volcano:localStorage.getItem('scriptResetArea.volcano') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.volcano')) : false,northernFields:localStorage.getItem('scriptResetArea.northernFields') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.northernFields')) : false,hauntedMansion:localStorage.getItem('scriptResetArea.hauntedMansion') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.hauntedMansion')) : false,desert:localStorage.getItem('scriptResetArea.desert') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.desert')) : false,ocean:localStorage.getItem('scriptResetArea.ocean') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.ocean')) : false,jungle:localStorage.getItem('scriptResetArea.jungle') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.jungle')) : false,dungeonEntrance:localStorage.getItem('scriptResetArea.dungeonEntrance') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.dungeonEntrance')) : false,dungeon:localStorage.getItem('scriptResetArea.dungeon') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.dungeon')) : false,castle:localStorage.getItem('scriptResetArea.castle') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.castle')) : false,cemetery:localStorage.getItem('scriptResetArea.cemetery') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.cemetery')) : false,factory:localStorage.getItem('scriptResetArea.factory') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.factory')) : false,hauntedWoods:localStorage.getItem('scriptResetArea.hauntedWoods') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.hauntedWoods')) : false,deepOcean:localStorage.getItem('scriptResetArea.deepOcean') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.deepOcean')) : false}
+window.scriptCousinArea = localStorage.getItem('scriptCousinArea') !== null ? JSON.parse(localStorage.getItem('scriptCousinArea')) : 'fields'
 //Cooking Vars
-window.scriptBoatSend = {rowBoat:JSON.parse(localStorage.getItem('scriptBoatSend.rowBoat'))||true,canoeBoat:JSON.parse(localStorage.getItem('scriptBoatSend.canoeBoat'))||true,sailBoat:JSON.parse(localStorage.getItem('scriptBoatSend.sailBoat'))||true,highWind:JSON.parse(localStorage.getItem('scriptBoatSend.highWind'))||true,steamBoat:JSON.parse(localStorage.getItem('scriptBoatSend.steamBoat'))||true,trawler:JSON.parse(localStorage.getItem('scriptBoatSend.trawler'))||true}
+window.scriptBoatSend = {rowBoat:localStorage.getItem('scriptBoatSend.rowBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.rowBoat')) : true,canoeBoat:localStorage.getItem('scriptBoatSend.canoeBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.canoeBoat')) : true,sailBoat:localStorage.getItem('scriptBoatSend.sailBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.sailBoat')) : true,highWind:localStorage.getItem('scriptBoatSend.highWind') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.highWind')) : true,steamBoat:localStorage.getItem('scriptBoatSend.steamBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.steamBoat')) : true,trawler:localStorage.getItem('scriptBoatSend.trawler') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.trawler')) : true}
 const oldHideAllTabs = hideAllTabs
 
 function autoEvent() {
@@ -205,11 +209,15 @@ function autoSmelt() {
 
 function autoRefine() {
 	if (barRefineryTimer < 2 && scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
+		clicksItem('goldBarRefinery')
 		sendBytes('REFINE_GOLD_BARS=goldBars')
+		closeSmittysDialogue('dialogue-barRefinery');
 		closeSmittysDialogue('dialogue-confirm')
 
 	} else if (barRefineryTimer < 2 && scriptRefinaryBar == 'promethium' && oil > 2000000 && promethiumBars > 99) {
+		clicksItem('goldBarRefinery')
 		sendBytes('REFINE_GOLD_BARS=promethiumBars')
+		closeSmittysDialogue('dialogue-barRefinery');
 		closeSmittysDialogue('dialogue-confirm')
 	}
 }
@@ -231,7 +239,8 @@ function autoFoundry() {
 		: magicLogs > 100 ? scriptFoundryWoodLocal = 'magicLogs'
 		: scriptFoundryWoodLocal = 'none';
 	}
-	if (scriptFoundryWoodLocal > 20 && lava > 12 && scriptFoundryWoodLocal !== 'none') {
+	console.log(scriptFoundryWoodLocal+' used')
+	if (window[scriptFoundryWoodLocal] > 99 && lava > 99 && scriptFoundryWoodLocal !== 'none') {
 	sendBytes('CHARCOAL_FOUNDRY='+scriptFoundryWoodLocal+'~'+100)
 	closeSmittysDialogue('dialogue-confirm')
     }
@@ -300,6 +309,23 @@ function autoDrink() {
     }
 }
 
+function autoTreeUpgrade() {
+	if (woodcuttingUpgradePotionCooldown == 0 && woodcuttingUpgradePotion >= 1) {
+		if (scriptTreeUpgrade[tree6] === true && woodcuttingUpgradePotionUsed6 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=6')}
+		if (scriptTreeUpgrade[tree5] === true && woodcuttingUpgradePotionUsed5 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=5')}
+		if (scriptTreeUpgrade[tree4] === true && woodcuttingUpgradePotionUsed4 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=4')}
+		if (scriptTreeUpgrade[tree3] === true && woodcuttingUpgradePotionUsed3 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=3')}
+		if (scriptTreeUpgrade[tree2] === true && woodcuttingUpgradePotionUsed2 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=2')}
+		if (scriptTreeUpgrade[tree1] === true && woodcuttingUpgradePotionUsed1 == 0) {
+			sendBytes('POTION_UPGRADE_TREE=1')}
+	}
+}
+
 function autoBrew() {
     var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li")
 
@@ -334,7 +360,7 @@ function autoFight() {
 }
 
 function autoReset() {
-	if (exploringArea !== 'none' && fightDone == 1 && resetFightingPotion >= 1 && resetFightingPotionUsed == 0) {
+	if (exploringArea !== 'none' && fightDone == 1 && monsterName == 'none' && resetFightingPotion >= 1 && resetFightingPotionUsed == 0) {
 		if (scriptResetArea[exploringArea] === true) {
 			sendBytes('DRINK=resetFightingPotion')
 		}
@@ -348,6 +374,10 @@ function autoMonsterHunt() {
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 }
+
+/*function autoHeal() {
+	if (monsterName !== 'none' && heroHp == 0){}
+}*/
 
 function autoSpell() {
 	if (fireSpell == 1 && fireSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
@@ -584,6 +614,14 @@ function scriptAddTabs() {
       <tr id="scriptCityUnlock" onclick="if(isMayor == 0) {window.autoCityUnlock();console.log('City Unlocked')}" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/mayorsHouse.png" class="img-medium"></td>
         <td style="text-align:right;padding-right:20px;width:100%">CITY UNLOCK</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
+      <tr id="scriptGlobalToggleLoad" onclick="window.autoChangeVar2('toggleGlobalLoad',!toggleGlobalLoad,this.id)" style="cursor: pointer; color: green;">
+        <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">GLOBAL TOGGLE ACTIVATED ON LOAD</td>
       </tr>
     </tbody>
   </table>
@@ -1073,6 +1111,86 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
+      <tr id="scriptTreeUpgradeToggle" onclick="window.autoChangeVar2('toggleTreeUpgrade',!toggleTreeUpgrade,this.id)" style="cursor: pointer; color: red;">
+        <td style="padding-left: 10px;"><img src="images/woodcuttingUpgradePotion.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">TREE UPGRADE POTION</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
+    <tbody style="display: block;">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','tree',!scriptTreeUpgrade.tree,this.id)" id="treeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/tree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','oakTree',!scriptTreeUpgrade.oakTree,this.id)" id="oakTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/oakTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">OAK TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','willowTree',!scriptTreeUpgrade.willowTree,this.id)" id="willowTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/willowTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">WILLOW TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','mapleTree',!scriptTreeUpgrade.mapleTree,this.id)" id="mapleTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/mapleTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">MAPLE TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','redwoodTree',!scriptTreeUpgrade.redwoodTree,this.id)" id="redwoodTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/redwoodTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">REDWOOD TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','pineTree',!scriptTreeUpgrade.pineTree,this.id)" id="pineTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/pineTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">PINE TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','hauntedTree',!scriptTreeUpgrade.hauntedTree,this.id)" id="hauntedTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">HAUNTED TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','jungleTree',!scriptTreeUpgrade.jungleTree,this.id)" id="jungleTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/jungleTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">JUNGLE TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','lavaTree',!scriptTreeUpgrade.lavaTree,this.id)" id="lavaTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/lavaTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">LAVA TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','goldTree',!scriptTreeUpgrade.goldTree,this.id)" id="goldTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/goldTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">GOLD TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','magicTree',!scriptTreeUpgrade.magicTree,this.id)" id="magicTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/magicTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">MAGIC TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','appleTree',!scriptTreeUpgrade.appleTree,this.id)" id="appleTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/appleTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">APPLE TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','cactusTree',!scriptTreeUpgrade.cactusTree,this.id)" id="cactusTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/cactusTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">CACTUS TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','bananaTree',!scriptTreeUpgrade.bananaTree,this.id)" id="bananaTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/bananaTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">BANANA TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','palmTree',!scriptTreeUpgrade.palmTree,this.id)" id="palmTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/palmTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">PALM TREE UPGRADE</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','pineappleTree',!scriptTreeUpgrade.pineappleTree,this.id)" id="pineappleTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/pineappleTree.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">PINEAPPLE TREE UPGRADE</td>
+      </tr>
+      <tr style="color: red;" onclick="window.autoChangeObject2('scriptTreeUpgrade','starfuitTree',!scriptTreeUpgrade.starfuitTree,this.id)" id="starfruitTreeUpgradeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/starfruitTree.png" class="img-small"></td>
+        <td style="text-align: center;">STARFRUIT TREE UPGRADE</td>
+      </tr>
+    </tbody>
+  </table>
 </div>`
 
 	scriptConfPotionsTab.innerHTML= `<div id="tab-scriptConfigPotions" style="display:none">
@@ -1458,6 +1576,7 @@ function scriptAddTabs() {
 
 function scriptStyleTabs() {
 	document.getElementById('scriptGlobalToggle').style.color = toggleGlobal ? 'green' : 'red';
+	document.getElementById('scriptGlobalToggleLoad').style.color = toggleGlobalLoad ? 'green' : 'red';
 	document.getElementById('scriptGeodeToggle').style.color = toggleGeodeOpen ? 'green' : 'red';
 	document.getElementById('scriptMineralToggle').style.color = toggleMineralIdentify ? 'green' : 'red';
 	document.getElementById('scriptNecklaceToggle').style.color = toggleNecklaceCharge ? 'green' : 'red';
@@ -1498,6 +1617,22 @@ function scriptStyleTabs() {
 	document.getElementById('fishBonesIgnoreToggle').style.color = scriptBonesIgnore.fishBones ? 'green' : 'red';
 	document.getElementById('scriptDrinkToggle').style.color = toggleDrink ? 'green' : 'red';
 	document.getElementById('scriptBrewToggle').style.color = toggleBrew ? 'green' : 'red';
+	document.getElementById('treeUpgradeToggle').style.color = scriptTreeUpgrade.tree ? 'green' : 'red';
+	document.getElementById('oakTreeUpgradeToggle').style.color = scriptTreeUpgrade.oakTree ? 'green' : 'red';
+	document.getElementById('willowTreeUpgradeToggle').style.color = scriptTreeUpgrade.willowTree ? 'green' : 'red';
+	document.getElementById('mapleTreeUpgradeToggle').style.color = scriptTreeUpgrade.mapleTree ? 'green' : 'red';
+	document.getElementById('redwoodTreeUpgradeToggle').style.color = scriptTreeUpgrade.redwoodTree ? 'green' : 'red';
+	document.getElementById('pineTreeUpgradeToggle').style.color = scriptTreeUpgrade.pineTree ? 'green' : 'red';
+	document.getElementById('hauntedTreeUpgradeToggle').style.color = scriptTreeUpgrade.hauntedTree ? 'green' : 'red';
+	document.getElementById('jungleTreeUpgradeToggle').style.color = scriptTreeUpgrade.jungleTree ? 'green' : 'red';
+	document.getElementById('lavaTreeUpgradeToggle').style.color = scriptTreeUpgrade.lavaTree ? 'green' : 'red';
+	document.getElementById('goldTreeUpgradeToggle').style.color = scriptTreeUpgrade.goldTree ? 'green' : 'red';
+	document.getElementById('magicTreeUpgradeToggle').style.color = scriptTreeUpgrade.magicTree ? 'green' : 'red';
+	document.getElementById('appleTreeUpgradeToggle').style.color = scriptTreeUpgrade.appleTree ? 'green' : 'red';
+	document.getElementById('cactusTreeUpgradeToggle').style.color = scriptTreeUpgrade.cactusTree ? 'green' : 'red';
+	document.getElementById('bananaTreeUpgradeToggle').style.color = scriptTreeUpgrade.bananaTree ? 'green' : 'red';
+	document.getElementById('palmTreeUpgradeToggle').style.color = scriptTreeUpgrade.palmTree ? 'green' : 'red';
+	document.getElementById('pineappleTreeUpgradeToggle').style.color = scriptTreeUpgrade.pineappleTree ? 'green' : 'red';
 	document.getElementById('scriptExploreToggle').style.color = toggleExplore ? 'green' : 'red';
 	document.getElementById('scriptAreaOptions').value = scriptArea;
 	document.getElementById('scriptFightToggle').style.color = toggleFight ? 'green' : 'red';
@@ -1752,6 +1887,7 @@ function autoGameLoopSlow() {
         if (toggleMineralIdentify === true) autoIdentify();
         if (toggleNecklaceCharge === true) autoNecklaceCharge();
         if (toggleBones === true) autoBones();
+		if (toggleTreeUpgrade === true) autoTreeUpgrade();
 		if (toggleBags === true) autoBags();
         if (toggleStatue === true) autoStatue();
         if (toggleArtifact === true) autoArtifact();
