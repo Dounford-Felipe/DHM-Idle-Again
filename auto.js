@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.9.1
+// @version      1.2.9.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -37,6 +37,7 @@ window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(l
 window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
 window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
 window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
+window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : false
 window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
 window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
 window.toggleBags = localStorage.getItem('toggleBags') !== null ? JSON.parse(localStorage.getItem('toggleBags')) : false
@@ -375,9 +376,15 @@ function autoMonsterHunt() {
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 }
 
-/*function autoHeal() {
-	if (monsterName !== 'none' && heroHp == 0){}
-}*/
+function autoHeal() {
+	if (monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0){
+		sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
+	} else if (monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0) {
+		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
+	} else if (monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0) {
+		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+	}
+}
 
 function autoSpell() {
 	if (fireSpell == 1 && fireSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
@@ -1454,6 +1461,14 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
+      <tr id="scriptHealToggle" onclick="window.autoChangeVar2('toggleHeal',!toggleHeal,this.id)" style="cursor: pointer; color: red;">
+        <td style="padding-left: 10px;"><img src="images/autoTickHeal.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">TICK HEAL</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
       <tr id="scriptCousinToggle" onclick="window.autoChangeVar2('toggleCousin',!toggleCousin,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goblinCousin.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">GOBLIN COUSIN</td>
@@ -1657,6 +1672,7 @@ function scriptStyleTabs() {
 	document.getElementById('scriptMonsterFindToggle').style.color = toggleMonsterFind ? 'green' : 'red';
 	document.getElementById('scriptShinyToggle').style.color = toggleShiny ? 'green' : 'red';
 	document.getElementById('scriptSpellToggle').style.color = toggleSpell ? 'green' : 'red';
+	document.getElementById('scriptHealToggle').style.color = toggleHeal ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = toggleCousin ? 'green' : 'red';
 	document.getElementById('scriptCousinArea').value = scriptCousinArea;
 	document.getElementById('scriptStatueToggle').style.color = toggleStatue ? 'green' : 'red';
@@ -1901,6 +1917,12 @@ function autoGameLoopFast() {
 	}
 }
 
+function autoGameLoopVeryFast() {
+	if (toggleGlobal === true) {
+		if (toggleHeal === true) autoHeal();
+	}
+}
+
 const gameLoopInterval = setInterval(function(){
     autoGameLoop()
 }, 5000);
@@ -1912,4 +1934,8 @@ const gameLoopSlowInterval = setInterval(function(){
 const gameLoopFastInterval = setInterval(function(){
     autoGameLoopFast()
 }, 1000);
+
+const gameLoopVeryFastInterval = setInterval(function(){
+    autoGameLoopVeryFast()
+}, 250);
 })();
