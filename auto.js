@@ -6,7 +6,7 @@
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
 // @require      https://code.jquery.com/ui/1.12.1/jquery-ui.js
-// @require      https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js
+// @require      https://greasyfork.org/scripts/478182-pubnub-js/code/PubNub%20JS.js?version=1269788
 // @match        https://dhm.idle-pixel.com/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=greasyfork.org
 // @grant        none
@@ -46,7 +46,6 @@ window.toggleStatue = localStorage.getItem('toggleStatue') !== null ? JSON.parse
 window.toggleArtifact = localStorage.getItem('toggleArtifact') !== null ? JSON.parse(localStorage.getItem('toggleArtifact')) : false
 window.toggleBoat = localStorage.getItem('toggleBoat') !== null ? JSON.parse(localStorage.getItem('toggleBoat')) : true
 window.toggleEvent = true
-chatUser = localStorage.getItem('chatUser') !== null ? JSON.parse(localStorage.getItem('chatUser')) : username
 //Mining Vars
 window.scriptTrainAmount = localStorage.getItem('scriptTrainAmount') !== null ? JSON.parse(localStorage.getItem('scriptTrainAmount')) : 1
 window.scriptRocket = localStorage.getItem('scriptRocket') !== null ? JSON.parse(localStorage.getItem('scriptRocket')) : 'Moon'
@@ -1937,7 +1936,7 @@ const publishMessage = async (message) => {
             message: {
                 title: "greeting",
                 description: message,
-                sender: chatUser
+                sender: username
             }
         };
         await pubnub.publish(publishPayload);
