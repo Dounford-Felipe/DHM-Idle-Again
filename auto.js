@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.2.9.2
+// @version      1.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
 // @require      https://code.jquery.com/ui/1.12.1/jquery-ui.js
+// @require      https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js
 // @match        https://dhm.idle-pixel.com/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=greasyfork.org
 // @grant        none
@@ -14,7 +15,7 @@
 
 (function() {
     'use strict';
-$("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
+$("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
 //Toggles
 window.toggleGlobalLoad = localStorage.getItem('toggleGlobalLoad') !== null ? JSON.parse(localStorage.getItem('toggleGlobalLoad')) : true
 window.toggleGlobal = window.toggleGlobalLoad ? true : false
@@ -45,6 +46,7 @@ window.toggleStatue = localStorage.getItem('toggleStatue') !== null ? JSON.parse
 window.toggleArtifact = localStorage.getItem('toggleArtifact') !== null ? JSON.parse(localStorage.getItem('toggleArtifact')) : false
 window.toggleBoat = localStorage.getItem('toggleBoat') !== null ? JSON.parse(localStorage.getItem('toggleBoat')) : true
 window.toggleEvent = true
+chatUser = localStorage.getItem('chatUser') !== null ? JSON.parse(localStorage.getItem('chatUser')) : username
 //Mining Vars
 window.scriptTrainAmount = localStorage.getItem('scriptTrainAmount') !== null ? JSON.parse(localStorage.getItem('scriptTrainAmount')) : 1
 window.scriptRocket = localStorage.getItem('scriptRocket') !== null ? JSON.parse(localStorage.getItem('scriptRocket')) : 'Moon'
@@ -528,7 +530,8 @@ function scriptAddTabs() {
 </tbody></table>
 </div>`;
 	miscTab[2].parentNode.insertBefore(scriptConfBar,miscTab[3]);
-
+	
+	var chatDiv = document.createElement("div");
 	var scriptConfTab = document.createElement("div");
 	var scriptConfMiningTab = document.createElement("div");
 	var scriptConfCraftingTab = document.createElement("div");
@@ -541,6 +544,17 @@ function scriptAddTabs() {
 	var scriptConfCookingTab = document.createElement("div");
 	let gameScreen = document.querySelectorAll("#game-screen")[1];
 	let logoutTab = document.getElementById('tab-logout');
+	chatDiv.innerHTML = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
+		<div style="margin-bottom:5px;font-weight: bold;">Chat Box</div>
+		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
+
+		</div>
+		<div style="margin-top: 5px;">
+			<input id="message-body" type="text" maxlength="200" size="100%">
+			<button onclick="window.sendChat()">Send</button>
+		</div>
+	</div>`
+	
 	scriptConfTab.innerHTML = `<div id="tab-scriptConfig" style="display:none">
   <div class="main-button-lighter">
     <table>
@@ -1587,6 +1601,7 @@ function scriptAddTabs() {
 	gameScreen.insertBefore(scriptConfPotionsTab,logoutTab);
 	gameScreen.insertBefore(scriptConfExploringTab,logoutTab);
 	gameScreen.insertBefore(scriptConfCookingTab,logoutTab);
+	gameScreen.insertBefore(chatDiv,logoutTab);
 }
 
 function scriptStyleTabs() {
@@ -1854,6 +1869,78 @@ function addOptions(select, optionsArray) {
         option.text = optionText.charAt(0).toUpperCase() + optionText.slice(1);
         select.appendChild(option);
     }
+}
+
+//Chat
+const chatSend = () => {
+        var input = document.getElementById('message-body');
+        publishMessage(input.value);
+        input.value = '';
+};
+
+window.sendChat = chatSend
+
+const showMessage = (msg, sender) => {
+        var messageContainer = document.createElement('div');
+        var senderElement = document.createElement('strong');
+        senderElement.innerText = sender + ": ";
+        messageContainer.appendChild(senderElement);
+        var message = document.createElement('span');
+        message.innerText = msg;
+		messageContainer.style.wordWrap = "break-word";
+        messageContainer.appendChild(message);
+        var messageArea = document.getElementById('messages');
+        messageArea.appendChild(messageContainer);
+        messageArea.scrollTop = messageArea.scrollHeight;
+};
+
+let pubnub;
+
+const setupPubNub = () => {
+        // Update this block with your publish/subscribe keys
+        pubnub = new PubNub({
+            publishKey : "pub-c-dc687e48-701e-473a-bbce-091329dcb723",
+            subscribeKey : "sub-c-feab3982-e3f8-4dec-ad9c-a82105f20783",
+            userId: "myUniqueUserId"
+		});
+        // add listener
+		const listener = {
+            status: (statusEvent) => {
+                if (statusEvent.category === "PNConnectedCategory") {
+                    console.log("Connected");
+                }
+            },
+            message: (messageEvent) => {
+                showMessage(messageEvent.message.description, messageEvent.message.sender);
+            },
+            presence: (presenceEvent) => {
+                // handle presence
+            }
+        };
+        pubnub.addListener(listener);
+
+        // subscribe to a channel
+        pubnub.subscribe({
+            channels: ["hello_world"]
+        });
+};
+
+    // run after page is loaded
+window.onload = setupPubNub();
+
+    // publish message
+const publishMessage = async (message) => {
+        // With the right payload, you can publish a message, add a reaction to a message,
+        // send a push notification, or send a small payload called a signal.
+        const publishPayload = {
+            channel : "hello_world",
+            message: {
+                title: "greeting",
+                description: message,
+                sender: chatUser
+            }
+        };
+        await pubnub.publish(publishPayload);
 }
 
 window.onload = function() {
