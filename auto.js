@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.3.0.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -38,7 +38,7 @@ window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(l
 window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
 window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
 window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
-window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : false
+window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : true
 window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
 window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
 window.toggleBags = localStorage.getItem('toggleBags') !== null ? JSON.parse(localStorage.getItem('toggleBags')) : false
@@ -276,7 +276,7 @@ function autoPlant() {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
         sendBytes("HARVEST_AND_PLANT_ALL");
-        setTimeout(closeSmittysDialogue('dialogue-confirm'),1000)
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
       }
     }
   }
@@ -338,7 +338,7 @@ function autoBrew() {
 
       if (brewCheckbox.checked && drinkCheckbox.checked && window[selectedPotion] == 0) {
 		sendBytes('BREW='+selectedPotion+'~1');
-        setTimeout(closeSmittysDialogue("dialogue-confirm"))
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
       }
     }
 }
@@ -388,11 +388,15 @@ function autoHeal() {
 }
 
 function autoSpell() {
-	if (fireSpell == 1 && fireSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
-	if (reflectSpell == 1 && reflectSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
-	if (thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
-	if (lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
-	if (sandstormSpell == 1 && sandstormSpellCooldown == 0 && monsterName !== 'none') {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
+	if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
+	if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
+	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
+	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
+	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
+	if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
+	if (monsterName !== 'none' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
+	if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
+	if (monsterName !== 'none' && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}
 }
 
 function autoCousin() {
@@ -400,8 +404,8 @@ function autoCousin() {
 		let scriptCousinAreaLocal = scriptCousinArea
 		if (energy < scriptAreaEnergy.scriptCousinAreaLocal) {scriptCousinAreaLocal = 'fields'}
 		goblinCousin=1;
-		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)
-		setTimeout(closeSmittysDialogue('dialogue-confirm'),2000)
+		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)		
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
 	}
 }
 
@@ -549,7 +553,7 @@ function scriptAddTabs() {
 
 		</div>
 		<div style="margin-top: 5px;">
-			<input id="message-body" type="text" maxlength="200" size="100%">
+			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="handleKeyDown(event)>
 			<button onclick="window.sendChat()">Send</button>
 		</div>
 	</div>`
@@ -1924,9 +1928,6 @@ const setupPubNub = () => {
         });
 };
 
-    // run after page is loaded
-window.onload = setupPubNub();
-
     // publish message
 const publishMessage = async (message) => {
         // With the right payload, you can publish a message, add a reaction to a message,
@@ -1942,8 +1943,15 @@ const publishMessage = async (message) => {
         await pubnub.publish(publishPayload);
 }
 
+function handleKeyDown(event) {
+  if (event.keyCode === 13) {
+    window.sendChat();
+  }
+}
+
 window.onload = function() {
   scriptAddTabs();
+  setupPubNub();
   monsterOptions(scriptArea);
   scriptStyleTabs();
   $(function() {
