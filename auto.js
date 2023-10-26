@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0.1
+// @version      1.3.0.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -553,7 +553,7 @@ function scriptAddTabs() {
 
 		</div>
 		<div style="margin-top: 5px;">
-			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="handleKeyDown(event)">
+			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="window.handleKeyDown(event)">
 			<button onclick="window.sendChat()">Send</button>
 		</div>
 	</div>`
@@ -1943,12 +1943,6 @@ const publishMessage = async (message) => {
         await pubnub.publish(publishPayload);
 }
 
-function handleKeyDown(event) {
-  if (event.keyCode === 13) {
-    window.sendChat();
-  }
-}
-
 window.onload = function() {
   scriptAddTabs();
   setupPubNub();
@@ -1970,6 +1964,14 @@ window.onload = function() {
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
 };
+
+function handleKeyDown2(event) {
+  if (event.keyCode === 13) {
+    window.sendChat();
+  }
+}
+
+window.handleKeyDown = handleKeyDown2
 
 function autoGameLoop() {
     if (toggleGlobal === true) {
