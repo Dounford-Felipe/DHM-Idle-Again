@@ -548,12 +548,12 @@ function scriptAddTabs() {
 	let gameScreen = document.querySelectorAll("#game-screen")[1];
 	let logoutTab = document.getElementById('tab-logout');
 	chatDiv.innerHTML = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
-		<div style="margin-bottom:5px;font-weight: bold;">Chat Box</div>
+		<div style="margin-bottom:5px;font-weight: bold;color: black;">Chat Box</div>
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
 
 		</div>
 		<div style="margin-top: 5px;">
-			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="handleKeyDown(event)>
+			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="handleKeyDown(event)">
 			<button onclick="window.sendChat()">Send</button>
 		</div>
 	</div>`
