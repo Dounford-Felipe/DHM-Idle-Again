@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0.3
+// @version      1.3.0.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -38,7 +38,7 @@ window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(l
 window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
 window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
 window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
-window.toggleHeal = localStorage.getItem('toggleCombatPotion') !== null ? JSON.parse(localStorage.getItem('toggleCombatPotion')) : true
+window.toggleCombatPotion = localStorage.getItem('toggleCombatPotion') !== null ? JSON.parse(localStorage.getItem('toggleCombatPotion')) : true
 window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : true
 window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
 window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
