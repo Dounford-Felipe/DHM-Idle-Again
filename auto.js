@@ -38,6 +38,7 @@ window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(l
 window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
 window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
 window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
+window.toggleHeal = localStorage.getItem('toggleCombatPotion') !== null ? JSON.parse(localStorage.getItem('toggleCombatPotion')) : true
 window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : true
 window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
 window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
@@ -83,80 +84,102 @@ function autoGeodeOpen() {
 	if (geode1 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode1~'+geode1)
 		closeSmittysDialogue('dialogue-confirm')
-	} else if (geode2 > 0) {
+	}
+	if (geode2 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode2~'+geode2)
 		closeSmittysDialogue('dialogue-confirm')
-	} else if (geode3 > 0) {
+	}
+	if (geode3 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode3~'+geode3)
 		closeSmittysDialogue('dialogue-confirm')
-	} else if (geode4 > 0) {
+	}
+	if (geode4 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode4~'+geode4)
 		closeSmittysDialogue('dialogue-confirm')
-	} else if (geode5 > 0) {
+	}
+	if (geode5 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode5~'+geode5)
 		closeSmittysDialogue('dialogue-confirm')
-	} else if (geode6 > 0) {
+	}
+	if (geode6 > 0) {
 		sendBytes('OPEN_MULTIPLE_GEODE=geode6~'+geode6)
 		closeSmittysDialogue('dialogue-confirm')
 	}
 }
 
 function autoIdentify() {
-  if (limeQuartzMineralUnidentified > 0) {
-    clicksItem('limeQuartzMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (fluoriteMineralUnidentified > 0) {
-    clicksItem('fluoriteMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (topazMineralUnidentified > 0) {
-    clicksItem('topazMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (blueMarbleMineralUnidentified > 0) {
-    clicksItem('blueMarbleMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (sulferMineralUnidentified > 0) {
-    clicksItem('sulferMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (purpleQuartzMineralUnidentified > 0) {
-    clicksItem('purpleQuartzMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (limoniteMineralUnidentified > 0) {
-    clicksItem('limoniteMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (crystalPrismeMineralUnidentified > 0) {
-    clicksItem('crystalPrismeMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (typeof clearMarbleMineralUnidentified !== 'undefined' && clearMarbleMineralUnidentified > 0) {
-    clicksItem('clearMarbleMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (denseMarbleMineralUnidentified > 0) {
-    clicksItem('denseMarbleMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (jadeMineralUnidentified > 0) {
-    clicksItem('jadeMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (opalMineralUnidentified > 0) {
-    clicksItem('opalMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (amethystMineralUnidentified > 0) {
-    clicksItem('amethystMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (tashmarineMineralUnidentified > 0) {
-    clicksItem('tashmarineMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (tanzaniteMineralUnidentified > 0) {
-    clicksItem('tanzaniteMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (seaCrystalMineralUnidentified > 0) {
-    clicksItem('seaCrystalMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (amberMineralUnidentified > 0) {
-    clicksItem('amberMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  } else if (smoothPearlMineralUnidentified > 0) {
-    clicksItem('smoothPearlMineralUnidentified');
-    closeSmittysDialogue('dialogue-confirm');
-  }
+	if (limeQuartzMineralUnidentified > 0) {
+    	clicksItem('limeQuartzMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (fluoriteMineralUnidentified > 0) {
+    	clicksItem('fluoriteMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (topazMineralUnidentified > 0) {
+    	clicksItem('topazMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (blueMarbleMineralUnidentified > 0) {
+    	clicksItem('blueMarbleMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (sulferMineralUnidentified > 0) {
+    	clicksItem('sulferMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (purpleQuartzMineralUnidentified > 0) {
+    	clicksItem('purpleQuartzMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (limoniteMineralUnidentified > 0) {
+    	clicksItem('limoniteMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (crystalPrismeMineralUnidentified > 0) {
+    	clicksItem('crystalPrismeMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (typeof clearMarbleMineralUnidentified !== 'undefined' && clearMarbleMineralUnidentified > 0) {
+    	clicksItem('clearMarbleMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (denseMarbleMineralUnidentified > 0) {
+    	clicksItem('denseMarbleMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (jadeMineralUnidentified > 0) {
+    	clicksItem('jadeMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (opalMineralUnidentified > 0) {
+    	clicksItem('opalMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (amethystMineralUnidentified > 0) {
+    	clicksItem('amethystMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (tashmarineMineralUnidentified > 0) {
+    	clicksItem('tashmarineMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (tanzaniteMineralUnidentified > 0) {
+    	clicksItem('tanzaniteMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (seaCrystalMineralUnidentified > 0) {
+    	clicksItem('seaCrystalMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (amberMineralUnidentified > 0) {
+    	clicksItem('amberMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
+	if (smoothPearlMineralUnidentified > 0) {
+		clicksItem('smoothPearlMineralUnidentified');
+    	closeSmittysDialogue('dialogue-confirm');
+	}
 }
 
 function autoNecklaceCharge() {
@@ -241,8 +264,46 @@ function autoFoundry() {
 		: magicLogs > 100 ? scriptFoundryWoodLocal = 'magicLogs'
 		: scriptFoundryWoodLocal = 'none';
 	}
+	let scriptLava
+	switch (scriptFoundryWoodLocal) {
+		case 'logs':
+		scriptLava = 1;
+		break;
+		case 'oakLogs':
+		scriptLava = 2;
+		break;
+		case 'willowLogs':
+		scriptLava = 3;
+		break;
+		case 'mapleLogs':
+		scriptLava = 4;
+		break;
+		case 'redwoodLogs':
+		scriptLava = 5;
+		break;
+		case 'pineLogs':
+		scriptLava = 6;
+		break;
+		case 'hauntedLogs':
+		scriptLava = 7;
+		break;
+		case 'jungleLogs':
+		scriptLava = 8;
+		break;
+		case 'lavaLogs':
+		scriptLava = 9;
+		break;
+		case 'goldLogs':
+		scriptLava = 10;
+		break;
+		case 'magicLogs':
+		scriptLava = 11;
+		break;
+		default:
+		break;
+	}
 	console.log(scriptFoundryWoodLocal+' used')
-	if (window[scriptFoundryWoodLocal] > 99 && lava > 99 && scriptFoundryWoodLocal !== 'none') {
+	if (window[scriptFoundryWoodLocal] > 99 && lava >= scriptLava * 100 && scriptFoundryWoodLocal !== 'none') {
 	sendBytes('CHARCOAL_FOUNDRY='+scriptFoundryWoodLocal+'~'+100)
 	closeSmittysDialogue('dialogue-confirm')
     }
@@ -271,13 +332,14 @@ function autoPlant() {
     for (var i = 0; i < seedItems.length; i++) {
       var seedCheckbox = seedItems[i].querySelector(".seed-checkbox");
       var selectedSeed = seedItems[i].getAttribute("value"); // Obter o valor do atributo 'value'
-
+	  if (window[selectedSeed] >= 1){
       if (seedCheckbox.checked) {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
         sendBytes("HARVEST_AND_PLANT_ALL");
 		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
       }
+	  }
     }
   }
 }
@@ -306,7 +368,7 @@ function autoDrink() {
 
       if (drinkCheckbox.checked && window[selectedPotion] > 0 && window[selectedPotion+'Timer'] == 0) {
 		sendBytes('DRINK='+selectedPotion);
-        setTimeout(closeSmittysDialogue("dialogue-confirm"))
+        setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
       }
     }
 }
@@ -378,11 +440,11 @@ function autoMonsterHunt() {
 }
 
 function autoHeal() {
-	if (monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0){
+	if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0){
 		sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
-	} else if (monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0) {
+	} else if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0) {
 		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
-	} else if (monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0) {
+	} else if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 }
@@ -393,6 +455,9 @@ function autoSpell() {
 	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
 	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
+}
+
+function autoCombatPot() {
 	if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
 	if (monsterName !== 'none' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 	if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
@@ -402,7 +467,7 @@ function autoSpell() {
 function autoCousin() {
 	if (typeof goblinExploringArea == 'undefined' || goblinExploringArea == 'none') {
 		let scriptCousinAreaLocal = scriptCousinArea
-		if (energy < scriptAreaEnergy.scriptCousinAreaLocal) {scriptCousinAreaLocal = 'fields'}
+		if (energy < scriptAreaEnergy[scriptCousinAreaLocal]) {scriptCousinAreaLocal = 'fields'}
 		goblinCousin=1;
 		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)		
 		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
@@ -507,8 +572,14 @@ window.hideAllTabs = hideAllTabs2
 function autoChangeVar(variName,variValue,id) {
 	localStorage.setItem(variName, JSON.stringify(variValue))
 	window[variName] = variValue
-	if (typeof id !== 'undefined') {if (variValue == true) {document.getElementById(id).style.color = "green"} else {document.getElementById(id).style.color = "red"}
-    console.log(id)}
+	if (typeof id !== 'undefined') {
+		if (variValue == true) {
+			document.getElementById(id).style.color = "green"
+		} else {
+			document.getElementById(id).style.color = "red"
+		}
+		console.log(id)
+	}
 }
 
 window.autoChangeVar2 = autoChangeVar;
@@ -516,7 +587,13 @@ window.autoChangeVar2 = autoChangeVar;
 function autoChangeObject(variName,variKey,variValue,id) {
 	localStorage.setItem(variName+'.'+variKey, JSON.stringify(variValue))
 	window[variName][variKey] = variValue
-	if (typeof id !== 'undefined') {if (variValue == true) {document.getElementById(id).style.color = "green"} else {document.getElementById(id).style.color = "red"}}
+	if (typeof id !== 'undefined') {
+		if (variValue == true) {
+			document.getElementById(id).style.color = "green"
+		} else {
+			document.getElementById(id).style.color = "red"
+		}
+	}
 }
 
 window.autoChangeObject2 = autoChangeObject
@@ -1478,6 +1555,14 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
+      <tr id="scriptCombatPotionToggle" onclick="window.autoChangeVar2('toggleCombatPotion',!toggleCombatPotion,this.id)" style="cursor: pointer; color: red;">
+        <td style="padding-left: 10px;"><img src="images/ghostScanCombatPotion.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">COMBAT POTION</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
       <tr id="scriptHealToggle" onclick="window.autoChangeVar2('toggleHeal',!toggleHeal,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/autoTickHeal.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">TICK HEAL</td>
@@ -1690,6 +1775,7 @@ function scriptStyleTabs() {
 	document.getElementById('scriptMonsterFindToggle').style.color = toggleMonsterFind ? 'green' : 'red';
 	document.getElementById('scriptShinyToggle').style.color = toggleShiny ? 'green' : 'red';
 	document.getElementById('scriptSpellToggle').style.color = toggleSpell ? 'green' : 'red';
+	document.getElementById('scriptCombatPotionToggle').style.color = toggleCombatPotion ? 'green' : 'red';
 	document.getElementById('scriptHealToggle').style.color = toggleHeal ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = toggleCousin ? 'green' : 'red';
 	document.getElementById('scriptCousinArea').value = scriptCousinArea;
@@ -2009,6 +2095,7 @@ function autoGameLoopSlow() {
 function autoGameLoopFast() {
 	if (toggleGlobal === true) {
 		if (toggleSpell === true) autoSpell();
+		if (toggleCombatPotion === true) autoCombatPot();
 		if (toggleShiny === true || toggleMonsterFind === true) autoMonsterHunt();
 	}
 }
