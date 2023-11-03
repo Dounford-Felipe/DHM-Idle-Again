@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0.4
+// @version      1.3.0.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -78,6 +78,13 @@ function autoEvent() {
 	if (eventName !== 'none' && (eventStatus == 'active' || eventStatus == 'fullActive') && eventLastClicked == 0) {
         sendBytes('CLICKS_EVENT')
     }
+	var glowingInterval = setInterval(function() {
+        if (eventStatus == 'fullActive') {
+            sendBytes('CLICKS_EVENT')
+        } else {
+            clearInterval(glowingInterval);
+        }
+    }, 10);
 }
 
 function autoGeodeOpen() {
