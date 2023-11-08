@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.4.0.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -1076,37 +1076,37 @@ function scriptAddTabs() {
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
     <tbody style="display: table-row;">
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','redMushroomSeeds',!scriptVars.scriptFertilize.redMushroomSeeds,this.id)" id="MushroomFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','redMushroomSeeds',!scriptVars.scriptFertilize.redMushroomSeeds,this.id)" id="MushroomFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/redMushroomSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">RED MUSHROOM FERTILIZE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','dottedGreenLeafSeeds',!scriptVars.scriptFertilize.dottedGreenLeafSeeds,this.id)" id="dottedGreenFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','dottedGreenLeafSeeds',!scriptVars.scriptFertilize.dottedGreenLeafSeeds,this.id)" id="dottedGreenFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/dottedGreenLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">DOTTED GREEN LEAF FERTILIZE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','greenLeafSeeds',!scriptVars.scriptFertilize.greenLeafSeeds,this.id)" id="greenLeafFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','greenLeafSeeds',!scriptVars.scriptFertilize.greenLeafSeeds,this.id)" id="greenLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/greenLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">GREEN LEAF FERTILIZE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','limeLeafSeeds',!scriptVars.scriptFertilize.limeLeafSeeds,this.id)" id="limeLeafFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','limeLeafSeeds',!scriptVars.scriptFertilize.limeLeafSeeds,this.id)" id="limeLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/limeLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">LIME LEAF FERTILIZE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','goldLeafSeeds',!scriptVars.scriptFertilize.goldLeafSeeds,this.id)" id="goldLeafFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','goldLeafSeeds',!scriptVars.scriptFertilize.goldLeafSeeds,this.id)" id="goldLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/goldLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">GOLD LEAF FERTILIZE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','crystalLeafSeeds',!scriptVars.scriptFertilize.crystalLeafSeeds,this.id)" id="crystalLeafFertilizeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','crystalLeafSeeds',!scriptVars.scriptFertilize.crystalLeafSeeds,this.id)" id="crystalLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/crystalLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">CRYSTAL LEAF FERTILIZE</td>
       </tr>
-    <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','stripedGreenLeafSeeds',!scriptVars.scriptFertilize.stripedGreenLeafSeeds,this.id)" id="stripedGreenLeafFertilizeToggle">
+    <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','stripedGreenLeafSeeds',!scriptVars.scriptFertilize.stripedGreenLeafSeeds,this.id)" id="stripedGreenLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/stripedGreenLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">STRIPED GREEN LEAF FERTILIZE</td>
-      </tr><tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','stripedGoldLeafSeeds',!scriptVars.scriptFertilize.stripedGoldLeafSeeds,this.id)" id="stripedGoldLeafFertilizeToggle">
+      </tr><tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptFertilize','stripedGoldLeafSeeds',!scriptVars.scriptFertilize.stripedGoldLeafSeeds,this.id)" id="stripedGoldLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/stripedGoldLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">STRIPED GOLD LEAF FERTILIZE</td>
-      </tr><tr style="color: red;" onclick="window.autoChangeObject2('scriptFertilize','stripedCrystalLeafSeeds',!scriptVars.scriptFertilize.stripedCrystalLeafSeeds,this.id)" id="stripedCrystalLeafFertilizeToggle">
+      </tr><tr style="color: red;" onclick="window.autoChangeObject('scriptFertilize','stripedCrystalLeafSeeds',!scriptVars.scriptFertilize.stripedCrystalLeafSeeds,this.id)" id="stripedCrystalLeafFertilizeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/stripedCrystalLeafSeeds.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">STRIPED CRYSTAL LEAF FERTILIZE</td>
       </tr></tbody>
