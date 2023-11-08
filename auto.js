@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.1.1
+// @version      1.4.1.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -2267,4 +2267,11 @@ if (JSON.parse(localStorage.getItem('autoLogin')) == true) {
 	let lastUser = localStorage.getItem('lastLogin')
 	document.querySelector('#login-preset-'+lastUser+' tbody tr td:first-child').click();
 }
+
+Object.defineProperty(document, 'hidden', {
+  configurable: true,
+  get: function() {
+    return false;
+  }
+});
 })();
