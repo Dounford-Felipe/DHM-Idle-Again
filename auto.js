@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.1
+// @version      1.4.1.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -25,6 +25,7 @@ const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonA
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
 var scriptWaitTeleport = true
 var oldEquip = []
+var oldWeapon;
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -412,10 +413,11 @@ function autoFight() {
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			sendBytes('LOOK_FOR_FIGHT');
 			if (poisonSpear >= 1) {
+				oldWeapon = weapon
 				clicksItem('poisonSpear')
 				const poisonInterval = setInterval(function(){
 					if (poisonEnemyTimer == 1) {
-						clicksItem(presetWeapon1);
+						clicksItem(oldWeapon);
 						clearInterval(poisonInterval);
 					}
 				}, 2500);
