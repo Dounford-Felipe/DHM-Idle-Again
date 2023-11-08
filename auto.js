@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.0.2
+// @version      1.4.0.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -24,6 +24,7 @@ const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,norther
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
 var scriptWaitTeleport = true
+let poisonInterval;
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -412,7 +413,7 @@ function autoFight() {
 			sendBytes('LOOK_FOR_FIGHT');
 			if (poisonSpear >= 1) {
 				clicksItem('poisonSpear')
-				const poisonInterval = setInterval(function(){
+				poisonInterval = setInterval(function(){
 					if (poisonEnemyTimer == 1) {
 						clicksItem(presetWeapon1);
 						clearInterval(poisonInterval);
@@ -435,6 +436,7 @@ function autoReset() {
 function autoMonsterHunt() {
 	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName !== scriptVars.scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+		clearInterval(poisonInterval);
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
