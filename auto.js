@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0.5
+// @version      1.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -16,63 +16,29 @@
 (function() {
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
-//Toggles
-window.toggleGlobalLoad = localStorage.getItem('toggleGlobalLoad') !== null ? JSON.parse(localStorage.getItem('toggleGlobalLoad')) : true
-window.toggleGlobal = window.toggleGlobalLoad ? true : false
-window.toggleGeodeOpen = localStorage.getItem('toggleGeodeOpen') !== null ? JSON.parse(localStorage.getItem('toggleGeodeOpen')) : false
-window.toggleMineralIdentify = localStorage.getItem('toggleMineralIdentify') !== null ? JSON.parse(localStorage.getItem('toggleMineralIdentify')) : false
-window.toggleNecklaceCharge = localStorage.getItem('toggleNecklaceCharge') !== null ? JSON.parse(localStorage.getItem('toggleNecklaceCharge')) : false
-window.toggleTrain = localStorage.getItem('toggleTrain') !== null ? JSON.parse(localStorage.getItem('toggleTrain')) : false
-window.toggleRocket = localStorage.getItem('toggleRocket') !== null ? JSON.parse(localStorage.getItem('toggleRocket')) : false
-window.toggleSmelting = localStorage.getItem('toggleSmelting') !== null ? JSON.parse(localStorage.getItem('toggleSmelting')) : true
-window.toggleRefinary = localStorage.getItem('toggleRefinary') !== null ? JSON.parse(localStorage.getItem('toggleRefinary')) : false
-window.toggleCharcoal = localStorage.getItem('toggleCharcoal') !== null ? JSON.parse(localStorage.getItem('toggleCharcoal')) : false
-window.toggleWoodcutting = localStorage.getItem('toggleWoodcutting') !== null ? JSON.parse(localStorage.getItem('toggleWoodcutting')) : true
-window.toggleFarming = localStorage.getItem('toggleFarming') !== null ? JSON.parse(localStorage.getItem('toggleFarming')) : false
-window.toggleBones = localStorage.getItem('toggleBones') !== null ? JSON.parse(localStorage.getItem('toggleBones')) : false
-window.toggleDrink = localStorage.getItem('toggleDrink') !== null ? JSON.parse(localStorage.getItem('toggleDrink')) : false
-window.toggleTreeUpgrade = localStorage.getItem('toggleTreeUpgrade') !== null ? JSON.parse(localStorage.getItem('toggleTreeUpgrade')) : false
-window.toggleBrew = localStorage.getItem('toggleBrew') !== null ? JSON.parse(localStorage.getItem('toggleBrew')) : false
-window.toggleExplore = localStorage.getItem('toggleExplore') !== null ? JSON.parse(localStorage.getItem('toggleExplore')) : false
-window.toggleFight = localStorage.getItem('toggleFight') !== null ? JSON.parse(localStorage.getItem('toggleFight')) : false
-window.toggleResetFight = localStorage.getItem('toggleResetFight') !== null ? JSON.parse(localStorage.getItem('toggleResetFight')) : false
-window.toggleMonsterFind = localStorage.getItem('toggleMonsterFind') !== null ? JSON.parse(localStorage.getItem('toggleMonsterFind')) : false
-window.toggleSpell = localStorage.getItem('toggleSpell') !== null ? JSON.parse(localStorage.getItem('toggleSpell')) : false
-window.toggleCombatPotion = localStorage.getItem('toggleCombatPotion') !== null ? JSON.parse(localStorage.getItem('toggleCombatPotion')) : true
-window.toggleHeal = localStorage.getItem('toggleHeal') !== null ? JSON.parse(localStorage.getItem('toggleHeal')) : true
-window.toggleShiny = localStorage.getItem('toggleShiny') !== null ? JSON.parse(localStorage.getItem('toggleShiny')) : false
-window.toggleCousin = localStorage.getItem('toggleCousin') !== null ? JSON.parse(localStorage.getItem('toggleCousin')) : false
-window.toggleBags = localStorage.getItem('toggleBags') !== null ? JSON.parse(localStorage.getItem('toggleBags')) : false
-window.toggleStatue = localStorage.getItem('toggleStatue') !== null ? JSON.parse(localStorage.getItem('toggleStatue')) : false
-window.toggleArtifact = localStorage.getItem('toggleArtifact') !== null ? JSON.parse(localStorage.getItem('toggleArtifact')) : false
-window.toggleBoat = localStorage.getItem('toggleBoat') !== null ? JSON.parse(localStorage.getItem('toggleBoat')) : true
-window.toggleEvent = true
-//Mining Vars
-window.scriptTrainAmount = localStorage.getItem('scriptTrainAmount') !== null ? JSON.parse(localStorage.getItem('scriptTrainAmount')) : 1
-window.scriptRocket = localStorage.getItem('scriptRocket') !== null ? JSON.parse(localStorage.getItem('scriptRocket')) : 'Moon'
-//Crafting Vars
-window.scriptSmeltingOre = localStorage.getItem('scriptSmeltingOre') !== null ? JSON.parse(localStorage.getItem('scriptSmeltingOre')) : 'copper'
-window.scriptRefinaryBar = localStorage.getItem('scriptRefinaryBar') !== null ? JSON.parse(localStorage.getItem('scriptRefinaryBar')) : 'gold'
-window.scriptFoundryWood = localStorage.getItem('scriptFoundryWood') !== null ? JSON.parse(localStorage.getItem('scriptFoundryWood')) : 'cheapest'
-//Woodicutting Vars
-window.scriptTreeIgnore = {tree:localStorage.getItem('scriptTreeIgnore.tree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.tree')) : false,oakTree:localStorage.getItem('scriptTreeIgnore.oakTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.oakTree')) : false,willowTree:localStorage.getItem('scriptTreeIgnore.willowTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.willowTree')) : false,mapleTree:localStorage.getItem('scriptTreeIgnore.mapleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.mapleTree')) : false,redwoodTree:localStorage.getItem('scriptTreeIgnore.redwoodTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.redwoodTree')) : false,pineTree:localStorage.getItem('scriptTreeIgnore.pineTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.pineTree')) : false,hauntedTree:localStorage.getItem('scriptTreeIgnore.hauntedTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.hauntedTree')) : false,jungleTree:localStorage.getItem('scriptTreeIgnore.jungleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.jungleTree')) : true,lavaTree:localStorage.getItem('scriptTreeIgnore.lavaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.lavaTree')) : false,goldTree:localStorage.getItem('scriptTreeIgnore.goldTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.goldTree')) : true,magicTree:localStorage.getItem('scriptTreeIgnore.magicTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.magicTree')) : false,appleTree:localStorage.getItem('scriptTreeIgnore.appleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.appleTree')) : false,cactusTree:localStorage.getItem('scriptTreeIgnore.cactusTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.cactusTree')) : false,bananaTree:localStorage.getItem('scriptTreeIgnore.bananaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.bananaTree')) : false,palmTree:localStorage.getItem('scriptTreeIgnore.palmTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.palmTree')) : false,pineappleTree:localStorage.getItem('scriptTreeIgnore.pineappleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.pineappleTree')) : true,starfruitTree:localStorage.getItem('scriptTreeIgnore.starfruitTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeIgnore.starfruitTree')) : false,none:true}
-//Farming Vars
-window.scriptBonesIgnore = {bones:localStorage.getItem('scriptBonesIgnore.bones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.bones')) : true,ashes:localStorage.getItem('scriptBonesIgnore.ashes') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.ashes')) : false,iceBones:localStorage.getItem('scriptBonesIgnore.iceBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.iceBones')) : true,zombieBones:localStorage.getItem('scriptBonesIgnore.zombieBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.zombieBones')) : true,bloodBones:localStorage.getItem('scriptBonesIgnore.bloodBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.bloodBones')) : true,fishBones:localStorage.getItem('scriptBonesIgnore.fishBones') !== null ? JSON.parse(localStorage.getItem('scriptBonesIgnore.fishBones')) : true}
-//Brewing Vars
-window.scriptTreeUpgrade = {tree:localStorage.getItem('scriptTreeUpgrade.tree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.tree')) : false,oakTree:localStorage.getItem('scriptTreeUpgrade.oakTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.oakTree')) : false,willowTree:localStorage.getItem('scriptTreeUpgrade.willowTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.willowTree')) : false,mapleTree:localStorage.getItem('scriptTreeUpgrade.mapleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.mapleTree')) : false,redwoodTree:localStorage.getItem('scriptTreeUpgrade.redwoodTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.redwoodTree')) : false,pineTree:localStorage.getItem('scriptTreeUpgrade.pineTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.pineTree')) : false,hauntedTree:localStorage.getItem('scriptTreeUpgrade.hauntedTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.hauntedTree')) : false,jungleTree:localStorage.getItem('scriptTreeUpgrade.jungleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.jungleTree')) : true,lavaTree:localStorage.getItem('scriptTreeUpgrade.lavaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.lavaTree')) : false,goldTree:localStorage.getItem('scriptTreeUpgrade.goldTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.goldTree')) : true,magicTree:localStorage.getItem('scriptTreeUpgrade.magicTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.magicTree')) : false,appleTree:localStorage.getItem('scriptTreeUpgrade.appleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.appleTree')) : false,cactusTree:localStorage.getItem('scriptTreeUpgrade.cactusTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.cactusTree')) : false,bananaTree:localStorage.getItem('scriptTreeUpgrade.bananaTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.bananaTree')) : false,palmTree:localStorage.getItem('scriptTreeUpgrade.palmTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.palmTree')) : false,pineappleTree:localStorage.getItem('scriptTreeUpgrade.pineappleTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.pineappleTree')) : true,starfruitTree:localStorage.getItem('scriptTreeUpgrade.starfruitTree') !== null ? JSON.parse(localStorage.getItem('scriptTreeUpgrade.starfruitTree')) : false,none:false}
-//Exploring Vars
-window.scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
-window.scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
-window.scriptWaitTeleport = false
+//Variables
+window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCousin:false, toggleBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+//Const
+const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
+const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
-window.scriptArea = localStorage.getItem('scriptArea') !== null ? JSON.parse(localStorage.getItem('scriptArea')) : 'fields'
-window.scriptMonster = localStorage.getItem('scriptMonster') !== null ? JSON.parse(localStorage.getItem('scriptMonster')) : 'chicken'
-window.scriptResetArea = {fields:localStorage.getItem('scriptResetArea.fields') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.fields')) : false,forests:localStorage.getItem('scriptResetArea.forests') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.forests')) : false,caves:localStorage.getItem('scriptResetArea.caves') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.caves')) : false,volcano:localStorage.getItem('scriptResetArea.volcano') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.volcano')) : false,northernFields:localStorage.getItem('scriptResetArea.northernFields') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.northernFields')) : false,hauntedMansion:localStorage.getItem('scriptResetArea.hauntedMansion') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.hauntedMansion')) : false,desert:localStorage.getItem('scriptResetArea.desert') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.desert')) : false,ocean:localStorage.getItem('scriptResetArea.ocean') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.ocean')) : false,jungle:localStorage.getItem('scriptResetArea.jungle') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.jungle')) : false,dungeonEntrance:localStorage.getItem('scriptResetArea.dungeonEntrance') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.dungeonEntrance')) : false,dungeon:localStorage.getItem('scriptResetArea.dungeon') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.dungeon')) : false,castle:localStorage.getItem('scriptResetArea.castle') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.castle')) : false,cemetery:localStorage.getItem('scriptResetArea.cemetery') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.cemetery')) : false,factory:localStorage.getItem('scriptResetArea.factory') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.factory')) : false,hauntedWoods:localStorage.getItem('scriptResetArea.hauntedWoods') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.hauntedWoods')) : false,deepOcean:localStorage.getItem('scriptResetArea.deepOcean') !== null ? JSON.parse(localStorage.getItem('scriptResetArea.deepOcean')) : false}
-window.scriptCousinArea = localStorage.getItem('scriptCousinArea') !== null ? JSON.parse(localStorage.getItem('scriptCousinArea')) : 'fields'
-//Cooking Vars
-window.scriptBoatSend = {rowBoat:localStorage.getItem('scriptBoatSend.rowBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.rowBoat')) : true,canoeBoat:localStorage.getItem('scriptBoatSend.canoeBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.canoeBoat')) : true,sailBoat:localStorage.getItem('scriptBoatSend.sailBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.sailBoat')) : true,highWind:localStorage.getItem('scriptBoatSend.highWind') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.highWind')) : true,steamBoat:localStorage.getItem('scriptBoatSend.steamBoat') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.steamBoat')) : true,trawler:localStorage.getItem('scriptBoatSend.trawler') !== null ? JSON.parse(localStorage.getItem('scriptBoatSend.trawler')) : true}
+var scriptWaitTeleport = true
 const oldHideAllTabs = hideAllTabs
+
+window.hideAllTabs = function() {
+	oldHideAllTabs()
+	document.getElementById("tab-scriptConfig").style.display = "none";
+	document.getElementById("tab-scriptConfigMining").style.display = "none";
+	document.getElementById("tab-scriptConfigCrafting").style.display = "none";
+	document.getElementById("tab-scriptConfigWoodcutting").style.display = "none";
+	document.getElementById("tab-scriptConfigFarming").style.display = "none";
+	document.getElementById("tab-scriptConfigSeeds").style.display = "none";
+	document.getElementById("tab-scriptConfigBrewing").style.display = "none";
+	document.getElementById("tab-scriptConfigPotions").style.display = "none";
+	document.getElementById("tab-scriptConfigExploring").style.display = "none";
+	document.getElementById("tab-scriptConfigCooking").style.display = "none";
+}
 
 function autoEvent() {
 	if (eventName !== 'none' && (eventStatus == 'active' || eventStatus == 'fullActive') && eventLastClicked == 0) {
@@ -194,12 +160,12 @@ function autoNecklaceCharge() {
 }
 
 function autoTrain() {
-	if (train > 0 && trainTimer < 2 && oil >= 500000 * scriptTrainAmount) {
+	if (train > 0 && trainTimer < 2 && oil >= 500000 * scriptVars.scriptTrainAmount) {
 		sendBytes("MANAGE_TRAIN=0");
 		sendBytes('COLLECT_TRAIN_FORCE');
-		sendBytes('MANAGE_TRAIN='+scriptTrainAmount);
+		sendBytes('MANAGE_TRAIN='+scriptVars.scriptTrainAmount);
 		closeSmittysDialogue('dialogue-confirm2');
-	} else if (train > 0 && trainTimer == 1 && oil < 500000 * scriptTrainAmount) {
+	} else if (train > 0 && trainTimer == 1 && oil < 500000 * scriptVars.scriptTrainAmount) {
 		sendBytes("MANAGE_TRAIN=0");
 		sendBytes('COLLECT_TRAIN_FORCE');
 		closeSmittysDialogue('dialogue-confirm2');
@@ -211,11 +177,11 @@ function autoRocket() {
 		sendBytes('MANAGE_ROCKET=collect2')
 		closeSmittysDialogue('dialogue-confirm')
 	} else if (rocket == 1 && rocketKm == 0) {
-		if (scriptRocket == 'Moon' && oil >= 4000000) {
+		if (scriptVars.scriptRocket == 'Moon' && oil >= 4000000) {
 			sendBytes('MANAGE_ROCKET=send')
-		} else if (scriptRocket == 'Mars' && oil >= 15000000) {
+		} else if (scriptVars.scriptRocket == 'Mars' && oil >= 15000000) {
 			sendBytes('MANAGE_ROCKET=send_mars')
-		} else if (scriptRocket == 'Sun' & oil >= 30000000 && charcoal >= 100) {
+		} else if (scriptVars.scriptRocket == 'Sun' & oil >= 30000000 && charcoal >= 100) {
 			sendBytes('MANAGE_ROCKET=send_sun')
 		}
 	}
@@ -240,13 +206,13 @@ function autoSmelt() {
 }
 
 function autoRefine() {
-	if (barRefineryTimer < 2 && scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
+	if (barRefineryTimer < 2 && scriptVars.scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
 		clicksItem('goldBarRefinery')
 		sendBytes('REFINE_GOLD_BARS=goldBars')
 		closeSmittysDialogue('dialogue-barRefinery');
 		closeSmittysDialogue('dialogue-confirm')
 
-	} else if (barRefineryTimer < 2 && scriptRefinaryBar == 'promethium' && oil > 2000000 && promethiumBars > 99) {
+	} else if (barRefineryTimer < 2 && scriptVars.scriptRefinaryBar == 'promethium' && oil > 2000000 && promethiumBars > 99) {
 		clicksItem('goldBarRefinery')
 		sendBytes('REFINE_GOLD_BARS=promethiumBars')
 		closeSmittysDialogue('dialogue-barRefinery');
@@ -256,7 +222,7 @@ function autoRefine() {
 
 function autoFoundry() {
 	if (charcoalFoundryCurrentOreType == 0 || charcoalFoundryCurrentOreType == 'none') {
-	let scriptFoundryWoodLocal = scriptFoundryWood
+	let scriptFoundryWoodLocal = scriptVars.scriptFoundryWood
 	if (scriptFoundryWoodLocal == 'cheapest') {
 		logs > 100 ? scriptFoundryWoodLocal = 'logs'
 		: oakLogs > 100 ? scriptFoundryWoodLocal = 'oakLogs'
@@ -318,17 +284,17 @@ function autoFoundry() {
 }
 
 function autoLumber() {
-	if (scriptTreeIgnore[tree6] === false && treeTimer6 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree6] === false && treeTimer6 == 1) {
 	sendBytes('CHOP_TREE=6')}
-	if (scriptTreeIgnore[tree5] === false && treeTimer5 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree5] === false && treeTimer5 == 1) {
 	sendBytes('CHOP_TREE=5')}
-	if (scriptTreeIgnore[tree4] === false && treeTimer4 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree4] === false && treeTimer4 == 1) {
 	sendBytes('CHOP_TREE=4')}
-	if (scriptTreeIgnore[tree3] === false && treeTimer3 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree3] === false && treeTimer3 == 1) {
 	sendBytes('CHOP_TREE=3')}
-	if (scriptTreeIgnore[tree2] === false && treeTimer2 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree2] === false && treeTimer2 == 1) {
 	sendBytes('CHOP_TREE=2')}
-	if (scriptTreeIgnore[tree1] === false && treeTimer1 == 1) {
+	if (scriptVars.scriptTreeIgnore[tree1] === false && treeTimer1 == 1) {
 	sendBytes('CHOP_TREE=1')}
 }
 
@@ -352,18 +318,35 @@ function autoPlant() {
 }
 
 function autoBones() {
-	if (scriptBonesIgnore.bones === false && bones > 0) {
+	if (scriptVars.scriptBonesIgnore.bones === false && bones > 0) {
 	sendBytes('ADD_BONEMEAL=bones~'+bones)}
-	if (scriptBonesIgnore.ashes === false && ashes > 0) {
+	if (scriptVars.scriptBonesIgnore.ashes === false && ashes > 0) {
 	sendBytes('ADD_BONEMEAL=ashes~'+ashes)}
-	if (scriptBonesIgnore.iceBones === false && iceBones > 0) {
+	if (scriptVars.scriptBonesIgnore.iceBones === false && iceBones > 0) {
 	sendBytes('ADD_BONEMEAL=iceBones~'+iceBones)}
-	if (scriptBonesIgnore.zombieBones === false && zombieBones > 0) {
+	if (scriptVars.scriptBonesIgnore.zombieBones === false && zombieBones > 0) {
 	sendBytes('ADD_BONEMEAL=zombieBones~'+zombieBones)}
-	if (scriptBonesIgnore.bloodBones === false && bloodBones > 0) {
+	if (scriptVars.scriptBonesIgnore.bloodBones === false && bloodBones > 0) {
 	sendBytes('ADD_BONEMEAL=bloodBones~'+bloodBones)}
-	if (scriptBonesIgnore.fishBones === false && fishBones > 9) {
+	if (scriptVars.scriptBonesIgnore.fishBones === false && fishBones > 9) {
 	sendBytes('ADD_BONEMEAL=fishBones~'+(Math.floor(fishBones/10))*10)}
+}
+
+function autoFertilize() {
+	if (fertilizeSoilPotion >= 1) {
+		if (scriptVars.scriptFertilize[farm6] === true && fertilizeSoil6 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~6')}
+		if (scriptVars.scriptFertilize[farm5] === true && fertilizeSoil5 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~5')}
+		if (scriptVars.scriptFertilize[farm4] === true && fertilizeSoil4 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~4')}
+		if (scriptVars.scriptFertilize[farm3] === true && fertilizeSoil3 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~3')}
+		if (scriptVars.scriptFertilize[farm2] === true && fertilizeSoil2 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~2')}
+		if (scriptVars.scriptFertilize[farm1] === true && fertilizeSoil1 == 0) {
+			sendBytes('PLANT=fertilizeSoilPotion~1')}
+	}
 }
 
 function autoDrink() {
@@ -382,17 +365,17 @@ function autoDrink() {
 
 function autoTreeUpgrade() {
 	if (woodcuttingUpgradePotionCooldown == 0 && woodcuttingUpgradePotion >= 1) {
-		if (scriptTreeUpgrade[tree6] === true && woodcuttingUpgradePotionUsed6 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree6] === true && woodcuttingUpgradePotionUsed6 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=6')}
-		if (scriptTreeUpgrade[tree5] === true && woodcuttingUpgradePotionUsed5 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree5] === true && woodcuttingUpgradePotionUsed5 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=5')}
-		if (scriptTreeUpgrade[tree4] === true && woodcuttingUpgradePotionUsed4 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree4] === true && woodcuttingUpgradePotionUsed4 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=4')}
-		if (scriptTreeUpgrade[tree3] === true && woodcuttingUpgradePotionUsed3 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree3] === true && woodcuttingUpgradePotionUsed3 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=3')}
-		if (scriptTreeUpgrade[tree2] === true && woodcuttingUpgradePotionUsed2 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree2] === true && woodcuttingUpgradePotionUsed2 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=2')}
-		if (scriptTreeUpgrade[tree1] === true && woodcuttingUpgradePotionUsed1 == 0) {
+		if (scriptVars.scriptTreeUpgrade[tree1] === true && woodcuttingUpgradePotionUsed1 == 0) {
 			sendBytes('POTION_UPGRADE_TREE=1')}
 	}
 }
@@ -414,7 +397,7 @@ function autoBrew() {
 
 function autoExplore() {
 	if (explorerCooldown == 0) {
-		let scriptAreaLocal = scriptArea
+		let scriptAreaLocal = scriptVars.scriptArea
 		if (energy < scriptAreaEnergy[scriptAreaLocal]) {scriptAreaLocal = 'fields'}
 		sendBytes('EXPLORE='+scriptAreaLocal)
 		if (toggleShiny == true || toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
@@ -423,35 +406,46 @@ function autoExplore() {
 
 function autoFight() {
 	if (exploringArea !== 'none' && fightDone === 0) {
+		var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+		scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			sendBytes('LOOK_FOR_FIGHT');
-		}
-		if (toggleShiny == false && toggleMonsterFind == false) {scriptWaitTeleport === false}
-	}
-}
+			if (poisonSpear >= 1) {
+				clicksItem('poisonSpear')
+				const poisonInterval = setInterval(function(){
+					if (poisonEnemyTimer == 1) {
+						clicksItem(presetWeapon1);
+						clearInterval(poisonInterval);
+					}
+				}, 2500);
+			};
+		};
+		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
+	};
+};
 
 function autoReset() {
 	if (exploringArea !== 'none' && fightDone == 1 && monsterName == 'none' && resetFightingPotion >= 1 && resetFightingPotionUsed == 0) {
-		if (scriptResetArea[exploringArea] === true) {
+		if (scriptVars.scriptResetArea[exploringArea] === true) {
 			sendBytes('DRINK=resetFightingPotion')
 		}
 	}
 }
 
 function autoMonsterHunt() {
-	if (monsterName !== 'none' && (toggleMonsterFind == false || monsterName !== scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
+	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName !== scriptVars.scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 }
 
 function autoHeal() {
-	if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0){
+	if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0 && hpCombatPotion >= 1){
 		sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
-	} else if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0) {
+	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && superHpCombatPotion >= 1) {
 		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
-	} else if (exploringArea !== 0 && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0) {
+	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0 && teleportSpell == 1) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 }
@@ -460,20 +454,20 @@ function autoSpell() {
 	if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
 	if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
 	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
-	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
+	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
 }
 
 function autoCombatPot() {
 	if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
-	if (monsterName !== 'none' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
+	if (monsterName !== 'none' && typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 	if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
 	if (monsterName !== 'none' && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}
 }
 
 function autoCousin() {
 	if (typeof goblinExploringArea == 'undefined' || goblinExploringArea == 'none') {
-		let scriptCousinAreaLocal = scriptCousinArea
+		let scriptCousinAreaLocal = scriptVars.scriptCousinArea
 		if (energy < scriptAreaEnergy[scriptCousinAreaLocal]) {scriptCousinAreaLocal = 'fields'}
 		goblinCousin=1;
 		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)		
@@ -514,38 +508,38 @@ function autoArtifact() {
 }
 
 function autoBoat() {
-	if (rowBoat == 1 && scriptBoatSend.rowBoat == true && rowBoatTimer < 2) {
+	if (rowBoat == 1 && scriptVars.scriptBoatSend.rowBoat == true && rowBoatTimer < 2) {
 		if (bait > 4){
 		sendBytes('CLICKS_BOAT=rowBoat')
 		closeSmittysDialogue('dialogue-confirm2')
 		} else {clicksItem('rowBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
-	if (canoeBoat == 1 && scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2) {
+	if (canoeBoat == 1 && scriptVars.scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2) {
 		if (bait > 24) {
 		sendBytes('CLICKS_BOAT=canoeBoat')
 		closeSmittysDialogue('dialogue-confirm2')
 		} else {clicksItem('canoeBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
-	if (scriptBoatSend.highWind == true) {
-		if (sailBoat == 1 && scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2) {
+	if (scriptVars.scriptBoatSend.highWind == true) {
+		if (sailBoat == 1 && scriptVars.scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2) {
 		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
 		closeSmittysDialogue('dialogue-confirm2')
 		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
 		}
-	} else if (sailBoat == 1 && scriptBoatSend.sailBoat == true && sailBoatTimer < 2) {
+	} else if (sailBoat == 1 && scriptVars.scriptBoatSend.sailBoat == true && sailBoatTimer < 2) {
 		if (bait > 99) {
 		sendBytes('CLICKS_BOAT=sailBoat')
 		closeSmittysDialogue('dialogue-confirm2')
 		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
-	if (steamBoat == 1 && scriptBoatSend.steamBoat == true && steamBoatTimer < 2) {
+	if (steamBoat == 1 && scriptVars.scriptBoatSend.steamBoat == true && steamBoatTimer < 2) {
 		if (bait > 249) {
 		sendBytes('CLICKS_BOAT=steamBoat')
 		closeSmittysDialogue('dialogue-confirm2')
 		} else {clicksItem('steamBoat');closeSmittysDialogue('dialogue-confirm2')}
 	}
-	if (trawler == 1 && scriptBoatSend.trawler == true && trawlerTimer < 2) {
+	if (trawler == 1 && scriptVars.scriptBoatSend.trawler == true && trawlerTimer < 2) {
 		if (bait > 499) {
 		sendBytes('CLICKS_BOAT=trawler')
 		closeSmittysDialogue('dialogue-confirm2')
@@ -553,32 +547,23 @@ function autoBoat() {
 	}
 }
 
-function autoCityUnlock() {
+window.autoCityUnlock = function() {
 	sendBytes('CLICKS_SHOP_VOTE=9');
 	sendBytes("COLLECT_VOTES")
 }
 
-window.autoCityUnlock = autoCityUnlock
-
-function hideAllTabs2() {
-	oldHideAllTabs()
-	document.getElementById("tab-scriptConfig").style.display = "none";
-	document.getElementById("tab-scriptConfigMining").style.display = "none";
-	document.getElementById("tab-scriptConfigCrafting").style.display = "none";
-	document.getElementById("tab-scriptConfigWoodcutting").style.display = "none";
-	document.getElementById("tab-scriptConfigFarming").style.display = "none";
-	document.getElementById("tab-scriptConfigSeeds").style.display = "none";
-	document.getElementById("tab-scriptConfigBrewing").style.display = "none";
-	document.getElementById("tab-scriptConfigPotions").style.display = "none";
-	document.getElementById("tab-scriptConfigExploring").style.display = "none";
-	document.getElementById("tab-scriptConfigCooking").style.display = "none";
+function loadUserVars() {
+	let key = `idleAgain-${window.username}`;
+	if (localStorage.getItem(key)) {
+		scriptVars = JSON.parse(localStorage.getItem(key));
+	}
 }
 
-window.hideAllTabs = hideAllTabs2
-
-function autoChangeVar(variName,variValue,id) {
-	localStorage.setItem(variName, JSON.stringify(variValue))
-	window[variName] = variValue
+window.autoChangeVar = function(variName,variValue,id) {
+	console.log(variName+' '+variValue+' '+id)
+	let key = `idleAgain-${window.username}`;
+	scriptVars[variName] = variValue
+	localStorage.setItem(key, JSON.stringify(scriptVars))
 	if (typeof id !== 'undefined') {
 		if (variValue == true) {
 			document.getElementById(id).style.color = "green"
@@ -589,11 +574,10 @@ function autoChangeVar(variName,variValue,id) {
 	}
 }
 
-window.autoChangeVar2 = autoChangeVar;
-
-function autoChangeObject(variName,variKey,variValue,id) {
-	localStorage.setItem(variName+'.'+variKey, JSON.stringify(variValue))
-	window[variName][variKey] = variValue
+window.autoChangeObject = function(variName,variKey,variValue,id) {
+	let key = `idleAgain-${window.username}`;
+	scriptVars[variName][variKey] = variValue
+	localStorage.setItem(key, JSON.stringify(scriptVars))
 	if (typeof id !== 'undefined') {
 		if (variValue == true) {
 			document.getElementById(id).style.color = "green"
@@ -603,7 +587,14 @@ function autoChangeObject(variName,variKey,variValue,id) {
 	}
 }
 
-window.autoChangeObject2 = autoChangeObject
+window.toggleAutoLogin = function() {
+	localStorage.setItem('autoLogin', !JSON.parse(localStorage.getItem('autoLogin')))
+	if (JSON.parse(localStorage.getItem('autoLogin')) == true) {
+		document.getElementById('scriptLoginToggle').style.color = "green"
+	} else {
+		document.getElementById('scriptLoginToggle').style.color = "red"
+	}
+}
 
 function scriptAddTabs() {
 	var scriptConfBar = document.createElement("div");
@@ -655,7 +646,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptGlobalToggle" onclick="window.autoChangeVar2('toggleGlobal',!toggleGlobal,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptGlobalToggle" onclick="window.autoChangeVar('toggleGlobal',!scriptVars.toggleGlobal,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
         <td style="text-align:right;padding-right:20px;width:100%">SCRIPT TOGGLE</td>
       </tr>
@@ -727,9 +718,9 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptGlobalToggleLoad" onclick="window.autoChangeVar2('toggleGlobalLoad',!toggleGlobalLoad,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptLoginToggle" onclick="window.toggleAutoLogin()" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">GLOBAL TOGGLE ACTIVATED ON LOAD</td>
+        <td style="text-align:right;padding-right:20px;width:100%">AUTO LOGIN</td>
       </tr>
     </tbody>
   </table>
@@ -749,7 +740,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptGeodeToggle" onclick="window.autoChangeVar2('toggleGeodeOpen',!toggleGeodeOpen,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptGeodeToggle" onclick="window.autoChangeVar('toggleGeodeOpen',!scriptVars.toggleGeodeOpen,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/geode5.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">GEODE OPENING</td>
       </tr>
@@ -757,7 +748,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptMineralToggle" onclick="window.autoChangeVar2('toggleMineralIdentify',!toggleMineralIdentify,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptMineralToggle" onclick="window.autoChangeVar('toggleMineralIdentify',!scriptVars.toggleMineralIdentify,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/tanzaniteMineral.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">MINERAL IDENTIFY</td>
       </tr>
@@ -765,7 +756,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptNecklaceToggle" onclick="window.autoChangeVar2('toggleNecklaceCharge',!toggleNecklaceCharge,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptNecklaceToggle" onclick="window.autoChangeVar('toggleNecklaceCharge',!scriptVars.toggleNecklaceCharge,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/mineralNecklace.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">NECKLACE CHARGE</td>
       </tr>
@@ -773,7 +764,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptTrainToggle" onclick="window.autoChangeVar2('toggleTrain',!toggleTrain,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptTrainToggle" onclick="window.autoChangeVar('toggleTrain',!scriptVars.toggleTrain,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/train.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">TRAIN</td>
       </tr>
@@ -784,7 +775,7 @@ function scriptAddTabs() {
       <tr style="color: white;width: 100%;">
         <td style="padding-left: 10px;"><img src="images/trainTracks.png" class="img-small"></td>
         <td>
-          <select name="scriptTrainAmount" onchange="window.autoChangeVar2('scriptTrainAmount',this.value)" id="scriptTrainAmount">
+          <select name="scriptTrainAmount" onchange="window.autoChangeVar('scriptTrainAmount',this.value)" id="scriptTrainAmount">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -798,7 +789,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptRocketToggle" onclick="window.autoChangeVar2('toggleRocket',!toggleRocket,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptRocketToggle" onclick="window.autoChangeVar('toggleRocket',!scriptVars.toggleRocket,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/rocket.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">ROCKET</td>
       </tr>
@@ -809,7 +800,7 @@ function scriptAddTabs() {
       <tr style="color: white;width: 100%;">
         <td style="padding-left: 10px;"><img src="images/mars.png" class="img-small"></td>
         <td>
-          <select name="scriptRocketDestination" onchange="window.autoChangeVar2('scriptRocket',this.value)" id="scriptRocketDestination">
+          <select name="scriptRocketDestination" onchange="window.autoChangeVar('scriptRocket',this.value)" id="scriptRocketDestination">
             <option value="Moon">Moon</option>
             <option value="Mars">Mars</option>
             <option value="Sun">Sun</option>
@@ -834,7 +825,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptSmeltingToggle" onclick="window.autoChangeVar2('toggleSmelting',!toggleSmelting,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptSmeltingToggle" onclick="window.autoChangeVar('toggleSmelting',!scriptVars.toggleSmelting,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/ancientFurnace.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">SMELTING</td>
       </tr>
@@ -865,7 +856,7 @@ function scriptAddTabs() {
   </ol>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptRefinaryToggle" onclick="window.autoChangeVar2('toggleRefinary',!toggleRefinary,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptRefinaryToggle" onclick="window.autoChangeVar('toggleRefinary',!scriptVars.toggleRefinary,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goldBarRefinery.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">REFINARY</td>
       </tr>
@@ -876,7 +867,7 @@ function scriptAddTabs() {
       <tr id="scriptRefinaryBar" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/refinedGoldBars.png" class="img-small"></td>
         <td style="padding-left: 50px;">
-          <select name="scriptRefinaryBarOptions" onchange="window.autoChangeVar2('scriptRefinaryBar',this.value)" id="scriptRefinaryOptions">
+          <select name="scriptRefinaryBarOptions" onchange="window.autoChangeVar('scriptRefinaryBar',this.value)" id="scriptRefinaryOptions">
             <option value="gold">Gold</option>
             <option value="promethium">Promethium</option>
           </select>
@@ -887,7 +878,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptFoundryToggle" onclick="window.autoChangeVar2('toggleCharcoal',!toggleCharcoal,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptFoundryToggle" onclick="window.autoChangeVar('toggleCharcoal',!scriptVars.toggleCharcoal,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/charcoalFoundry.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">CHARCOAL FOUNDRY</td>
       </tr>
@@ -898,7 +889,7 @@ function scriptAddTabs() {
       <tr id="scriptFoundryWood" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/lavaLogs.png" class="img-small"></td>
         <td style="padding-left: 50px;">
-          <select name="scriptFoundryWoodOptions" onchange="window.autoChangeVar2('scriptFoundryWood',this.value)" id="scriptFoundryWoodOptions">
+          <select name="scriptFoundryWoodOptions" onchange="window.autoChangeVar('scriptFoundryWood',this.value)" id="scriptFoundryWoodOptions">
             <option value="cheapest">Cheapest</option>
             <option value="logs">Logs</option>
             <option value="oakLogs">Oak Logs</option>
@@ -932,79 +923,79 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptLumberToggle" onclick="window.autoChangeVar2('toggleWoodcutting',!toggleWoodcutting,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptLumberToggle" onclick="window.autoChangeVar('toggleWoodcutting',!scriptVars.toggleWoodcutting,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/lumberjack.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">LUMBERJACK</td>
       </tr>
     </tbody>
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
-    <tbody style="display: block;">
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','tree',!scriptTreeIgnore.tree,this.id)" id="treeIgnoreToggle">
+    <tbody style="display: table-row;">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','tree',!scriptVars.scriptTreeIgnore.tree,this.id)" id="treeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/tree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','oakTree',!scriptTreeIgnore.oakTree,this.id)" id="oakTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','oakTree',!scriptVars.scriptTreeIgnore.oakTree,this.id)" id="oakTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/oakTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">OAK TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','willowTree',!scriptTreeIgnore.willowTree,this.id)" id="willowTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','willowTree',!scriptVars.scriptTreeIgnore.willowTree,this.id)" id="willowTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/willowTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">WILLOW TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','mapleTree',!scriptTreeIgnore.mapleTree,this.id)" id="mapleTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','mapleTree',!scriptVars.scriptTreeIgnore.mapleTree,this.id)" id="mapleTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/mapleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">MAPLE TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','redwoodTree',!scriptTreeIgnore.redwoodTree,this.id)" id="redwoodTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','redwoodTree',!scriptVars.scriptTreeIgnore.redwoodTree,this.id)" id="redwoodTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/redwoodTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">REDWOOD TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','pineTree',!scriptTreeIgnore.pineTree,this.id)" id="pineTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','pineTree',!scriptVars.scriptTreeIgnore.pineTree,this.id)" id="pineTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/pineTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PINE TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','hauntedTree',!scriptTreeIgnore.hauntedTree,this.id)" id="hauntedTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','hauntedTree',!scriptVars.scriptTreeIgnore.hauntedTree,this.id)" id="hauntedTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">HAUNTED TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','jungleTree',!scriptTreeIgnore.jungleTree,this.id)" id="jungleTreeIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','jungleTree',!scriptVars.scriptTreeIgnore.jungleTree,this.id)" id="jungleTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/jungleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">JUNGLE TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','lavaTree',!scriptTreeIgnore.lavaTree,this.id)" id="lavaTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','lavaTree',!scriptVars.scriptTreeIgnore.lavaTree,this.id)" id="lavaTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/lavaTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">LAVA TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','goldTree',!scriptTreeIgnore.goldTree,this.id)" id="goldTreeIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','goldTree',!scriptVars.scriptTreeIgnore.goldTree,this.id)" id="goldTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/goldTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">GOLD TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','magicTree',!scriptTreeIgnore.magicTree,this.id)" id="magicTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','magicTree',!scriptVars.scriptTreeIgnore.magicTree,this.id)" id="magicTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/magicTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">MAGIC TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','appleTree',!scriptTreeIgnore.appleTree,this.id)" id="appleTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','appleTree',!scriptVars.scriptTreeIgnore.appleTree,this.id)" id="appleTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/appleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">APPLE TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','cactusTree',!scriptTreeIgnore.cactusTree,this.id)" id="cactusTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','cactusTree',!scriptVars.scriptTreeIgnore.cactusTree,this.id)" id="cactusTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/cactusTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">CACTUS TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','bananaTree',!scriptTreeIgnore.bananaTree,this.id)" id="bananaTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','bananaTree',!scriptVars.scriptTreeIgnore.bananaTree,this.id)" id="bananaTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/bananaTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">BANANA TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','palmTree',!scriptTreeIgnore.palmTree,this.id)" id="palmTreeIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','palmTree',!scriptVars.scriptTreeIgnore.palmTree,this.id)" id="palmTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/palmTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PALM TREE IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeIgnore','pineappleTree',!scriptTreeIgnore.pineappleTree,this.id)" id="pineappleTreeIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeIgnore','pineappleTree',!scriptVars.scriptTreeIgnore.pineappleTree,this.id)" id="pineappleTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/pineappleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PINEAPPLE TREE IGNORE</td>
       </tr>
-      <tr style="color: red;" onclick="window.autoChangeObject2('scriptTreeIgnore','starfuitTree',!scriptTreeIgnore.starfuitTree,this.id)" id="starfruitTreeIgnoreToggle">
+      <tr style="color: red;" onclick="window.autoChangeObject('scriptTreeIgnore','starfuitTree',!scriptVars.scriptTreeIgnore.starfuitTree,this.id)" id="starfruitTreeIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/starfruitTree.png" class="img-small"></td>
         <td style="text-align: center;">STARFRUIT TREE IGNORE</td>
       </tr>
@@ -1025,7 +1016,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptFarmingToggle" onclick="window.autoChangeVar2('toggleFarming',!toggleFarming,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptFarmingToggle" onclick="window.autoChangeVar('toggleFarming',!scriptVars.toggleFarming,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/farmer.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">HARVEST AND PLANT</td>
       </tr>
@@ -1041,39 +1032,84 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptBonesToggle" onclick="window.autoChangeVar2('toggleBones',!toggleBones,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptBonesToggle" onclick="window.autoChangeVar('toggleBones',!scriptVars.toggleBones,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bonemealBin.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">BONEMEAL</td>
       </tr>
     </tbody>
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
-    <tbody style="display: block;">
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','bones',!scriptBonesIgnore.bones,this.id)" id="bonesIgnoreToggle">
+    <tbody style="display: table-row;">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','bones',!scriptVars.scriptBonesIgnore.bones,this.id)" id="bonesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/bones.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">BONES IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','ashes',!scriptBonesIgnore.ashes,this.id)" id="ashesIgnoreToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','ashes',!scriptVars.scriptBonesIgnore.ashes,this.id)" id="ashesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/ashes.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">ASHES IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','iceBones',!scriptBonesIgnore.iceBones,this.id)" id="iceBonesIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','iceBones',!scriptVars.scriptBonesIgnore.iceBones,this.id)" id="iceBonesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/iceBones.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">ICE BONES IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','zombieBones',!scriptBonesIgnore.zombieBones,this.id)" id="zombieBonesIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','zombieBones',!scriptVars.scriptBonesIgnore.zombieBones,this.id)" id="zombieBonesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/zombieBones.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">ZOMBIE BONES IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','bloodBones',!scriptBonesIgnore.bloodBones,this.id)" id="bloodBonesIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','bloodBones',!scriptVars.scriptBonesIgnore.bloodBones,this.id)" id="bloodBonesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/bloodBones.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">BLOOD BONES IGNORE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBonesIgnore','fishBones',!scriptBonesIgnore.fishBones,this.id)" id="fishBonesIgnoreToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBonesIgnore','fishBones',!scriptVars.scriptBonesIgnore.fishBones,this.id)" id="fishBonesIgnoreToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/fishBones.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">FISH BONES IGNORE</td>
       </tr>
     </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
+      <tr id="scriptFertilizeToggle" onclick="window.autoChangeVar('toggleFertilize',!scriptVars.toggleFertilize,this.id)" style="cursor: pointer; color: red;">
+        <td style="padding-left: 10px;"><img src="images/fertilizeSoilPotion.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">FERTILIZE</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
+    <tbody style="display: table-row;">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','redMushroomSeeds',!scriptVars.scriptFertilize.redMushroomSeeds,this.id)" id="MushroomFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/redMushroomSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">RED MUSHROOM FERTILIZE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','dottedGreenLeafSeeds',!scriptVars.scriptFertilize.dottedGreenLeafSeeds,this.id)" id="dottedGreenFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/dottedGreenLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">DOTTED GREEN LEAF FERTILIZE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','greenLeafSeeds',!scriptVars.scriptFertilize.greenLeafSeeds,this.id)" id="greenLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/greenLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">GREEN LEAF FERTILIZE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','limeLeafSeeds',!scriptVars.scriptFertilize.limeLeafSeeds,this.id)" id="limeLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/limeLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">LIME LEAF FERTILIZE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','goldLeafSeeds',!scriptVars.scriptFertilize.goldLeafSeeds,this.id)" id="goldLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/goldLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">GOLD LEAF FERTILIZE</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','crystalLeafSeeds',!scriptVars.scriptFertilize.crystalLeafSeeds,this.id)" id="crystalLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/crystalLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">CRYSTAL LEAF FERTILIZE</td>
+      </tr>
+    <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','stripedGreenLeafSeeds',!scriptVars.scriptFertilize.stripedGreenLeafSeeds,this.id)" id="stripedGreenLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/stripedGreenLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">STRIPED GREEN LEAF FERTILIZE</td>
+      </tr><tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptFertilize','stripedGoldLeafSeeds',!scriptVars.scriptFertilize.stripedGoldLeafSeeds,this.id)" id="stripedGoldLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/stripedGoldLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">STRIPED GOLD LEAF FERTILIZE</td>
+      </tr><tr style="color: red;" onclick="window.autoChangeObject2('scriptFertilize','stripedCrystalLeafSeeds',!scriptVars.scriptFertilize.stripedCrystalLeafSeeds,this.id)" id="stripedCrystalLeafFertilizeToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/stripedCrystalLeafSeeds.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">STRIPED CRYSTAL LEAF FERTILIZE</td>
+      </tr></tbody>
   </table>
 </div>`
 
@@ -1197,7 +1233,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptDrinkToggle" onclick="window.autoChangeVar2('toggleDrink',!toggleDrink,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptDrinkToggle" onclick="window.autoChangeVar('toggleDrink',!scriptVars.toggleDrink,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/diamondBrewingKit.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">POTION DRINK</td>
       </tr>
@@ -1205,7 +1241,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptBrewToggle" onclick="window.autoChangeVar2('toggleBrew',!toggleBrew,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptBrewToggle" onclick="window.autoChangeVar('toggleBrew',!scriptVars.toggleBrew,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goldLeaf.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">POTION BREW</td>
       </tr>
@@ -1221,79 +1257,79 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptTreeUpgradeToggle" onclick="window.autoChangeVar2('toggleTreeUpgrade',!toggleTreeUpgrade,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptTreeUpgradeToggle" onclick="window.autoChangeVar('toggleTreeUpgrade',!scriptVars.toggleTreeUpgrade,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/woodcuttingUpgradePotion.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">TREE UPGRADE POTION</td>
       </tr>
     </tbody>
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
-    <tbody style="display: block;">
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','tree',!scriptTreeUpgrade.tree,this.id)" id="treeUpgradeToggle">
+    <tbody style="display: table-row;">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','tree',!scriptVars.scriptTreeUpgrade.tree,this.id)" id="treeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/tree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','oakTree',!scriptTreeUpgrade.oakTree,this.id)" id="oakTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','oakTree',!scriptVars.scriptTreeUpgrade.oakTree,this.id)" id="oakTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/oakTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">OAK TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','willowTree',!scriptTreeUpgrade.willowTree,this.id)" id="willowTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','willowTree',!scriptVars.scriptTreeUpgrade.willowTree,this.id)" id="willowTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/willowTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">WILLOW TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','mapleTree',!scriptTreeUpgrade.mapleTree,this.id)" id="mapleTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','mapleTree',!scriptVars.scriptTreeUpgrade.mapleTree,this.id)" id="mapleTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/mapleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">MAPLE TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','redwoodTree',!scriptTreeUpgrade.redwoodTree,this.id)" id="redwoodTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','redwoodTree',!scriptVars.scriptTreeUpgrade.redwoodTree,this.id)" id="redwoodTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/redwoodTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">REDWOOD TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','pineTree',!scriptTreeUpgrade.pineTree,this.id)" id="pineTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','pineTree',!scriptVars.scriptTreeUpgrade.pineTree,this.id)" id="pineTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/pineTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PINE TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','hauntedTree',!scriptTreeUpgrade.hauntedTree,this.id)" id="hauntedTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','hauntedTree',!scriptVars.scriptTreeUpgrade.hauntedTree,this.id)" id="hauntedTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">HAUNTED TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','jungleTree',!scriptTreeUpgrade.jungleTree,this.id)" id="jungleTreeUpgradeToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','jungleTree',!scriptVars.scriptTreeUpgrade.jungleTree,this.id)" id="jungleTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/jungleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">JUNGLE TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','lavaTree',!scriptTreeUpgrade.lavaTree,this.id)" id="lavaTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','lavaTree',!scriptVars.scriptTreeUpgrade.lavaTree,this.id)" id="lavaTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/lavaTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">LAVA TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','goldTree',!scriptTreeUpgrade.goldTree,this.id)" id="goldTreeUpgradeToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','goldTree',!scriptVars.scriptTreeUpgrade.goldTree,this.id)" id="goldTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/goldTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">GOLD TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','magicTree',!scriptTreeUpgrade.magicTree,this.id)" id="magicTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','magicTree',!scriptVars.scriptTreeUpgrade.magicTree,this.id)" id="magicTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/magicTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">MAGIC TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','appleTree',!scriptTreeUpgrade.appleTree,this.id)" id="appleTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','appleTree',!scriptVars.scriptTreeUpgrade.appleTree,this.id)" id="appleTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/appleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">APPLE TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','cactusTree',!scriptTreeUpgrade.cactusTree,this.id)" id="cactusTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','cactusTree',!scriptVars.scriptTreeUpgrade.cactusTree,this.id)" id="cactusTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/cactusTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">CACTUS TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','bananaTree',!scriptTreeUpgrade.bananaTree,this.id)" id="bananaTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','bananaTree',!scriptVars.scriptTreeUpgrade.bananaTree,this.id)" id="bananaTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/bananaTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">BANANA TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','palmTree',!scriptTreeUpgrade.palmTree,this.id)" id="palmTreeUpgradeToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','palmTree',!scriptVars.scriptTreeUpgrade.palmTree,this.id)" id="palmTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/palmTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PALM TREE UPGRADE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptTreeUpgrade','pineappleTree',!scriptTreeUpgrade.pineappleTree,this.id)" id="pineappleTreeUpgradeToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptTreeUpgrade','pineappleTree',!scriptVars.scriptTreeUpgrade.pineappleTree,this.id)" id="pineappleTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/pineappleTree.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">PINEAPPLE TREE UPGRADE</td>
       </tr>
-      <tr style="color: red;" onclick="window.autoChangeObject2('scriptTreeUpgrade','starfuitTree',!scriptTreeUpgrade.starfuitTree,this.id)" id="starfruitTreeUpgradeToggle">
+      <tr style="color: red;" onclick="window.autoChangeObject('scriptTreeUpgrade','starfuitTree',!scriptVars.scriptTreeUpgrade.starfuitTree,this.id)" id="starfruitTreeUpgradeToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/starfruitTree.png" class="img-small"></td>
         <td style="text-align: center;">STARFRUIT TREE UPGRADE</td>
       </tr>
@@ -1335,61 +1371,61 @@ function scriptAddTabs() {
   </div>
   <ol id="sortablePotions" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;">
     <li class="ui-state-default" value="furnaceSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FURNACE SPEED POTION<img src="images/furnaceSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FURNACE SPEED POTION<img src="images/furnaceSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="seedFinderPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">SEED FINDER POTION<img src="images/seedFinderPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">SEED FINDER POTION<img src="images/seedFinderPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="compostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">COMPOST POTION<img src="images/compostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">COMPOST POTION<img src="images/compostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="treeCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">TREE COMPOST POTION<img src="images/treeCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">TREE COMPOST POTION<img src="images/treeCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="fishingSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FISHING SPEED POTION<img src="images/fishingSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FISHING SPEED POTION<img src="images/fishingSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="woodcuttingXpPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">WOODCUTTING XP POTION<img src="images/woodcuttingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">WOODCUTTING XP POTION<img src="images/woodcuttingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="exploringSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">EXPLORER SPEED POTION<img src="images/exploringSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">EXPLORER SPEED POTION<img src="images/exploringSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="baitPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">BAIT POTION<img src="images/baitPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">BAIT POTION<img src="images/baitPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="farmingXpPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FARMING XP POTION<img src="images/farmingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FARMING XP POTION<img src="images/farmingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="fastCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FAST COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FAST COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="oilPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">OIL POTION<img src="images/oilPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">OIL POTION<img src="images/oilPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="coinPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">COIN POTION<img src="images/coinPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">COIN POTION<img src="images/coinPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="piratesPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">PIRATES POTION<img src="images/piratesPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">PIRATES POTION<img src="images/piratesPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="promethiumPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">PROMETHIUM POTION<img src="images/promethiumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">PROMETHIUM POTION<img src="images/promethiumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="rocketSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">ROCKET SPEED POTION<img src="images/rocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">ROCKET SPEED POTION<img src="images/rocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="fruitTreePotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">FRUIT TREE POTION<img src="images/fruitTreePotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FRUIT TREE POTION<img src="images/fruitTreePotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="titaniumPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">TITANIUM POTION<img src="images/titaniumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">TITANIUM POTION<img src="images/titaniumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="researchSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">RESEARCH SPEED POTION<img src="images/researchSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">RESEARCH SPEED POTION<img src="images/researchSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
     <li class="ui-state-default" value="superRocketSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">SUPER ROCKET SPEED POTION<img src="images/superRocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions2()">
+      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">SUPER ROCKET SPEED POTION<img src="images/superRocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
   </ol>
 </div>`
@@ -1407,7 +1443,7 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptExploreToggle" onclick="window.autoChangeVar2('toggleExplore',!toggleExplore,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptExploreToggle" onclick="window.autoChangeVar('toggleExplore',!scriptVars.toggleExplore,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/explorer.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">EXPLORER</td>
       </tr>
@@ -1418,7 +1454,7 @@ function scriptAddTabs() {
       <tr id="scriptExplorerArea" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/caves.png" class="img-small"></td>
         <td style="padding-left: 50px;">
-          <select name="scriptAreaOptions" onchange="window.autoChangeVar2('scriptArea',this.value);window.monsterOptions2(this.value);window.autoChangeVar2('scriptMonster',document.getElementById('scriptMonsterOptions').value)" id="scriptAreaOptions">
+          <select name="scriptAreaOptions" onchange="window.autoChangeVar('scriptArea',this.value);window.monsterOptions2(this.value);window.autoChangeVar('scriptMonster',document.getElementById('scriptMonsterOptions').value)" id="scriptAreaOptions">
             <option value="fields">Fields</option>
             <option value="forests">Forests</option>
             <option value="caves">Caves</option>
@@ -1443,7 +1479,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptFightToggle" onclick="window.autoChangeVar2('toggleFight',!toggleFight,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptFightToggle" onclick="window.autoChangeVar('toggleFight',!scriptVars.toggleFight,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/combat.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">FIGHT</td>
       </tr>
@@ -1451,7 +1487,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptResetToggle" onclick="window.autoChangeVar2('toggleResetFight',!toggleResetFight,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptResetToggle" onclick="window.autoChangeVar('toggleResetFight',!scriptVars.toggleResetFight,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/resetFightingPotion.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">RESET POTION</td>
       </tr>
@@ -1459,67 +1495,67 @@ function scriptAddTabs() {
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
     <tbody>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','fields',!scriptResetArea.fields,this.id)" id="fieldsResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','fields',!scriptVars.scriptResetArea.fields,this.id)" id="fieldsResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/fields.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Fields</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','forests',!scriptResetArea.forests,this.id)" id="forestsResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','forests',!scriptVars.scriptResetArea.forests,this.id)" id="forestsResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/forests.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Forests</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','caves',!scriptResetArea.caves,this.id)" id="cavesResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','caves',!scriptVars.scriptResetArea.caves,this.id)" id="cavesResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/caves.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Caves</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','volcano',!scriptResetArea.volcano,this.id)" id="volcanoResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','volcano',!scriptVars.scriptResetArea.volcano,this.id)" id="volcanoResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/volcano.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Volcano</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','northernFields',!scriptResetArea.northernFields,this.id)" id="northernFieldsResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','northernFields',!scriptVars.scriptResetArea.northernFields,this.id)" id="northernFieldsResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/northernFields.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Northern Fields</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','hauntedMansion',!scriptResetArea.hauntedMansion,this.id)" id="hauntedMansionResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','hauntedMansion',!scriptVars.scriptResetArea.hauntedMansion,this.id)" id="hauntedMansionResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedMansion.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Haunted Mansion</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','desert',!scriptResetArea.desert,this.id)" id="desertResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','desert',!scriptVars.scriptResetArea.desert,this.id)" id="desertResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/desert.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Desert</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','ocean',!scriptResetArea.ocean,this.id)" id="oceanResetToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','ocean',!scriptVars.scriptResetArea.ocean,this.id)" id="oceanResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/ocean.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Ocean</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','jungle',!scriptResetArea.jungle,this.id)" id="jungleResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','jungle',!scriptVars.scriptResetArea.jungle,this.id)" id="jungleResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/jungle.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Jungle</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','dungeonEntrance',!scriptResetArea.dungeonEntrance,this.id)" id="dungeonEntranceResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','dungeonEntrance',!scriptVars.scriptResetArea.dungeonEntrance,this.id)" id="dungeonEntranceResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/dungeonEntrance.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Dungeon Entrance</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','dungeon',!scriptResetArea.dungeon,this.id)" id="dungeonResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','dungeon',!scriptVars.scriptResetArea.dungeon,this.id)" id="dungeonResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/dungeon.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Dungeon</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','castle',!scriptResetArea.castle,this.id)" id="castleResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','castle',!scriptVars.scriptResetArea.castle,this.id)" id="castleResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/castle.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Castle</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','cemetery',!scriptResetArea.cemetery,this.id)" id="cemeteryResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','cemetery',!scriptVars.scriptResetArea.cemetery,this.id)" id="cemeteryResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/cemetery.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Cemetery</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','factory',!scriptResetArea.factory,this.id)" id="factoryResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','factory',!scriptVars.scriptResetArea.factory,this.id)" id="factoryResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/factory.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Factory</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','hauntedWoods',!scriptResetArea.hauntedWoods,this.id)" id="hauntedWoodsResetToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','hauntedWoods',!scriptVars.scriptResetArea.hauntedWoods,this.id)" id="hauntedWoodsResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedWoods.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Haunted Woods</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptResetArea','deepOcean',!scriptResetArea.deepOcean,this.id)" id="deepOceanResetToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptResetArea','deepOcean',!scriptVars.scriptResetArea.deepOcean,this.id)" id="deepOceanResetToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/deepOcean.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">Deep Ocean</td>
       </tr>
@@ -1527,7 +1563,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptMonsterFindToggle" onclick="window.autoChangeVar2('toggleMonsterFind',!toggleMonsterFind,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptMonsterFindToggle" onclick="window.autoChangeVar('toggleMonsterFind',!scriptVars.toggleMonsterFind,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/skeletonMonster.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">SEARCH FOR MONSTER</td>
       </tr>
@@ -1537,7 +1573,7 @@ function scriptAddTabs() {
     <tbody>
       <tr id="scriptExplorerArea" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/exploringSkill.png" class="img-small"></td>
-        <td style="padding-left: 50px;"><select name="scriptMonsterOptions" onchange="window.autoChangeVar2('scriptMonster',this.value)" id="scriptMonsterOptions">
+        <td style="padding-left: 50px;"><select name="scriptMonsterOptions" onchange="window.autoChangeVar('scriptMonster',this.value)" id="scriptMonsterOptions">
           </select>
         </td>
         <td style="text-align:right;padding-right:20px;width:100%">MONSTER TO SEARCH</td>
@@ -1546,7 +1582,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptShinyToggle" onclick="window.autoChangeVar2('toggleShiny',!toggleShiny,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptShinyToggle" onclick="window.autoChangeVar('toggleShiny',!scriptVars.toggleShiny,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/shiny.gif" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">SHINY/GEM GOBLIN HUNT</td>
       </tr>
@@ -1554,7 +1590,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptSpellToggle" onclick="window.autoChangeVar2('toggleSpell',!toggleSpell,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptSpellToggle" onclick="window.autoChangeVar('toggleSpell',!scriptVars.toggleSpell,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/fireSpell.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">SPELL</td>
       </tr>
@@ -1562,7 +1598,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptCombatPotionToggle" onclick="window.autoChangeVar2('toggleCombatPotion',!toggleCombatPotion,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptCombatPotionToggle" onclick="window.autoChangeVar('toggleCombatPotion',!scriptVars.toggleCombatPotion,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/ghostScanCombatPotion.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">COMBAT POTION</td>
       </tr>
@@ -1570,7 +1606,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptHealToggle" onclick="window.autoChangeVar2('toggleHeal',!toggleHeal,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptHealToggle" onclick="window.autoChangeVar('toggleHeal',!scriptVars.toggleHeal,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/autoTickHeal.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">TICK HEAL</td>
       </tr>
@@ -1578,7 +1614,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptCousinToggle" onclick="window.autoChangeVar2('toggleCousin',!toggleCousin,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptCousinToggle" onclick="window.autoChangeVar('toggleCousin',!scriptVars.toggleCousin,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goblinCousin.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">GOBLIN COUSIN</td>
       </tr>
@@ -1589,7 +1625,7 @@ function scriptAddTabs() {
       <tr id="scriptCousinArea" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/fields.png" class="img-small"></td>
         <td style="padding-left: 50px;">
-          <select name="scriptCousinAreaOptions" onchange="window.autoChangeVar2('scriptCousinArea',this.value)" id="scriptCousinAreaOptions">
+          <select name="scriptCousinAreaOptions" onchange="window.autoChangeVar('scriptCousinArea',this.value)" id="scriptCousinAreaOptions">
             <option value="fields">Fields</option>
             <option value="forests">Forests</option>
             <option value="caves">Caves</option>
@@ -1614,7 +1650,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptBagsToggle" onclick="window.autoChangeVar2('toggleBags',!toggleBags,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptBagsToggle" onclick="window.autoChangeVar('toggleBags',!scriptVars.toggleBags,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/fieldsLoot.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">BAGS OPENING</td>
       </tr>
@@ -1622,7 +1658,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptStatueToggle" onclick="window.autoChangeVar2('toggleStatue',!toggleStatue,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptStatueToggle" onclick="window.autoChangeVar('toggleStatue',!scriptVars.toggleStatue,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bronzeStatueMetalDetector.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">STATUE SELL</td>
       </tr>
@@ -1630,7 +1666,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptArtifactToggle" onclick="window.autoChangeVar2('toggleArtifact',!toggleArtifact,this.id)" style="cursor: pointer; color: red;">
+      <tr id="scriptArtifactToggle" onclick="window.autoChangeVar('toggleArtifact',!scriptVars.toggleArtifact,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/skullArtifact.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">ARTIFACT CONVERT</td>
       </tr>
@@ -1651,35 +1687,35 @@ function scriptAddTabs() {
   </div>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptBoatToggle" onclick="window.autoChangeVar2('toggleBoat',!toggleBoat,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptBoatToggle" onclick="window.autoChangeVar('toggleBoat',!scriptVars.toggleBoat,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/sailBoat.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">BOAT</td>
       </tr>
     </tbody>
   </table>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
-    <tbody style="display: block;">
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','rowBoat',!scriptBoatSend.rowBoat,this.id)" id="rowBoatSendToggle">
+    <tbody style="display: table-row;">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','rowBoat',!scriptVars.scriptBoatSend.rowBoat,this.id)" id="rowBoatSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/rowBoat.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">ROW BOAT</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','canoeBoat',!scriptBoatSend.canoeBoat,this.id)" id="canoeBoatSendToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','canoeBoat',!scriptVars.scriptBoatSend.canoeBoat,this.id)" id="canoeBoatSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/canoeBoat.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">CANOE</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','sailBoat',!scriptBoatSend.sailBoat,this.id)" id="sailBoatSendToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','sailBoat',!scriptVars.scriptBoatSend.sailBoat,this.id)" id="sailBoatSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/sailBoat.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">SAIL BOAT</td>
       </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','highWind',!scriptBoatSend.highWind,this.id)" id="highWindSendToggle">
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','highWind',!scriptVars.scriptBoatSend.highWind,this.id)" id="highWindSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/windIcon.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">WAIT HIGH WIND</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','steamBoat',!scriptBoatSend.steamBoat,this.id)" id="steamBoatSendToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','steamBoat',!scriptVars.scriptBoatSend.steamBoat,this.id)" id="steamBoatSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/steamBoat.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">STEAM BOAT</td>
       </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject2('scriptBoatSend','trawler',!scriptBoatSend.trawler,this.id)" id="trawlerSendToggle">
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptBoatSend','trawler',!scriptVars.scriptBoatSend.trawler,this.id)" id="trawlerSendToggle">
         <td style="padding-left: 10px;width: 5%;"><img src="images/trawler.png" class="img-small"></td>
         <td style="text-align: center;width: 40%">TRAWLER</td>
       </tr>
@@ -1700,104 +1736,115 @@ function scriptAddTabs() {
 }
 
 function scriptStyleTabs() {
-	document.getElementById('scriptGlobalToggle').style.color = toggleGlobal ? 'green' : 'red';
-	document.getElementById('scriptGlobalToggleLoad').style.color = toggleGlobalLoad ? 'green' : 'red';
-	document.getElementById('scriptGeodeToggle').style.color = toggleGeodeOpen ? 'green' : 'red';
-	document.getElementById('scriptMineralToggle').style.color = toggleMineralIdentify ? 'green' : 'red';
-	document.getElementById('scriptNecklaceToggle').style.color = toggleNecklaceCharge ? 'green' : 'red';
-	document.getElementById('scriptTrainToggle').style.color = toggleTrain ? 'green' : 'red';
-	document.getElementById('scriptTrainAmount').value = scriptTrainAmount;
-	document.getElementById('scriptRocketToggle').style.color = toggleRocket ? 'green' : 'red';
-	document.getElementById('scriptRocketDestination').value = scriptRocket;
-	document.getElementById('scriptSmeltingToggle').style.color = toggleSmelting ? 'green' : 'red';
-	document.getElementById('scriptRefinaryToggle').style.color = toggleRefinary ? 'green' : 'red';
-	document.getElementById('scriptRefinaryOptions').value = scriptRefinaryBar;
-	document.getElementById('scriptFoundryToggle').style.color = toggleCharcoal ? 'green' : 'red';
-	document.getElementById('scriptFoundryWoodOptions').value = scriptFoundryWood;
-	document.getElementById('scriptLumberToggle').style.color = toggleWoodcutting ? 'green' : 'red';
-	document.getElementById('treeIgnoreToggle').style.color = scriptTreeIgnore.tree ? 'green' : 'red';
-	document.getElementById('oakTreeIgnoreToggle').style.color = scriptTreeIgnore.oakTree ? 'green' : 'red';
-	document.getElementById('willowTreeIgnoreToggle').style.color = scriptTreeIgnore.willowTree ? 'green' : 'red';
-	document.getElementById('mapleTreeIgnoreToggle').style.color = scriptTreeIgnore.mapleTree ? 'green' : 'red';
-	document.getElementById('redwoodTreeIgnoreToggle').style.color = scriptTreeIgnore.redwoodTree ? 'green' : 'red';
-	document.getElementById('pineTreeIgnoreToggle').style.color = scriptTreeIgnore.pineTree ? 'green' : 'red';
-	document.getElementById('hauntedTreeIgnoreToggle').style.color = scriptTreeIgnore.hauntedTree ? 'green' : 'red';
-	document.getElementById('jungleTreeIgnoreToggle').style.color = scriptTreeIgnore.jungleTree ? 'green' : 'red';
-	document.getElementById('lavaTreeIgnoreToggle').style.color = scriptTreeIgnore.lavaTree ? 'green' : 'red';
-	document.getElementById('goldTreeIgnoreToggle').style.color = scriptTreeIgnore.goldTree ? 'green' : 'red';
-	document.getElementById('magicTreeIgnoreToggle').style.color = scriptTreeIgnore.magicTree ? 'green' : 'red';
-	document.getElementById('appleTreeIgnoreToggle').style.color = scriptTreeIgnore.appleTree ? 'green' : 'red';
-	document.getElementById('cactusTreeIgnoreToggle').style.color = scriptTreeIgnore.cactusTree ? 'green' : 'red';
-	document.getElementById('bananaTreeIgnoreToggle').style.color = scriptTreeIgnore.bananaTree ? 'green' : 'red';
-	document.getElementById('palmTreeIgnoreToggle').style.color = scriptTreeIgnore.palmTree ? 'green' : 'red';
-	document.getElementById('pineappleTreeIgnoreToggle').style.color = scriptTreeIgnore.pineappleTree ? 'green' : 'red';
-	document.getElementById('starfruitTreeIgnoreToggle').style.color = scriptTreeIgnore.starfruitTree ? 'green' : 'red';
-	document.getElementById('scriptFarmingToggle').style.color = toggleFarming ? 'green' : 'red';
-	document.getElementById('scriptBonesToggle').style.color = toggleBones ? 'green' : 'red';
-	document.getElementById('bonesIgnoreToggle').style.color = scriptBonesIgnore.bones ? 'green' : 'red';
-	document.getElementById('ashesIgnoreToggle').style.color = scriptBonesIgnore.ashes ? 'green' : 'red';
-	document.getElementById('iceBonesIgnoreToggle').style.color = scriptBonesIgnore.iceBones ? 'green' : 'red';
-	document.getElementById('zombieBonesIgnoreToggle').style.color = scriptBonesIgnore.zombieBones ? 'green' : 'red';
-	document.getElementById('bloodBonesIgnoreToggle').style.color = scriptBonesIgnore.bloodBones ? 'green' : 'red';
-	document.getElementById('fishBonesIgnoreToggle').style.color = scriptBonesIgnore.fishBones ? 'green' : 'red';
-	document.getElementById('scriptDrinkToggle').style.color = toggleDrink ? 'green' : 'red';
-	document.getElementById('scriptBrewToggle').style.color = toggleBrew ? 'green' : 'red';
-	document.getElementById('treeUpgradeToggle').style.color = scriptTreeUpgrade.tree ? 'green' : 'red';
-	document.getElementById('oakTreeUpgradeToggle').style.color = scriptTreeUpgrade.oakTree ? 'green' : 'red';
-	document.getElementById('willowTreeUpgradeToggle').style.color = scriptTreeUpgrade.willowTree ? 'green' : 'red';
-	document.getElementById('mapleTreeUpgradeToggle').style.color = scriptTreeUpgrade.mapleTree ? 'green' : 'red';
-	document.getElementById('redwoodTreeUpgradeToggle').style.color = scriptTreeUpgrade.redwoodTree ? 'green' : 'red';
-	document.getElementById('pineTreeUpgradeToggle').style.color = scriptTreeUpgrade.pineTree ? 'green' : 'red';
-	document.getElementById('hauntedTreeUpgradeToggle').style.color = scriptTreeUpgrade.hauntedTree ? 'green' : 'red';
-	document.getElementById('jungleTreeUpgradeToggle').style.color = scriptTreeUpgrade.jungleTree ? 'green' : 'red';
-	document.getElementById('lavaTreeUpgradeToggle').style.color = scriptTreeUpgrade.lavaTree ? 'green' : 'red';
-	document.getElementById('goldTreeUpgradeToggle').style.color = scriptTreeUpgrade.goldTree ? 'green' : 'red';
-	document.getElementById('magicTreeUpgradeToggle').style.color = scriptTreeUpgrade.magicTree ? 'green' : 'red';
-	document.getElementById('appleTreeUpgradeToggle').style.color = scriptTreeUpgrade.appleTree ? 'green' : 'red';
-	document.getElementById('cactusTreeUpgradeToggle').style.color = scriptTreeUpgrade.cactusTree ? 'green' : 'red';
-	document.getElementById('bananaTreeUpgradeToggle').style.color = scriptTreeUpgrade.bananaTree ? 'green' : 'red';
-	document.getElementById('palmTreeUpgradeToggle').style.color = scriptTreeUpgrade.palmTree ? 'green' : 'red';
-	document.getElementById('pineappleTreeUpgradeToggle').style.color = scriptTreeUpgrade.pineappleTree ? 'green' : 'red';
-	document.getElementById('scriptExploreToggle').style.color = toggleExplore ? 'green' : 'red';
-	document.getElementById('scriptAreaOptions').value = scriptArea;
-	document.getElementById('scriptFightToggle').style.color = toggleFight ? 'green' : 'red';
-	document.getElementById('fieldsResetToggle').style.color = scriptResetArea.fields ? 'green' : 'red';
-	document.getElementById('forestsResetToggle').style.color = scriptResetArea.forests ? 'green' : 'red';
-	document.getElementById('cavesResetToggle').style.color = scriptResetArea.caves ? 'green' : 'red';
-	document.getElementById('volcanoResetToggle').style.color = scriptResetArea.volcano ? 'green' : 'red';
-	document.getElementById('northernFieldsResetToggle').style.color = scriptResetArea.northernFields ? 'green' : 'red';
-	document.getElementById('hauntedMansionResetToggle').style.color = scriptResetArea.hauntedMansion ? 'green' : 'red';
-	document.getElementById('desertResetToggle').style.color = scriptResetArea.desert ? 'green' : 'red';
-	document.getElementById('oceanResetToggle').style.color = scriptResetArea.ocean ? 'green' : 'red';
-	document.getElementById('jungleResetToggle').style.color = scriptResetArea.jungle ? 'green' : 'red';
-	document.getElementById('dungeonEntranceResetToggle').style.color = scriptResetArea.dungeonEntrance ? 'green' : 'red';
-	document.getElementById('dungeonResetToggle').style.color = scriptResetArea.dungeon ? 'green' : 'red';
-	document.getElementById('castleResetToggle').style.color = scriptResetArea.castle ? 'green' : 'red';
-	document.getElementById('cemeteryResetToggle').style.color = scriptResetArea.cemetery ? 'green' : 'red';
-	document.getElementById('factoryResetToggle').style.color = scriptResetArea.factory ? 'green' : 'red';
-	document.getElementById('hauntedWoodsResetToggle').style.color = scriptResetArea.hauntedWoods ? 'green' : 'red';
-	document.getElementById('deepOceanResetToggle').style.color = scriptResetArea.deepOcean ? 'green' : 'red';
-	document.getElementById('scriptResetToggle').style.color = toggleResetFight ? 'green' : 'red';
-	document.getElementById('scriptMonsterOptions').value = scriptMonster;
-	document.getElementById('scriptMonsterFindToggle').style.color = toggleMonsterFind ? 'green' : 'red';
-	document.getElementById('scriptShinyToggle').style.color = toggleShiny ? 'green' : 'red';
-	document.getElementById('scriptSpellToggle').style.color = toggleSpell ? 'green' : 'red';
-	document.getElementById('scriptCombatPotionToggle').style.color = toggleCombatPotion ? 'green' : 'red';
-	document.getElementById('scriptHealToggle').style.color = toggleHeal ? 'green' : 'red';
-	document.getElementById('scriptCousinToggle').style.color = toggleCousin ? 'green' : 'red';
-	document.getElementById('scriptCousinArea').value = scriptCousinArea;
-	document.getElementById('scriptStatueToggle').style.color = toggleStatue ? 'green' : 'red';
-	document.getElementById('scriptArtifactToggle').style.color = toggleArtifact ? 'green' : 'red';
-	document.getElementById('scriptBoatToggle').style.color = toggleBoat ? 'green' : 'red';
-	document.getElementById('rowBoatSendToggle').style.color = scriptBoatSend.rowBoat ? 'green' : 'red';
-	document.getElementById('canoeBoatSendToggle').style.color = scriptBoatSend.canoeBoat ? 'green' : 'red';
-	document.getElementById('sailBoatSendToggle').style.color = scriptBoatSend.sailBoat ? 'green' : 'red';
-	document.getElementById('highWindSendToggle').style.color = scriptBoatSend.highWind ? 'green' : 'red';
-	document.getElementById('steamBoatSendToggle').style.color = scriptBoatSend.steamBoat ? 'green' : 'red';
-	document.getElementById('trawlerSendToggle').style.color = scriptBoatSend.trawler ? 'green' : 'red';
+	document.getElementById('scriptGlobalToggle').style.color = scriptVars.toggleGlobal ? 'green' : 'red';
+	document.getElementById('scriptLoginToggle').style.color = scriptVars.toggleLogin ? 'green' : 'red';
+	document.getElementById('scriptGeodeToggle').style.color = scriptVars.toggleGeodeOpen ? 'green' : 'red';
+	document.getElementById('scriptMineralToggle').style.color = scriptVars.toggleMineralIdentify ? 'green' : 'red';
+	document.getElementById('scriptNecklaceToggle').style.color = scriptVars.toggleNecklaceCharge ? 'green' : 'red';
+	document.getElementById('scriptTrainToggle').style.color = scriptVars.toggleTrain ? 'green' : 'red';
+	document.getElementById('scriptTrainAmount').value = scriptVars.scriptTrainAmount;
+	document.getElementById('scriptRocketToggle').style.color = scriptVars.toggleRocket ? 'green' : 'red';
+	document.getElementById('scriptRocketDestination').value = scriptVars.scriptRocket;
+	document.getElementById('scriptSmeltingToggle').style.color = scriptVars.toggleSmelting ? 'green' : 'red';
+	document.getElementById('scriptRefinaryToggle').style.color = scriptVars.toggleRefinary ? 'green' : 'red';
+	document.getElementById('scriptRefinaryOptions').value = scriptVars.scriptRefinaryBar;
+	document.getElementById('scriptFoundryToggle').style.color = scriptVars.toggleCharcoal ? 'green' : 'red';
+	document.getElementById('scriptFoundryWoodOptions').value = scriptVars.scriptFoundryWood;
+	document.getElementById('scriptLumberToggle').style.color = scriptVars.toggleWoodcutting ? 'green' : 'red';
+	document.getElementById('treeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.tree ? 'green' : 'red';
+	document.getElementById('oakTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.oakTree ? 'green' : 'red';
+	document.getElementById('willowTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.willowTree ? 'green' : 'red';
+	document.getElementById('mapleTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.mapleTree ? 'green' : 'red';
+	document.getElementById('redwoodTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.redwoodTree ? 'green' : 'red';
+	document.getElementById('pineTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.pineTree ? 'green' : 'red';
+	document.getElementById('hauntedTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.hauntedTree ? 'green' : 'red';
+	document.getElementById('jungleTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.jungleTree ? 'green' : 'red';
+	document.getElementById('lavaTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.lavaTree ? 'green' : 'red';
+	document.getElementById('goldTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.goldTree ? 'green' : 'red';
+	document.getElementById('magicTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.magicTree ? 'green' : 'red';
+	document.getElementById('appleTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.appleTree ? 'green' : 'red';
+	document.getElementById('cactusTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.cactusTree ? 'green' : 'red';
+	document.getElementById('bananaTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.bananaTree ? 'green' : 'red';
+	document.getElementById('palmTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.palmTree ? 'green' : 'red';
+	document.getElementById('pineappleTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.pineappleTree ? 'green' : 'red';
+	document.getElementById('starfruitTreeIgnoreToggle').style.color = scriptVars.scriptTreeIgnore.starfruitTree ? 'green' : 'red';
+	document.getElementById('scriptFarmingToggle').style.color = scriptVars.toggleFarming ? 'green' : 'red';
+	document.getElementById('scriptBonesToggle').style.color = scriptVars.toggleBones ? 'green' : 'red';
+	document.getElementById('bonesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.bones ? 'green' : 'red';
+	document.getElementById('ashesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.ashes ? 'green' : 'red';
+	document.getElementById('iceBonesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.iceBones ? 'green' : 'red';
+	document.getElementById('zombieBonesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.zombieBones ? 'green' : 'red';
+	document.getElementById('bloodBonesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.bloodBones ? 'green' : 'red';
+	document.getElementById('fishBonesIgnoreToggle').style.color = scriptVars.scriptBonesIgnore.fishBones ? 'green' : 'red';
+	document.getElementById('scriptFertilizeToggle').style.color = scriptVars.toggleFertilize ? 'green' : 'red';
+	document.getElementById('MushroomFertilizeToggle').style.color = scriptVars.scriptFertilize.redMushroomSeeds ? 'green' : 'red';
+	document.getElementById('dottedGreenFertilizeToggle').style.color = scriptVars.scriptFertilize.dottedGreenLeafSeeds ? 'green' : 'red';
+	document.getElementById('greenLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.greenLeafSeeds ? 'green' : 'red';
+	document.getElementById('limeLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.limeLeafSeeds ? 'green' : 'red';
+	document.getElementById('goldLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.goldLeafSeeds ? 'green' : 'red';
+	document.getElementById('crystalLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.crystalLeafSeeds ? 'green' : 'red';
+	document.getElementById('stripedGreenLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.stripedGreenLeafSeeds ? 'green' : 'red';
+	document.getElementById('stripedGoldLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.stripedGoldLeafSeeds ? 'green' : 'red';
+	document.getElementById('stripedCrystalLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.stripedCrystalLeafSeeds ? 'green' : 'red';
+	document.getElementById('scriptDrinkToggle').style.color = scriptVars.toggleDrink ? 'green' : 'red';
+	document.getElementById('scriptBrewToggle').style.color = scriptVars.toggleBrew ? 'green' : 'red';
+	document.getElementById('treeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.tree ? 'green' : 'red';
+	document.getElementById('oakTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.oakTree ? 'green' : 'red';
+	document.getElementById('willowTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.willowTree ? 'green' : 'red';
+	document.getElementById('mapleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.mapleTree ? 'green' : 'red';
+	document.getElementById('redwoodTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.redwoodTree ? 'green' : 'red';
+	document.getElementById('pineTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.pineTree ? 'green' : 'red';
+	document.getElementById('hauntedTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.hauntedTree ? 'green' : 'red';
+	document.getElementById('jungleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.jungleTree ? 'green' : 'red';
+	document.getElementById('lavaTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.lavaTree ? 'green' : 'red';
+	document.getElementById('goldTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.goldTree ? 'green' : 'red';
+	document.getElementById('magicTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.magicTree ? 'green' : 'red';
+	document.getElementById('appleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.appleTree ? 'green' : 'red';
+	document.getElementById('cactusTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.cactusTree ? 'green' : 'red';
+	document.getElementById('bananaTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.bananaTree ? 'green' : 'red';
+	document.getElementById('palmTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.palmTree ? 'green' : 'red';
+	document.getElementById('pineappleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.pineappleTree ? 'green' : 'red';
+	document.getElementById('scriptExploreToggle').style.color = scriptVars.toggleExplore ? 'green' : 'red';
+	document.getElementById('scriptAreaOptions').value = scriptVars.scriptArea;
+	document.getElementById('scriptFightToggle').style.color = scriptVars.toggleFight ? 'green' : 'red';
+	document.getElementById('fieldsResetToggle').style.color = scriptVars.scriptResetArea.fields ? 'green' : 'red';
+	document.getElementById('forestsResetToggle').style.color = scriptVars.scriptResetArea.forests ? 'green' : 'red';
+	document.getElementById('cavesResetToggle').style.color = scriptVars.scriptResetArea.caves ? 'green' : 'red';
+	document.getElementById('volcanoResetToggle').style.color = scriptVars.scriptResetArea.volcano ? 'green' : 'red';
+	document.getElementById('northernFieldsResetToggle').style.color = scriptVars.scriptResetArea.northernFields ? 'green' : 'red';
+	document.getElementById('hauntedMansionResetToggle').style.color = scriptVars.scriptResetArea.hauntedMansion ? 'green' : 'red';
+	document.getElementById('desertResetToggle').style.color = scriptVars.scriptResetArea.desert ? 'green' : 'red';
+	document.getElementById('oceanResetToggle').style.color = scriptVars.scriptResetArea.ocean ? 'green' : 'red';
+	document.getElementById('jungleResetToggle').style.color = scriptVars.scriptResetArea.jungle ? 'green' : 'red';
+	document.getElementById('dungeonEntranceResetToggle').style.color = scriptVars.scriptResetArea.dungeonEntrance ? 'green' : 'red';
+	document.getElementById('dungeonResetToggle').style.color = scriptVars.scriptResetArea.dungeon ? 'green' : 'red';
+	document.getElementById('castleResetToggle').style.color = scriptVars.scriptResetArea.castle ? 'green' : 'red';
+	document.getElementById('cemeteryResetToggle').style.color = scriptVars.scriptResetArea.cemetery ? 'green' : 'red';
+	document.getElementById('factoryResetToggle').style.color = scriptVars.scriptResetArea.factory ? 'green' : 'red';
+	document.getElementById('hauntedWoodsResetToggle').style.color = scriptVars.scriptResetArea.hauntedWoods ? 'green' : 'red';
+	document.getElementById('deepOceanResetToggle').style.color = scriptVars.scriptResetArea.deepOcean ? 'green' : 'red';
+	document.getElementById('scriptResetToggle').style.color = scriptVars.toggleResetFight ? 'green' : 'red';
+	document.getElementById('scriptMonsterOptions').value = scriptVars.scriptMonster;
+	document.getElementById('scriptMonsterFindToggle').style.color = scriptVars.toggleMonsterFind ? 'green' : 'red';
+	document.getElementById('scriptShinyToggle').style.color = scriptVars.toggleShiny ? 'green' : 'red';
+	document.getElementById('scriptSpellToggle').style.color = scriptVars.toggleSpell ? 'green' : 'red';
+	document.getElementById('scriptCombatPotionToggle').style.color = scriptVars.toggleCombatPotion ? 'green' : 'red';
+	document.getElementById('scriptHealToggle').style.color = scriptVars.toggleHeal ? 'green' : 'red';
+	document.getElementById('scriptCousinToggle').style.color = scriptVars.toggleCousin ? 'green' : 'red';
+	document.getElementById('scriptCousinArea').value = scriptVars.scriptCousinArea;
+	document.getElementById('scriptStatueToggle').style.color = scriptVars.toggleStatue ? 'green' : 'red';
+	document.getElementById('scriptArtifactToggle').style.color = scriptVars.toggleArtifact ? 'green' : 'red';
+	document.getElementById('scriptBoatToggle').style.color = scriptVars.toggleBoat ? 'green' : 'red';
+	document.getElementById('rowBoatSendToggle').style.color = scriptVars.scriptBoatSend.rowBoat ? 'green' : 'red';
+	document.getElementById('canoeBoatSendToggle').style.color = scriptVars.scriptBoatSend.canoeBoat ? 'green' : 'red';
+	document.getElementById('sailBoatSendToggle').style.color = scriptVars.scriptBoatSend.sailBoat ? 'green' : 'red';
+	document.getElementById('highWindSendToggle').style.color = scriptVars.scriptBoatSend.highWind ? 'green' : 'red';
+	document.getElementById('steamBoatSendToggle').style.color = scriptVars.scriptBoatSend.steamBoat ? 'green' : 'red';
+	document.getElementById('trawlerSendToggle').style.color = scriptVars.scriptBoatSend.trawler ? 'green' : 'red';
 }
 
 function saveOreOrder() {
+  let key = `idleAgain-oreOrder${window.username}`;
   var oreItems = document.getElementById("sortableOres").getElementsByTagName("li");
   var oreOrder = [];
 
@@ -1809,11 +1856,12 @@ function saveOreOrder() {
     oreOrder.push({ value: oreValue, minimum: oreMinimum });
   }
 
-  localStorage.setItem("oreOrder", JSON.stringify(oreOrder));
+  localStorage.setItem(key, JSON.stringify(oreOrder));
 }
 
 function loadOreOrder() {
-  var oreOrderData = localStorage.getItem("oreOrder");
+  let key = `idleAgain-oreOrder${window.username}`;
+  var oreOrderData = localStorage.getItem(key);
 
   if (oreOrderData) {
     oreOrderData = JSON.parse(oreOrderData);
@@ -1832,6 +1880,7 @@ function loadOreOrder() {
 }
 
 function saveSeedOrder() {
+  let key = `idleAgain-seedOrder${window.username}`;
   var seedOrderList = document.getElementById("sortableSeeds");
   var seedItems = seedOrderList.getElementsByTagName("li");
   var seedOrder = [];
@@ -1844,11 +1893,12 @@ function saveSeedOrder() {
     seedOrder.push({ value: seedValue, checked: isChecked });
   }
 
-  localStorage.setItem("seedOrder", JSON.stringify(seedOrder));
+  localStorage.setItem(key, JSON.stringify(seedOrder));
 }
 
 function loadSeedOrder() {
-  var seedOrderData = localStorage.getItem("seedOrder");
+  let key = `idleAgain-seedOrder${window.username}`;
+  var seedOrderData = localStorage.getItem(key);
 
   if (seedOrderData) {
     seedOrderData = JSON.parse(seedOrderData);
@@ -1871,7 +1921,8 @@ function loadSeedOrder() {
   }
 }
 
-function savePotions() {
+window.savePotions = function() {
+  let key = `idleAgain-potionState${window.username}`;
   var potionList = document.getElementById("sortablePotions");
   var potionItems = potionList.getElementsByTagName("li");
   var potionState = [];
@@ -1890,13 +1941,12 @@ function savePotions() {
     });
   }
 
-  localStorage.setItem("potionState", JSON.stringify(potionState));
+  localStorage.setItem(key, JSON.stringify(potionState));
 }
 
-window.savePotions2 = savePotions
-
 function loadPotions() {
-  var potionState = localStorage.getItem("potionState");
+  let key = `idleAgain-potionState${window.username}`;
+  var potionState = localStorage.getItem(key);
 
   if (potionState) {
     potionState = JSON.parse(potionState);
@@ -2037,26 +2087,53 @@ const publishMessage = async (message) => {
 }
 
 window.onload = function() {
-  scriptAddTabs();
-  setupPubNub();
-  monsterOptions(scriptArea);
-  scriptStyleTabs();
-  $(function() {
-	$("#sortableSeeds").sortable({
-		update: function(event, ui) {saveSeedOrder()}
+	setupPubNub();
+	monsterOptions(scriptVars.scriptArea);
+	$(function() {
+		$("#sortableSeeds").sortable({
+			update: function(event, ui) {saveSeedOrder()}
+		});
+		$("#sortableSeeds").disableSelection();
+		$("#sortableOres").sortable({
+			update: function(event, ui) {saveOreOrder()}
+		});
+		$("#sortableOres").disableSelection();
 	});
-	$("#sortableSeeds").disableSelection();
-	$("#sortableOres").sortable({
-		update: function(event, ui) {saveOreOrder()}
-	});
-	$("#sortableOres").disableSelection();
-	});
+	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+	if (JSON.parse(localStorage.getItem('IANotification')) !== 1) {
+		alert('You need to config the Idle Again Script');
+		localStorage.setItem('IANotification',1)
+	};
+};
+
+scriptAddTabs();
+
+function initLoginNotifications() {
+	var loginObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutationRecord) {
+			if (document.getElementById("game-screen").style.display !== "none") {
+				console.log('logando')
+				onLogin()
+			}
+		});    
+    });
+		
+	var loginTarget = document.getElementById('game-screen');
+    loginObserver.observe(loginTarget, { attributes : true, attributeFilter : ['style'] });
+}
+
+initLoginNotifications();
+
+function onLogin() {
+	console.log('log in')
+	loadUserVars();
+	scriptStyleTabs();
 	loadSeedOrder();
 	loadOreOrder();
 	loadPotions();
-	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
-};
+	localStorage.setItem('lastLogin',username);
+}
 
 function handleKeyDown2(event) {
   if (event.keyCode === 13) {
@@ -2067,49 +2144,50 @@ function handleKeyDown2(event) {
 window.handleKeyDown = handleKeyDown2
 
 function autoGameLoop() {
-    if (toggleGlobal === true) {
-        if (toggleTrain === true) autoTrain();
-        if (toggleRocket === true) autoRocket();
-        if (toggleSmelting === true) autoSmelt();
-        if (toggleRefinary === true) autoRefine();
-        if (toggleCharcoal === true) autoFoundry();
-        if (toggleWoodcutting === true) autoLumber();
-        if (toggleFarming === true) autoPlant();
-        if (toggleDrink === true) autoDrink();
-        if (toggleBrew === true) autoBrew();
-        if (toggleExplore === true) autoExplore();
-        if (toggleFight === true) autoFight();
-		if (toggleResetFight === true) autoReset();
-        if (toggleCousin === true) autoCousin();
-        if (toggleBoat === true) autoBoat();
-		if (toggleEvent === true) autoEvent();
+    if (scriptVars.toggleGlobal === true) {
+        if (scriptVars.toggleTrain === true) autoTrain();
+        if (scriptVars.toggleRocket === true) autoRocket();
+        if (scriptVars.toggleSmelting === true) autoSmelt();
+        if (scriptVars.toggleRefinary === true) autoRefine();
+        if (scriptVars.toggleCharcoal === true) autoFoundry();
+        if (scriptVars.toggleWoodcutting === true) autoLumber();
+        if (scriptVars.toggleFarming === true) autoPlant();
+        if (scriptVars.toggleDrink === true) autoDrink();
+        if (scriptVars.toggleBrew === true) autoBrew();
+        if (scriptVars.toggleExplore === true) autoExplore();
+        if (scriptVars.toggleFight === true) autoFight();
+		if (scriptVars.toggleResetFight === true) autoReset();
+        if (scriptVars.toggleCousin === true) autoCousin();
+        if (scriptVars.toggleBoat === true) autoBoat();
+		if (scriptVars.toggleEvent === true) autoEvent();
     }
 }
 
 function autoGameLoopSlow() {
-    if (toggleGlobal === true) {
-        if (toggleGeodeOpen === true) autoGeodeOpen();
-        if (toggleMineralIdentify === true) autoIdentify();
-        if (toggleNecklaceCharge === true) autoNecklaceCharge();
-        if (toggleBones === true) autoBones();
-		if (toggleTreeUpgrade === true) autoTreeUpgrade();
-		if (toggleBags === true) autoBags();
-        if (toggleStatue === true) autoStatue();
-        if (toggleArtifact === true) autoArtifact();
+    if (scriptVars.toggleGlobal === true) {
+        if (scriptVars.toggleGeodeOpen === true) autoGeodeOpen();
+        if (scriptVars.toggleMineralIdentify === true) autoIdentify();
+        if (scriptVars.toggleNecklaceCharge === true) autoNecklaceCharge();
+        if (scriptVars.toggleBones === true) autoBones();
+		if (scriptVars.toggleFertilize === true) autoFertilize();
+		if (scriptVars.toggleTreeUpgrade === true) autoTreeUpgrade();
+		if (scriptVars.toggleBags === true) autoBags();
+        if (scriptVars.toggleStatue === true) autoStatue();
+        if (scriptVars.toggleArtifact === true) autoArtifact();
     }
 }
 
 function autoGameLoopFast() {
-	if (toggleGlobal === true) {
-		if (toggleSpell === true) autoSpell();
-		if (toggleCombatPotion === true) autoCombatPot();
-		if (toggleShiny === true || toggleMonsterFind === true) autoMonsterHunt();
+	if (scriptVars.toggleGlobal === true) {
+		if (scriptVars.toggleSpell === true) autoSpell();
+		if (scriptVars.toggleCombatPotion === true) autoCombatPot();
+		if (scriptVars.toggleShiny === true || scriptVars.toggleMonsterFind === true) autoMonsterHunt();
 	}
 }
 
 function autoGameLoopVeryFast() {
-	if (toggleGlobal === true) {
-		if (toggleHeal === true) autoHeal();
+	if (scriptVars.toggleGlobal === true) {
+		if (scriptVars.toggleHeal === true) autoHeal();
 	}
 }
 
@@ -2128,4 +2206,9 @@ const gameLoopFastInterval = setInterval(function(){
 const gameLoopVeryFastInterval = setInterval(function(){
     autoGameLoopVeryFast()
 }, 250);
+
+if (JSON.parse(localStorage.getItem('autoLogin')) == true) {
+	let lastUser = localStorage.getItem('lastLogin')
+	document.querySelector('#login-preset-'+lastUser+' tbody tr td:first-child').click();
+}
 })();
