@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.0.1
+// @version      1.4.0.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -1788,6 +1788,7 @@ function scriptStyleTabs() {
 	document.getElementById('stripedCrystalLeafFertilizeToggle').style.color = scriptVars.scriptFertilize.stripedCrystalLeafSeeds ? 'green' : 'red';
 	document.getElementById('scriptDrinkToggle').style.color = scriptVars.toggleDrink ? 'green' : 'red';
 	document.getElementById('scriptBrewToggle').style.color = scriptVars.toggleBrew ? 'green' : 'red';
+	document.getElementById('scriptTreeUpgradeToggle').style.color = scriptVars.toggleTreeUpgrade ? 'green' : 'red';
 	document.getElementById('treeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.tree ? 'green' : 'red';
 	document.getElementById('oakTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.oakTree ? 'green' : 'red';
 	document.getElementById('willowTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.willowTree ? 'green' : 'red';
