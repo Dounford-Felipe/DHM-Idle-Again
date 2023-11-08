@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.0.3
+// @version      1.4.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
@@ -24,7 +24,7 @@ const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,norther
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
 var scriptWaitTeleport = true
-let poisonInterval;
+var oldEquip = []
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -413,7 +413,7 @@ function autoFight() {
 			sendBytes('LOOK_FOR_FIGHT');
 			if (poisonSpear >= 1) {
 				clicksItem('poisonSpear')
-				poisonInterval = setInterval(function(){
+				const poisonInterval = setInterval(function(){
 					if (poisonEnemyTimer == 1) {
 						clicksItem(presetWeapon1);
 						clearInterval(poisonInterval);
@@ -436,7 +436,6 @@ function autoReset() {
 function autoMonsterHunt() {
 	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName !== scriptVars.scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-		clearInterval(poisonInterval);
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
@@ -453,11 +452,50 @@ function autoHeal() {
 }
 
 function autoSpell() {
-	if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=fireSpell')}
+	if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
+		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+			oldEquip = [head,body,leg];
+			clicksItem('darkMageHood');
+			clicksItem('darkMageTop');
+			clicksItem('darkMageBottom');
+			sendBytes('CAST_COMBAT_SPELL=fireSpell');
+			clicksItem(oldEquip[0]);
+			clicksItem(oldEquip[1]);
+			clicksItem(oldEquip[2]);
+		} else {
+			sendBytes('CAST_COMBAT_SPELL=fireSpell')
+		}
+	}
 	if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
-	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')}
+	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
+		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+			oldEquip = [head,body,leg];
+			clicksItem('darkMageHood');
+			clicksItem('darkMageTop');
+			clicksItem('darkMageBottom');
+			sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
+			clicksItem(oldEquip[0]);
+			clicksItem(oldEquip[1]);
+			clicksItem(oldEquip[2]);
+		} else {
+			sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
+		}
+	}
 	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
-	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=sandstormSpell')}
+	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
+		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+			oldEquip = [head,body,leg];
+			clicksItem('darkMageHood');
+			clicksItem('darkMageTop');
+			clicksItem('darkMageBottom');
+			sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
+			clicksItem(oldEquip[0]);
+			clicksItem(oldEquip[1]);
+			clicksItem(oldEquip[2]);
+		} else {
+			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
+		}
+	}
 }
 
 function autoCombatPot() {
@@ -1739,7 +1777,7 @@ function scriptAddTabs() {
 
 function scriptStyleTabs() {
 	document.getElementById('scriptGlobalToggle').style.color = scriptVars.toggleGlobal ? 'green' : 'red';
-	document.getElementById('scriptLoginToggle').style.color = scriptVars.toggleLogin ? 'green' : 'red';
+	document.getElementById('scriptLoginToggle').style.color = JSON.parse(localStorage.getItem('autoLogin')) ? 'green' : 'red';
 	document.getElementById('scriptGeodeToggle').style.color = scriptVars.toggleGeodeOpen ? 'green' : 'red';
 	document.getElementById('scriptMineralToggle').style.color = scriptVars.toggleMineralIdentify ? 'green' : 'red';
 	document.getElementById('scriptNecklaceToggle').style.color = scriptVars.toggleNecklaceCharge ? 'green' : 'red';
@@ -2124,6 +2162,19 @@ function initLoginNotifications() {
 		
 	var loginTarget = document.getElementById('game-screen');
     loginObserver.observe(loginTarget, { attributes : true, attributeFilter : ['style'] });
+	
+	
+	var reloadObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutationRecord) {
+			if (document.getElementById("dialogue-reconnecting").style.display !== "none") {
+				console.log('reloading')
+				setTimeout(function(){window.location.reload()},10000);
+			}
+		});    
+    });
+		
+	var reloadTarget = document.getElementById('dialogue-reconnecting');
+    reloadObserver.observe(reloadTarget, { attributes : true, attributeFilter : ['style'] });
 }
 
 initLoginNotifications();
@@ -2154,6 +2205,7 @@ function autoGameLoop() {
         if (scriptVars.toggleRefinary === true) autoRefine();
         if (scriptVars.toggleCharcoal === true) autoFoundry();
         if (scriptVars.toggleWoodcutting === true) autoLumber();
+		if (scriptVars.toggleFertilize === true) autoFertilize();
         if (scriptVars.toggleFarming === true) autoPlant();
         if (scriptVars.toggleDrink === true) autoDrink();
         if (scriptVars.toggleBrew === true) autoBrew();
@@ -2172,7 +2224,6 @@ function autoGameLoopSlow() {
         if (scriptVars.toggleMineralIdentify === true) autoIdentify();
         if (scriptVars.toggleNecklaceCharge === true) autoNecklaceCharge();
         if (scriptVars.toggleBones === true) autoBones();
-		if (scriptVars.toggleFertilize === true) autoFertilize();
 		if (scriptVars.toggleTreeUpgrade === true) autoTreeUpgrade();
 		if (scriptVars.toggleBags === true) autoBags();
         if (scriptVars.toggleStatue === true) autoStatue();
