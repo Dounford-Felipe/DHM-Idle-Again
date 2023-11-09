@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.1.2
+// @version      1.4.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
+// @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
 // @require      https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @require      https://greasyfork.org/scripts/478182-pubnub-js/code/PubNub%20JS.js?version=1269788
@@ -2274,4 +2275,5 @@ Object.defineProperty(document, 'hidden', {
     return false;
   }
 });
+
 })();
