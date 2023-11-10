@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2.4
+// @version      1.4.2.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -454,7 +454,7 @@ function autoMonsterHunt() {
 function autoHeal() {
 	if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0 && (hpCombatPotion >= 1 || hpCombatPotionFree == 1)){
 		sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
-	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || superHpCombatPotionFree == 1)) {
+	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
 		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
 	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0 && teleportSpell == 1) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
@@ -1804,6 +1804,27 @@ function scriptAddTabs() {
 	gameScreen.insertBefore(chatDiv,logoutTab);
 }
 
+function addWikiButton() {
+	let itemBox = document.querySelectorAll('[id^="item-box-"]');
+	itemBox = Array.from(itemBox);
+	itemBox = itemBox.filter(function(element) {
+		return !element.id.startsWith("item-box-amount");
+	});
+	for (var i = 0; i < itemBox.length; i++) {
+		let wikiURL = itemBox[i].id.substr(9).replace(/([A-Z0-9])/g, ' $1').trim();
+		wikiURL = wikiURL.charAt(0).toUpperCase() + wikiURL.slice(1);
+		let wikiButton = document.createElement("a");
+		wikiButton.href = 'https://diamondhuntmobile.fandom.com/wiki/'+wikiURL
+		wikiButton.target = '_blank'
+		wikiButton.style.position = 'absolute'
+        wikiButton.style.top = '0';
+        wikiButton.style.left = '0';
+		wikiButton.innerHTML = '<img src="images/wiki.png" style="width:25px;height:25px;">'
+		itemBox[i].querySelector('td').style.position = 'relative';
+		itemBox[i].querySelector('td').appendChild(wikiButton);
+	}
+}
+
 function scriptStyleTabs() {
 	document.getElementById('scriptGlobalToggle').style.color = scriptVars.toggleGlobal ? 'green' : 'red';
 	document.getElementById('scriptLoginToggle').style.color = JSON.parse(localStorage.getItem('autoLogin')) ? 'green' : 'red';
@@ -2177,6 +2198,7 @@ window.onload = function() {
 		alert('You need to config the Idle Again Script');
 		localStorage.setItem('IANotification',1)
 	};
+	addWikiButton();
 };
 
 scriptAddTabs();
