@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2.1
+// @version      1.4.2.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -402,7 +402,9 @@ function autoExplore() {
 	if (explorerCooldown == 0) {
 		let scriptAreaLocal = scriptVars.scriptArea
 		if (scriptAreaLocal == 'dungeon' && dungeonKey == 0) (scriptAreaLocal = 'dungeonEntrance')
-		if (energy < scriptAreaEnergy[scriptAreaLocal]) {scriptAreaLocal = 'fields'}
+		let areaCost = scriptAreaEnergy[scriptAreaLocal]
+		if (totalDonations >= 32) {areaCost = scriptAreaEnergy[scriptAreaLocal] * 0.8}
+		if (energy < areaCost) {scriptAreaLocal = 'fields'}
 		sendBytes('EXPLORE='+scriptAreaLocal)
 		if (scriptVars.toggleShiny == true || scriptVars.toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
@@ -414,20 +416,24 @@ function autoFight() {
 		scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			sendBytes('LOOK_FOR_FIGHT');
-			if (poisonSpear >= 1) {
-				oldWeapon = weapon
-				clicksItem('poisonSpear')
-				const poisonInterval = setInterval(function(){
-					if (poisonEnemyTimer == 1) {
-						clicksItem(oldWeapon);
-						clearInterval(poisonInterval);
-					}
-				}, 2500);
-			};
+			autoPoison();
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
 };
+
+function autoPoison() {
+	if (poisonSpear >= 1) {
+		oldWeapon = weapon
+		clicksItem('poisonSpear')
+		const poisonInterval = setInterval(function(){
+			if (poisonEnemyTimer == 1) {
+				clicksItem(presetWeapon1);
+				clearInterval(poisonInterval);
+			}
+		}, 2000);
+	}
+}
 
 function autoReset() {
 	if (exploringArea !== 'none' && fightDone == 1 && monsterName == 'none' && resetFightingPotion >= 1 && resetFightingPotionUsed == 0) {
