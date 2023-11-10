@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2.2
+// @version      1.4.2.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -18,7 +18,7 @@
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
 //Variables
-window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCousin:false, toggleBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
@@ -532,6 +532,17 @@ function autoBags() {
 			sendBytes('OPEN_LOOT_MULTI='+bag+'~'+window[bag])
 			closeSmittysDialogue('dialogue-confirm')
 		}
+	}
+}
+
+function autoFieldsBags() {
+	if (fieldsLoot > 0) {
+		sendBytes('OPEN_LOOT_MULTI=fieldsLoot~'+fieldsLoot)
+		closeSmittysDialogue('dialogue-confirm')
+	}
+	if (shinyFieldsLoot > 0) {
+		sendBytes('OPEN_LOOT_MULTI=shinyFieldsLoot~'+shinyFieldsLoot)
+		closeSmittysDialogue('dialogue-confirm')
 	}
 }
 
@@ -1701,8 +1712,16 @@ function scriptAddTabs() {
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
       <tr id="scriptBagsToggle" onclick="window.autoChangeVar('toggleBags',!scriptVars.toggleBags,this.id)" style="cursor: pointer; color: red;">
-        <td style="padding-left: 10px;"><img src="images/fieldsLoot.png" class="img-small"></td>
+        <td style="padding-left: 10px;"><img src="images/oceanLoot.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">BAGS OPENING</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
+      <tr id="scriptFieldsBagsToggle" onclick="window.autoChangeVar('toggleFieldsBags',!scriptVars.toggleFieldsBags,this.id)" style="cursor: pointer; color: red;">
+        <td style="padding-left: 10px;"><img src="images/fieldsLoot.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">FIELDS BAGS OPENING</td>
       </tr>
     </tbody>
   </table>
@@ -1883,6 +1902,8 @@ function scriptStyleTabs() {
 	document.getElementById('scriptHealToggle').style.color = scriptVars.toggleHeal ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = scriptVars.toggleCousin ? 'green' : 'red';
 	document.getElementById('scriptCousinArea').value = scriptVars.scriptCousinArea;
+	document.getElementById('scriptBagsToggle').style.color = scriptVars.toggleBags ? 'green' : 'red';
+	document.getElementById('scriptFieldsBagsToggle').style.color = scriptVars.toggleFieldsBags ? 'green' : 'red';
 	document.getElementById('scriptStatueToggle').style.color = scriptVars.toggleStatue ? 'green' : 'red';
 	document.getElementById('scriptArtifactToggle').style.color = scriptVars.toggleArtifact ? 'green' : 'red';
 	document.getElementById('scriptBoatToggle').style.color = scriptVars.toggleBoat ? 'green' : 'red';
@@ -2236,6 +2257,7 @@ function autoGameLoopSlow() {
         if (scriptVars.toggleBones === true) autoBones();
 		if (scriptVars.toggleTreeUpgrade === true) autoTreeUpgrade();
 		if (scriptVars.toggleBags === true) autoBags();
+		if (scriptVars.toggleFieldsBags === true) autoFieldsBags();
         if (scriptVars.toggleStatue === true) autoStatue();
         if (scriptVars.toggleArtifact === true) autoArtifact();
     }
