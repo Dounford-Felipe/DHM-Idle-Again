@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2.5
+// @version      1.4.2.6
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -27,6 +27,9 @@ const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'nor
 var scriptWaitTeleport = true
 var oldEquip = []
 var oldWeapon;
+const scriptComplexMonsters = ['desertLizard2', 'pufferFish', 'dragon', 'castleMage', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
+let defaultPotion = true
+let defaultSpell = true
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -417,13 +420,39 @@ function autoFight() {
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			sendBytes('LOOK_FOR_FIGHT');
 			autoPoison();
+			//if (scriptComplexMonsters.includes(monsterName)) {scriptedFight()}
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
 };
 
+/*function scriptedFight() {
+	if (monsterName == desertLizard2) {
+		defaultPotion = true;
+		defaultSpell = false;
+	} else if (monsterName == pufferFish) {
+		clicksItem('bow');
+		clicksItem('superBow');
+		clicksItem('enchantedSuperBow');
+		defaultPotion = true;
+		defaultSpell = true;
+	} else if (monsterName == dragon) {
+		- charge on 4th attack
+	} else if (monsterName == castleMage) {
+		- melee/ranged barrier
+	} else if (monsterName == robotMage) {
+		 - charge and melee/ranged barrier
+	} else if (monsterName == bloodGolem) {
+		- needs to swap between bearfur and titanium armor
+	} else if (monsterName == bloodDesertLizard2) {
+		- charge
+	} else if (monsterName == bloodPufferFish) {
+		- bow first then trident+
+	} 
+}*/
+
 function autoPoison() {
-	if (poisonSpear >= 1) {
+	if (typeof poisonSpear !== 'undefined') {
 		oldWeapon = weapon
 		clicksItem('poisonSpear')
 		const poisonInterval = setInterval(function(){
@@ -462,8 +491,9 @@ function autoHeal() {
 }
 
 function autoSpell() {
-	if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
-		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+	//if (monsterName !== 'none' && (!scriptComplexMonsters.includes(monsterName) || defaultSpell == true)) {
+		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
+			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 			oldEquip = [head,body,leg];
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
@@ -475,10 +505,10 @@ function autoSpell() {
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
-	}
-	if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
-	if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
-		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+		}
+		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
+		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
+			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 			oldEquip = [head,body,leg];
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
@@ -490,10 +520,10 @@ function autoSpell() {
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 		}
-	}
-	if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
-	if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
-		if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
+		}
+		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
+		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
+			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 			oldEquip = [head,body,leg];
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
@@ -505,14 +535,17 @@ function autoSpell() {
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
-	}
+		}
+	//}
 }
 
 function autoCombatPot() {
-	if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
-	if (monsterName !== 'none' && typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
-	if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
-	if (monsterName !== 'none' && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}
+	//if (monsterName !== 'none' && (!scriptComplexMonsters.includes(monsterName) || defaultPotion == true)) {
+		if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
+		if (monsterName !== 'none' && typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
+		if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
+		if (monsterName !== 'none' && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}
+	//}
 }
 
 function autoCousin() {
@@ -2199,6 +2232,8 @@ window.onload = function() {
 		localStorage.setItem('IANotification',1)
 	};
 	addWikiButton();
+	document.getElementById('fight-button').querySelectorAll('td')[0].setAttribute('onclick', 'clicksFightButton();autoPoison();');
+	document.getElementById('fight-button').querySelectorAll('td')[1].setAttribute('onclick', 'clicksFightButton();autoPoison();');
 };
 
 scriptAddTabs();
