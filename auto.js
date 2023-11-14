@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2.8
+// @version      1.4.2.9
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -544,7 +544,7 @@ function autoCombatPot() {
 		if (monsterName !== 'none' && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
 		if (monsterName !== 'none' && typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 		if (monsterName !== 'none' && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
-		if (monsterName !== 'none' && scriptAreaEnergy[exploringArea] > 2000000 && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}
+		setTimeout(function(){if (monsterName !== 'none' && scriptAreaEnergy[exploringArea] > 2000000 && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
 	//}
 }
 
@@ -2322,8 +2322,8 @@ function autoGameLoopSlow() {
 function autoGameLoopFast() {
 	if (scriptVars.toggleGlobal === true) {
 		if (scriptVars.toggleSpell === true) autoSpell();
-		if (scriptVars.toggleCombatPotion === true) autoCombatPot();
 		if (scriptVars.toggleShiny === true || scriptVars.toggleMonsterFind === true) autoMonsterHunt();
+		if (scriptVars.toggleCombatPotion === true) autoCombatPot();
 	}
 }
 
