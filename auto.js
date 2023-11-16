@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.3.1
+// @version      1.4.3.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -571,12 +571,12 @@ function autoBags() {
 }
 
 function autoFieldsBags() {
-	if (window[fieldsLoot] > 0) {
-		sendBytes('OPEN_LOOT_MULTI=fieldsLoot~'+window[fieldsLoot])
+	if (window['fieldsLoot'] > 0) {
+		sendBytes('OPEN_LOOT_MULTI=fieldsLoot~'+window['fieldsLoot'])
 		closeSmittysDialogue('dialogue-confirm')
 	}
-	if (window[shinyFieldsLoot] > 0) {
-		sendBytes('OPEN_LOOT_MULTI=shinyFieldsLoot~'+window[shinyFieldsLoot])
+	if (window['shinyFieldsLoot'] > 0) {
+		sendBytes('OPEN_LOOT_MULTI=shinyFieldsLoot~'+window['shinyFieldsLoot'])
 		closeSmittysDialogue('dialogue-confirm')
 	}
 }
