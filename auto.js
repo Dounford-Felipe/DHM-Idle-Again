@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4
+// @version      1.4.4.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -480,7 +480,7 @@ function autoHeal() {
 }
 
 function autoSpell() {
-	if (monsterName !== 'none' && (!scriptComplexMonsters.includes(monsterName) || defaultSpell == true)) {
+	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 			oldEquip = [head,body,leg];
@@ -542,7 +542,7 @@ function autoCombatPot() {
 }
 
 function autoCombatSwap() {
-	if (monsterName !== 'none') {
+	if (typeof monsterName === 'string' && monsterName !== 'none') {
 	if (monsterName.includes('castleMage')) {
 		if (monsterName == 'castleMage2') {
 			clicksItem('bow');
