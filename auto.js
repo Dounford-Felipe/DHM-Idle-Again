@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4.5
+// @version      1.4.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -485,14 +485,16 @@ function autoSpell() {
 	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			oldEquip = [head,body,leg];
-			clicksItem('darkMageHood');
-			clicksItem('darkMageTop');
-			clicksItem('darkMageBottom');
-			sendBytes('CAST_COMBAT_SPELL=fireSpell');
-			clicksItem(oldEquip[0]);
-			clicksItem(oldEquip[1]);
-			clicksItem(oldEquip[2]);
+				oldEquip = [head,body,leg,weapon];
+				clicksItem('darkMageHood');
+				clicksItem('darkMageTop');
+				clicksItem('darkMageBottom');
+				if (staff >= 1) {clicksItem('staff')}
+				sendBytes('CAST_COMBAT_SPELL=fireSpell');
+				clicksItem(oldEquip[0]);
+				clicksItem(oldEquip[1]);
+				clicksItem(oldEquip[2]);
+				clicksItem(oldEquip[3]);
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
@@ -504,14 +506,16 @@ function autoSpell() {
 		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-				oldEquip = [head,body,leg];
+				oldEquip = [head,body,leg,weapon];
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
+				if (staff >= 1) {clicksItem('staff')}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
 				clicksItem(oldEquip[0]);
 				clicksItem(oldEquip[1]);
 				clicksItem(oldEquip[2]);
+				clicksItem(oldEquip[3]);
 			} else {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			}
@@ -519,14 +523,16 @@ function autoSpell() {
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			oldEquip = [head,body,leg];
+			oldEquip = [head,body,leg,weapon];
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
 			clicksItem('darkMageBottom');
+			if (staff >= 1) {clicksItem('staff')}
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
 			clicksItem(oldEquip[0]);
 			clicksItem(oldEquip[1]);
 			clicksItem(oldEquip[2]);
+			clicksItem(oldEquip[3]);
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
