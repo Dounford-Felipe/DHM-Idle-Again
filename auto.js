@@ -27,10 +27,7 @@ const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'nor
 var scriptWaitTeleport = true
 var oldEquip = []
 var oldWeapon;
-var monsterName = 'none'
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
-let defaultPotion = true
-let defaultSpell = true
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -2224,7 +2221,6 @@ const publishMessage = async (message) => {
 
 window.onload = function() {
 	setupPubNub();
-	window.monsterOptions(scriptVars.scriptArea);
 	$(function() {
 		$("#sortableSeeds").sortable({
 			update: function(event, ui) {saveSeedOrder()}
