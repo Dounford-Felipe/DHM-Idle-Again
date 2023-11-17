@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4.4
+// @version      1.4.4.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -550,7 +550,7 @@ function autoCombatSwap() {
 			clicksItem('bow');
 			clicksItem('superBow');
 			clicksItem('enchantedSuperBow');
-		} else if (ranged.includes(weapon)){
+		} else if (monsterName == 'castleMage3' && ranged.includes(weapon)){
 			clicksItem('scythe');
 			clicksItem('mace');
 			clicksItem('trident');
