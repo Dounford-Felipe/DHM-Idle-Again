@@ -1941,6 +1941,7 @@ function scriptStyleTabs() {
 	document.getElementById('pineappleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.pineappleTree ? 'green' : 'red';
 	document.getElementById('scriptExploreToggle').style.color = scriptVars.toggleExplore ? 'green' : 'red';
 	document.getElementById('scriptAreaOptions').value = scriptVars.scriptArea;
+	window.monsterOptions(scriptVars.scriptArea);
 	document.getElementById('scriptFightToggle').style.color = scriptVars.toggleFight ? 'green' : 'red';
 	document.getElementById('fieldsResetToggle').style.color = scriptVars.scriptResetArea.fields ? 'green' : 'red';
 	document.getElementById('forestsResetToggle').style.color = scriptVars.scriptResetArea.forests ? 'green' : 'red';
