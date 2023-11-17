@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.3.3
+// @version      1.4.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -18,7 +18,7 @@
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">');
 //Variables
-window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
@@ -27,7 +27,7 @@ const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'nor
 var scriptWaitTeleport = true
 var oldEquip = []
 var oldWeapon;
-const scriptComplexMonsters = ['desertLizard2', 'pufferFish', 'dragon', 'castleMage', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
+//const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 let defaultPotion = true
 let defaultSpell = true
 const oldHideAllTabs = hideAllTabs
@@ -420,8 +420,8 @@ function autoFight() {
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
 			if (infectedTimer > 0) {sendBytes('DRINK=cureInfectionPotion')}
 			sendBytes('LOOK_FOR_FIGHT');
-			autoPoison();
-			//if (scriptComplexMonsters.includes(monsterName)) {scriptedFight()}
+			window.autoPoison();
+			setTimeout(function(){if (monsterName == pufferFish){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000); 
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
@@ -431,16 +431,6 @@ function autoFight() {
 	if (monsterName == desertLizard2) {
 		defaultPotion = true;
 		defaultSpell = false;
-	} else if (monsterName == pufferFish) {
-		clicksItem('bow');
-		clicksItem('superBow');
-		clicksItem('enchantedSuperBow');
-		defaultPotion = true;
-		defaultSpell = true;
-	} else if (monsterName == dragon) {
-		- charge on 4th attack
-	} else if (monsterName == castleMage) {
-		- melee/ranged barrier
 	} else if (monsterName == robotMage) {
 		 - charge and melee/ranged barrier
 	} else if (monsterName == bloodGolem) {
@@ -452,7 +442,7 @@ function autoFight() {
 	} 
 }*/
 
-function autoPoison() {
+window.autoPoison = function() {
 	if (typeof poisonSpear !== 'undefined') {
 		oldWeapon = weapon
 		clicksItem('poisonSpear')
@@ -474,7 +464,7 @@ function autoReset() {
 }
 
 function autoMonsterHunt() {
-	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName !== scriptVars.scriptMonster) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
+	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName.includes(scriptVars.scriptMonster)) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
@@ -492,7 +482,7 @@ function autoHeal() {
 }
 
 function autoSpell() {
-	//if (monsterName !== 'none' && (!scriptComplexMonsters.includes(monsterName) || defaultSpell == true)) {
+	if (monsterName !== 'none' && (!scriptComplexMonsters.includes(monsterName) || defaultSpell == true)) {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 			oldEquip = [head,body,leg];
@@ -507,20 +497,24 @@ function autoSpell() {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
 		}
-		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {sendBytes('CAST_COMBAT_SPELL=reflectSpell')}
+		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
+			if (monsterName !== 'dragon' || dragonFireCharge == 4) {
+				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
+			}
+		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			oldEquip = [head,body,leg];
-			clicksItem('darkMageHood');
-			clicksItem('darkMageTop');
-			clicksItem('darkMageBottom');
-			sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-			clicksItem(oldEquip[0]);
-			clicksItem(oldEquip[1]);
-			clicksItem(oldEquip[2]);
-		} else {
-			sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
-		}
+				oldEquip = [head,body,leg];
+				clicksItem('darkMageHood');
+				clicksItem('darkMageTop');
+				clicksItem('darkMageBottom');
+				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
+				clicksItem(oldEquip[0]);
+				clicksItem(oldEquip[1]);
+				clicksItem(oldEquip[2]);
+			} else {
+				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
+			}
 		}
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
@@ -537,17 +531,31 @@ function autoSpell() {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
 		}
-	//}
+	}
 }
 
 function autoCombatPot() {
 	if (monsterName !== 'none') {
-	//if (!scriptComplexMonsters.includes(monsterName) || defaultPotion == true) {
 		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
 		if (typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 		if ((ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
 		setTimeout(function(){if (monsterName !== 'none' && scriptAreaEnergy[exploringArea] > 2000000 && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
-	//}
+	}
+}
+
+function autoCombatSwap() {
+	if (monsterName !== 'none') {
+	if monsterName.includes('castleMage') {
+		if (monsterName == 'castleMage2') {
+			clicksItem('bow');
+			clicksItem('superBow');
+			clicksItem('enchantedSuperBow');
+		} else if {
+			clicksItem('scythe');
+			clicksItem('mace');
+			clicksItem('trident');
+		}
+	} 
 	}
 }
 
@@ -1551,7 +1559,7 @@ function scriptAddTabs() {
       <tr id="scriptExplorerArea" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/caves.png" class="img-small"></td>
         <td style="padding-left: 50px;">
-          <select name="scriptAreaOptions" onchange="window.autoChangeVar('scriptArea',this.value);window.monsterOptions2(this.value);window.autoChangeVar('scriptMonster',document.getElementById('scriptMonsterOptions').value)" id="scriptAreaOptions">
+          <select name="scriptAreaOptions" onchange="window.autoChangeVar('scriptArea',this.value);window.monsterOptions(this.value);window.autoChangeVar('scriptMonster',document.getElementById('scriptMonsterOptions').value)" id="scriptAreaOptions">
             <option value="fields">Fields</option>
             <option value="forests">Forests</option>
             <option value="caves">Caves</option>
@@ -2094,7 +2102,7 @@ function loadPotions() {
   }
 }
 
-function monsterOptions(monsterArea) {
+window.monsterOptions = function(monsterArea) {
     var select = document.getElementById("scriptMonsterOptions");
     select.innerHTML = "";
 
@@ -2132,8 +2140,6 @@ function monsterOptions(monsterArea) {
         addOptions(select, ["poisonSquid", "tridentSoldier", "piranhas"]);
     }
 }
-
-window.monsterOptions2 = monsterOptions
 
 function addOptions(select, optionsArray) {
     for (var i = 0; i < optionsArray.length; i++) {
@@ -2216,7 +2222,7 @@ const publishMessage = async (message) => {
 
 window.onload = function() {
 	setupPubNub();
-	monsterOptions(scriptVars.scriptArea);
+	window.monsterOptions(scriptVars.scriptArea);
 	$(function() {
 		$("#sortableSeeds").sortable({
 			update: function(event, ui) {saveSeedOrder()}
@@ -2234,8 +2240,8 @@ window.onload = function() {
 		localStorage.setItem('IANotification',1)
 	};
 	addWikiButton();
-	document.getElementById('fight-button').querySelectorAll('td')[0].setAttribute('onclick', 'clicksFightButton();autoPoison();');
-	document.getElementById('fight-button').querySelectorAll('td')[1].setAttribute('onclick', 'clicksFightButton();autoPoison();');
+	document.getElementById('fight-button').querySelectorAll('td')[0].setAttribute('onclick', 'clicksFightButton();window.autoPoison();');
+	document.getElementById('fight-button').querySelectorAll('td')[1].setAttribute('onclick', 'clicksFightButton();window.autoPoison();');
 };
 
 scriptAddTabs();
@@ -2327,6 +2333,7 @@ function autoGameLoopFast() {
 		if (scriptVars.toggleSpell === true) autoSpell();
 		if (scriptVars.toggleShiny === true || scriptVars.toggleMonsterFind === true) autoMonsterHunt();
 		if (scriptVars.toggleCombatPotion === true) autoCombatPot();
+		if (scriptVars.toggleCombatSwap === true) autoCombatSwap();
 	}
 }
 
@@ -2346,7 +2353,7 @@ const gameLoopSlowInterval = setInterval(function(){
 
 const gameLoopFastInterval = setInterval(function(){
     autoGameLoopFast()
-}, 1000);
+}, 750);
 
 const gameLoopVeryFastInterval = setInterval(function(){
     autoGameLoopVeryFast()
