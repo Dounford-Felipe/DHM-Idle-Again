@@ -550,7 +550,7 @@ function autoCombatSwap() {
 			clicksItem('bow');
 			clicksItem('superBow');
 			clicksItem('enchantedSuperBow');
-		} else if {
+		} else {
 			clicksItem('scythe');
 			clicksItem('mace');
 			clicksItem('trident');
