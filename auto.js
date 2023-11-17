@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4.2
+// @version      1.4.4.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -659,6 +659,9 @@ function loadUserVars() {
 	let key = `idleAgain-${window.username}`;
 	if (localStorage.getItem(key)) {
 		scriptVars = JSON.parse(localStorage.getItem(key));
+	}
+	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
+		scriptVars.toggleCombatSwap = true
 	}
 }
 
