@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4.3
+// @version      1.4.4.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -27,6 +27,8 @@ const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'nor
 var scriptWaitTeleport = true
 var oldEquip = []
 var oldWeapon;
+const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
+const ranged = ['bow','superBow','enchantedSuperBow']
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 const oldHideAllTabs = hideAllTabs
 
@@ -544,11 +546,11 @@ function autoCombatPot() {
 function autoCombatSwap() {
 	if (typeof monsterName === 'string' && monsterName !== 'none') {
 	if (monsterName.includes('castleMage')) {
-		if (monsterName == 'castleMage2') {
+		if (monsterName == 'castleMage2' && melee.includes(weapon)) {
 			clicksItem('bow');
 			clicksItem('superBow');
 			clicksItem('enchantedSuperBow');
-		} else {
+		} else if (ranged.includes(weapon)){
 			clicksItem('scythe');
 			clicksItem('mace');
 			clicksItem('trident');
