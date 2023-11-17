@@ -419,7 +419,7 @@ function autoFight() {
 			if (infectedTimer > 0) {sendBytes('DRINK=cureInfectionPotion')}
 			sendBytes('LOOK_FOR_FIGHT');
 			window.autoPoison();
-			setTimeout(function(){if (monsterName == pufferFish){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000); 
+			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000); 
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
