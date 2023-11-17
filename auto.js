@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4.1
+// @version      1.4.4.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -462,7 +462,7 @@ function autoReset() {
 }
 
 function autoMonsterHunt() {
-	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || monsterName.includes(scriptVars.scriptMonster)) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
+	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || !monsterName.includes(scriptVars.scriptMonster)) && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
 	}
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
