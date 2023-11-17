@@ -546,7 +546,7 @@ function autoCombatPot() {
 
 function autoCombatSwap() {
 	if (monsterName !== 'none') {
-	if monsterName.includes('castleMage') {
+	if (monsterName.includes('castleMage')) {
 		if (monsterName == 'castleMage2') {
 			clicksItem('bow');
 			clicksItem('superBow');
