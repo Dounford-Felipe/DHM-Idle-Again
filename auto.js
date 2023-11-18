@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.5
+// @version      1.4.5.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -2176,7 +2176,7 @@ const showMessage = (msg, sender) => {
         senderElement.innerText = sender + ": ";
         messageContainer.appendChild(senderElement);
         var message = document.createElement('span');
-        message.innerText = msg;
+        message.innerHTML = msg;
 		messageContainer.style.wordWrap = "break-word";
         messageContainer.appendChild(message);
         var messageArea = document.getElementById('messages');
