@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.5.1
+// @version      1.4.5.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -2171,6 +2171,7 @@ const chatSend = () => {
 window.sendChat = chatSend
 
 const showMessage = (msg, sender) => {
+		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
         senderElement.innerText = sender + ": ";
@@ -2230,8 +2231,9 @@ const publishMessage = async (message) => {
         await pubnub.publish(publishPayload);
 }
 
+setupPubNub();
+
 window.onload = function() {
-	setupPubNub();
 	$(function() {
 		$("#sortableSeeds").sortable({
 			update: function(event, ui) {saveSeedOrder()}
