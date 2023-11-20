@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.5.3
+// @version      1.4.5.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -311,7 +311,7 @@ function autoPlant() {
     for (var i = 0; i < seedItems.length; i++) {
       var seedCheckbox = seedItems[i].querySelector(".seed-checkbox");
       var selectedSeed = seedItems[i].getAttribute("value"); // Obter o valor do atributo 'value'
-	  if (window[selectedSeed] >= 1){
+	  if (window[selectedSeed] >= 1 && bonemeal >= seedsArrayGlobal[selectedSeed].bonemealCost){
       if (seedCheckbox.checked) {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
