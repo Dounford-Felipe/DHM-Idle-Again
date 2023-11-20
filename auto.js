@@ -711,9 +711,8 @@ window.toggleAutoLogin = function() {
 }
 
 function scriptAddTabs() {
-	var scriptConfBar = document.createElement("div");
-	let miscTab = document.querySelectorAll("#tab-misc > .main-button");
-	scriptConfBar.innerHTML = `<div onclick="navigate('scriptConfig')" class="main-button" style="cursor: pointer;">
+	let miscTab = document.querySelectorAll("#tab-misc > .main-button")[2];
+	let scriptConfBar = `<div onclick="navigate('scriptConfig')" class="main-button" style="cursor: pointer;">
 <table>
 	<tbody><tr>
 	<td><img src="images/whiteGear.png" class="img-small"></td>
@@ -721,22 +720,9 @@ function scriptAddTabs() {
 	</tr>
 </tbody></table>
 </div>`;
-	miscTab[2].parentNode.insertBefore(scriptConfBar,miscTab[3]);
+	$(scriptConfBar).insertAfter(miscTab)
 	
-	var chatDiv = document.createElement("div");
-	var scriptConfTab = document.createElement("div");
-	var scriptConfMiningTab = document.createElement("div");
-	var scriptConfCraftingTab = document.createElement("div");
-	var scriptConfWoodcuttingTab = document.createElement("div");
-	var scriptConfFarmingTab = document.createElement("div");
-	var scriptConfSeedsTab = document.createElement("div");
-	var scriptConfBrewingTab = document.createElement("div");
-	var scriptConfPotionsTab = document.createElement("div");
-	var scriptConfExploringTab = document.createElement("div");
-	var scriptConfCookingTab = document.createElement("div");
-	let gameScreen = document.querySelectorAll("#game-screen")[1];
-	let logoutTab = document.getElementById('tab-logout');
-	chatDiv.innerHTML = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
+	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 		<div style="margin-bottom:5px;font-weight: bold;color: black;">Chat Box</div>
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
 
@@ -747,7 +733,7 @@ function scriptAddTabs() {
 		</div>
 	</div>`
 	
-	scriptConfTab.innerHTML = `<div id="tab-scriptConfig" style="display:none">
+	let scriptConfTab = `<div id="tab-scriptConfig" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -841,7 +827,7 @@ function scriptAddTabs() {
 </div>`
 
 
-	scriptConfMiningTab.innerHTML = `<div id="tab-scriptConfigMining" style="display:none">
+	let scriptConfMiningTab  = `<div id="tab-scriptConfigMining" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -926,7 +912,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfCraftingTab.innerHTML= `<div id="tab-scriptConfigCrafting" style="display:none">
+	let scriptConfCraftingTab = `<div id="tab-scriptConfigCrafting" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1024,7 +1010,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfWoodcuttingTab.innerHTML= `<div id="tab-scriptConfigWoodcutting" style="display:none">
+	let scriptConfWoodcuttingTab = `<div id="tab-scriptConfigWoodcutting" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1117,7 +1103,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfFarmingTab.innerHTML= `<div id="tab-scriptConfigFarming" style="display:none">
+	let scriptConfFarmingTab = `<div id="tab-scriptConfigFarming" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1227,7 +1213,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfSeedsTab.innerHTML= `<div id="tab-scriptConfigSeeds" style="display:none">
+	let scriptConfSeedsTab = `<div id="tab-scriptConfigSeeds" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1334,7 +1320,7 @@ function scriptAddTabs() {
   </ol>
 </div>`
 
-	scriptConfBrewingTab.innerHTML= `<div id="tab-scriptConfigBrewing" style="display:none">
+	let scriptConfBrewingTab = `<div id="tab-scriptConfigBrewing" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1451,7 +1437,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfPotionsTab.innerHTML= `<div id="tab-scriptConfigPotions" style="display:none">
+	let scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1544,7 +1530,7 @@ function scriptAddTabs() {
   </ol>
 </div>`
 
-	scriptConfExploringTab.innerHTML= `<div id="tab-scriptConfigExploring" style="display:none">
+	let scriptConfExploringTab = `<div id="tab-scriptConfigExploring" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1796,7 +1782,7 @@ function scriptAddTabs() {
   </table>
 </div>`
 
-	scriptConfCookingTab.innerHTML= `<div id="tab-scriptConfigCooking" style="display:none">
+	let scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
   <div class="main-button-lighter">
     <table>
       <tbody>
@@ -1844,17 +1830,17 @@ function scriptAddTabs() {
     </tbody>
   </table>
 </div>`;
-	gameScreen.insertBefore(scriptConfTab,logoutTab);
-	gameScreen.insertBefore(scriptConfMiningTab,logoutTab);
-	gameScreen.insertBefore(scriptConfCraftingTab,logoutTab);
-	gameScreen.insertBefore(scriptConfWoodcuttingTab,logoutTab);
-	gameScreen.insertBefore(scriptConfFarmingTab,logoutTab);
-	gameScreen.insertBefore(scriptConfSeedsTab,logoutTab);
-	gameScreen.insertBefore(scriptConfBrewingTab,logoutTab);
-	gameScreen.insertBefore(scriptConfPotionsTab,logoutTab);
-	gameScreen.insertBefore(scriptConfExploringTab,logoutTab);
-	gameScreen.insertBefore(scriptConfCookingTab,logoutTab);
-	gameScreen.insertBefore(chatDiv,logoutTab);
+	$(chatDiv).insertAfter('#tab-logout');
+	$(scriptConfCookingTab).insertAfter('#tab-logout');
+	$(scriptConfExploringTab).insertAfter('#tab-logout');
+	$(scriptConfPotionsTab).insertAfter('#tab-logout');
+	$(scriptConfBrewingTab).insertAfter('#tab-logout');
+	$(scriptConfSeedsTab).insertAfter('#tab-logout');
+	$(scriptConfFarmingTab).insertAfter('#tab-logout');
+	$(scriptConfWoodcuttingTab).insertAfter('#tab-logout');
+	$(scriptConfCraftingTab).insertAfter('#tab-logout');
+	$(scriptConfMiningTab).insertAfter('#tab-logout');
+	$(scriptConfTab).insertAfter('#tab-logout');
 	
 	let compareBar = `<a href="https://dhmcompare.infinityfreeapp.com/" target="_blank" style="text-decoration:none;">
 		<div class="main-button">
@@ -1865,8 +1851,8 @@ function scriptAddTabs() {
 				</tr></tbody>
 			</table>
 		</div>
-	</a>`
-	$(compareBar).insertAfter('#your-profile-link')
+	</a>`;
+	$(compareBar).insertAfter('#your-profile-link');
 }
 
 function addWikiButton() {
