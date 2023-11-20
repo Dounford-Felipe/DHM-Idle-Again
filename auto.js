@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.5.2
+// @version      1.4.5.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -500,7 +500,7 @@ function autoSpell() {
 		}
 		}
 		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
-			if (monsterName !== 'dragon' || dragonFireCharge == 4) {
+			if ((monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') || (monsterCharge <= 2 && monsterCharge !== 0))) {
 				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
 			}
 		}
@@ -542,7 +542,7 @@ function autoSpell() {
 
 function autoCombatPot() {
 	if (monsterName !== 'none') {
-		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},15000);}
+		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},19000);}
 		if (typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 		if ((ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
 		setTimeout(function(){if (monsterName !== 'none' && scriptAreaEnergy[exploringArea] > 2000000 && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
@@ -1855,6 +1855,18 @@ function scriptAddTabs() {
 	gameScreen.insertBefore(scriptConfExploringTab,logoutTab);
 	gameScreen.insertBefore(scriptConfCookingTab,logoutTab);
 	gameScreen.insertBefore(chatDiv,logoutTab);
+	
+	let compareBar = `<a href="https://dhmcompare.infinityfreeapp.com/" target="_blank" style="text-decoration:none;">
+		<div class="main-button">
+			<table>
+				<tbody><tr>
+					<td><img src="https://raw.githubusercontent.com/Dounford-Felipe/DHM-Compare/main/images/favicon.ico" class="img-small"></td>
+					<td class="back-label">COMPARE TOOL</td>
+				</tr></tbody>
+			</table>
+		</div>
+	</a>`
+	$(compareBar).insertAfter('#your-profile-link')
 }
 
 function addWikiButton() {
