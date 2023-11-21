@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6
+// @version      1.4.6.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -18,7 +18,7 @@
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script><script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" type="text/css">');
 //Variables
-window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+window.scriptVars = {toggleGlobal:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
@@ -316,7 +316,7 @@ function autoPlant() {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
         sendBytes("HARVEST_AND_PLANT_ALL");
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
       }
 	  }
     }
@@ -364,7 +364,7 @@ function autoDrink() {
 
       if (drinkCheckbox.checked && window[selectedPotion] > 0 && window[selectedPotion+'Timer'] == 0) {
 		sendBytes('DRINK='+selectedPotion);
-        setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
+        setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
       }
     }
 }
@@ -396,7 +396,7 @@ function autoBrew() {
 
       if (brewCheckbox.checked && drinkCheckbox.checked && window[selectedPotion] == 0) {
 		sendBytes('BREW='+selectedPotion+'~1');
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
       }
     }
 }
@@ -565,13 +565,20 @@ function autoCombatSwap() {
 	}
 }
 
+function autoBM() {
+	if ($('#explore-select-area').children().eq(0).attr("onclick") == 'clicksBloodMoonExploring()' && bloodMoonTimer <= 60) {
+		sendBytes('STARE_BLOOD_MOON')
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+	}
+}
+
 function autoCousin() {
 	if (typeof goblinExploringArea == 'undefined' || goblinExploringArea == 'none') {
 		let scriptCousinAreaLocal = scriptVars.scriptCousinArea
 		if (energy < scriptAreaEnergy[scriptCousinAreaLocal]) {scriptCousinAreaLocal = 'fields'}
 		goblinCousin=1;
 		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)		
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},1000);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
 	}
 }
 
@@ -670,6 +677,9 @@ function loadUserVars() {
 	}
 	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
 		scriptVars.toggleCombatSwap = true
+	}
+	if (typeof scriptVars.toggleBM == 'undefined') {
+		scriptVars.toggleBM = false
 	}
 }
 
@@ -1714,6 +1724,14 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
+      <tr id="scriptBloodMoonToggle" onclick="window.autoChangeVar('toggleBM',!scriptVars.toggleBM,this.id)" style="cursor: pointer; color: green;">
+        <td style="padding-left: 10px;"><img src="images/bloodMoonIcon.png" class="img-small"></td>
+        <td style="text-align:right;padding-right:20px;width:100%">BLOOD MOON</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
       <tr id="scriptCousinToggle" onclick="window.autoChangeVar('toggleCousin',!scriptVars.toggleCousin,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goblinCousin.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">GOBLIN COUSIN</td>
@@ -1972,6 +1990,7 @@ function scriptStyleTabs() {
 	document.getElementById('scriptSpellToggle').style.color = scriptVars.toggleSpell ? 'green' : 'red';
 	document.getElementById('scriptCombatPotionToggle').style.color = scriptVars.toggleCombatPotion ? 'green' : 'red';
 	document.getElementById('scriptHealToggle').style.color = scriptVars.toggleHeal ? 'green' : 'red';
+	document.getElementById('scriptBloodMoonToggle').style.color = scriptVars.toggleBM ? 'green' : 'red';
 	document.getElementById('scriptCousinToggle').style.color = scriptVars.toggleCousin ? 'green' : 'red';
 	document.getElementById('scriptCousinArea').value = scriptVars.scriptCousinArea;
 	document.getElementById('scriptBagsToggle').style.color = scriptVars.toggleBags ? 'green' : 'red';
@@ -2314,6 +2333,7 @@ function autoGameLoop() {
         if (scriptVars.toggleFarming === true) autoPlant();
         if (scriptVars.toggleDrink === true) autoDrink();
         if (scriptVars.toggleBrew === true) autoBrew();
+        if (scriptVars.toggleBM === true) autoBM();
         if (scriptVars.toggleExplore === true) autoExplore();
         if (scriptVars.toggleFight === true) autoFight();
 		if (scriptVars.toggleResetFight === true) autoReset();
