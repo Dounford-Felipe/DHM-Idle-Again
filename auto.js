@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.1
+// @version      1.4.6.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -485,7 +485,7 @@ function autoSpell() {
 	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-				oldEquip = [head,body,leg,weapon];
+				if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
@@ -506,7 +506,7 @@ function autoSpell() {
 		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-				oldEquip = [head,body,leg,weapon];
+				if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
@@ -523,7 +523,7 @@ function autoSpell() {
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			oldEquip = [head,body,leg,weapon];
+			if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
 			clicksItem('darkMageBottom');
@@ -566,7 +566,7 @@ function autoCombatSwap() {
 }
 
 function autoBM() {
-	if ($('#explore-select-area').children().eq(0).attr("onclick") == 'clicksBloodMoonExploring()' && bloodMoonTimer <= 60) {
+	if ($('#explore-select-area').children(':last').attr("onclick") == 'setAreaScreenByIndex(17);navigate("explore");' && bloodMoonTimer <= 60) {
 		sendBytes('STARE_BLOOD_MOON')
 		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
 	}
