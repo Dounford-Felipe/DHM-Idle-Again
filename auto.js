@@ -1724,7 +1724,7 @@ function scriptAddTabs() {
   </table>
   <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
     <tbody>
-      <tr id="scriptBloodMoonToggle" onclick="window.autoChangeVar('toggleBM',!scriptVars.toggleBM,this.id)" style="cursor: pointer; color: green;">
+      <tr id="scriptBloodMoonToggle" onclick="window.autoChangeVar('toggleBM',!scriptVars.toggleBM,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bloodMoonIcon.png" class="img-small"></td>
         <td style="text-align:right;padding-right:20px;width:100%">BLOOD MOON</td>
       </tr>
