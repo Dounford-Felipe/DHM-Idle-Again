@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.2
+// @version      1.4.6.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -2278,8 +2278,10 @@ function initLoginNotifications() {
 	var loginObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
 			if (document.getElementById("game-screen").style.display !== "none") {
-				console.log('logando')
-				onLogin()
+				console.log('logando');
+				navigate('exploreSelect');
+				navigate('main');
+				onLogin();
 			}
 		});    
     });
