@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.4
+// @version      1.4.6.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -472,9 +472,9 @@ function autoMonsterHunt() {
 }
 
 function autoHeal() {
-	if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0 && (hpCombatPotion >= 1 || hpCombatPotionFree == 1)){
+	if (monsterName !== 'none' && heroHp == 0 && hpCombatPotionUsed == 0 && (hpCombatPotion >= 1 || hpCombatPotionFree == 1)){
 		sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
-	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
+	} else if (monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
 		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
 	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0 && teleportSpell == 1) {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
