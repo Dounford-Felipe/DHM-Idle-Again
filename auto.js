@@ -30,6 +30,7 @@ var oldWeapon;
 const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
 const ranged = ['bow','superBow','enchantedSuperBow']
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
+const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
 
 window.hideAllTabs = function() {
@@ -623,6 +624,12 @@ function autoArtifact() {
 			break;
 		}
 	}
+}
+
+window.cookAll = function () {
+    for (let i = 0; i < cookableFood.length; i++) {
+      if (window[cookableFood[i]] > 0) {sendBytes('COOK='+cookableFood[i]+'~'+window[cookableFood[i]])}
+    }
 }
 
 function autoBoat() {
