@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.6
+// @version      1.4.6.7
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -1867,7 +1867,7 @@ function scriptAddTabs() {
 	$(scriptConfMiningTab).insertAfter('#tab-logout');
 	$(scriptConfTab).insertAfter('#tab-logout');
 	
-	let compareBar = `<a href="https://dhmcompare.infinityfreeapp.com/" target="_blank" style="text-decoration:none;">
+	let compareBar = `<a href="https://dounford-felipe.github.io/DHM-Compare/" target="_blank" style="text-decoration:none;">
 		<div class="main-button">
 			<table>
 				<tbody><tr>
