@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.7
+// @version      1.4.6.8
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -626,10 +626,18 @@ function autoArtifact() {
 	}
 }
 
-window.cookAll = function () {
+window.cookAll = function() {
     for (let i = 0; i < cookableFood.length; i++) {
       if (window[cookableFood[i]] > 0) {sendBytes('COOK='+cookableFood[i]+'~'+window[cookableFood[i]])}
     }
+}
+
+window.getHeatNeeded = function() {
+	let heatNeeded = 0
+	for (let i = 0; i < cookableFood.length; i++) {
+      heatNeeded += foodArrayGlobal[cookableFood[i]].heatRequired * window[cookableFood[i]]
+    }
+	document.getElementById('heatNeeded').innerText = heatNeeded.toLocaleString('en-us')
 }
 
 function autoBoat() {
@@ -1878,6 +1886,29 @@ function scriptAddTabs() {
 		</div>
 	</a>`;
 	$(compareBar).insertAfter('#your-profile-link');
+	
+	let cookAllItem = `<div class="main-button-lighter" id="scriptCook" style="background-color: rgb(0, 77, 0);">
+	<table>
+		<tbody>
+			<tr>
+				<td style="width: 20%; position: relative;"><img src="images/heat.png" id="item-img-energy" class="img-medium"></td>
+				<td class="main-button-table-tr-td2">
+					<span class="main-button-span-item-owned" id="heatNeeded">0</span><span> HEAT NEEDED</span>
+					<hr class="no-space">
+					<span class="main-button-span-desc" onclick="getHeatNeeded()" style="
+						background-color: darkcyan;
+						padding: 4px;
+						">GET HEAT NEEDED</span><span class="main-button-span-desc" onclick="cookAll()" style="
+						background-color: darkcyan;
+						padding: 4px;
+						margin-left: 10px;
+						"> COOK ALL</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>`
+	$(cookAllItem).insertAfter('#item-box-energy')
 }
 
 function addWikiButton() {
