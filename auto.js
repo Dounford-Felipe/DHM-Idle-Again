@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7
+// @version      1.4.7.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -1905,7 +1905,7 @@ function scriptAddTabs() {
 	<table>
 		<tbody>
 			<tr>
-				<td style="width: 20%; position: relative;"><img src="images/heat.png" id="item-img-energy" class="img-medium"></td>
+				<td style="width: 20%; position: relative;"><img src="images/heat.png" class="img-medium"></td>
 				<td class="main-button-table-tr-td2">
 					<span class="main-button-span-item-owned" id="heatNeeded">0</span><span> HEAT NEEDED</span>
 					<hr class="no-space">
@@ -1922,7 +1922,7 @@ function scriptAddTabs() {
 	<table>
 		<tbody>
 			<tr>
-				<td style="width: 20%; position: relative;"><img src="images/clock.png" id="item-img-energy" class="img-medium"></td>
+				<td style="width: 20%; position: relative;"><img src="images/clock.png" class="img-medium"></td>
 				<td class="main-button-table-tr-td2" style="padding-bottom: 6px;">
 					<span class="main-button-span-item-owned" id="growTimeNeeded">TIME TO GROW ALL</span>
 					<hr class="no-space">
@@ -1938,7 +1938,7 @@ function scriptAddTabs() {
 	<table>
 		<tbody>
 			<tr>
-				<td style="width: 20%; position: relative;"><img src="images/ashes.png" id="item-img-energy" class="img-medium"></td>
+				<td style="width: 20%; position: relative;"><img src="images/ashes.png" class="img-medium"></td>
 				<td class="main-button-table-tr-td2" style="padding-bottom: 6px;">
 					<span class="main-button-span-item-owned" id="bonemealNeeded">0</span><span> BONEMEAL NEEDED</span>
 					<hr class="no-space">
