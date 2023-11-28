@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.6.8
+// @version      1.4.7
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -356,6 +356,23 @@ function autoFertilize() {
 	}
 }
 
+window.getBonemealNeeded = function() {
+	let bonemealNeeded = 0
+	for (let i = 0; i < seedsArrayGlobal.length; i++) {
+      bonemealNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].bonemealCost * window[seedsArrayGlobal[i].itemName] : 0
+    }
+	document.getElementById('bonemealNeeded').innerText = bonemealNeeded.toLocaleString('en-us')
+}
+
+window.getTimeNeeded = function() {
+	let timeNeeded = 0
+    let plotsUnlocked = farmUnlocked6 == 1 ? 6 : farmUnlocked5 == 1 ? 5 : farmUnlocked4 == 1 ? 4 : farmUnlocked3 == 1 ? 3 : 2
+	for (let i = 0; i < seedsArrayGlobal.length; i++) {
+      timeNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].growtime * window[seedsArrayGlobal[i].itemName] : 0
+    }
+	document.getElementById('growTimeNeeded').innerText = formatTime(timeNeeded/10/plotsUnlocked)
+}
+
 function autoDrink() {
     var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li")
 
@@ -429,10 +446,7 @@ function autoFight() {
 };
 
 /*function scriptedFight() {
-	if (monsterName == desertLizard2) {
-		defaultPotion = true;
-		defaultSpell = false;
-	} else if (monsterName == robotMage) {
+	if (monsterName == robotMage) {
 		 - charge and melee/ranged barrier
 	} else if (monsterName == bloodGolem) {
 		- needs to swap between bearfur and titanium armor
@@ -1895,20 +1909,46 @@ function scriptAddTabs() {
 				<td class="main-button-table-tr-td2">
 					<span class="main-button-span-item-owned" id="heatNeeded">0</span><span> HEAT NEEDED</span>
 					<hr class="no-space">
-					<span class="main-button-span-desc" onclick="getHeatNeeded()" style="
-						background-color: darkcyan;
-						padding: 4px;
-						">GET HEAT NEEDED</span><span class="main-button-span-desc" onclick="cookAll()" style="
-						background-color: darkcyan;
-						padding: 4px;
-						margin-left: 10px;
-						"> COOK ALL</span>
+					<span class="main-button-span-desc" onclick="getHeatNeeded()" style="background-color: darkcyan;padding: 4px;">GET HEAT NEEDED</span>
+					<span class="main-button-span-desc" onclick="cookAll()" style="background-color: darkcyan;padding: 4px;margin-left: 10px;">COOK ALL</span>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	</div>`
 	$(cookAllItem).insertAfter('#item-box-energy')
+	
+	let growTimeNeededItem = `<div class="main-button-lighter" id="scriptgrowTimeNeeded" style="background-color: rgb(26, 51, 0);">
+	<table>
+		<tbody>
+			<tr>
+				<td style="width: 20%; position: relative;"><img src="images/clock.png" id="item-img-energy" class="img-medium"></td>
+				<td class="main-button-table-tr-td2" style="padding-bottom: 6px;">
+					<span class="main-button-span-item-owned" id="growTimeNeeded">TIME TO GROW ALL</span>
+					<hr class="no-space">
+					<span class="main-button-span-desc" onclick="getTimeNeeded()" style="background-color: darkcyan;padding: 4px;">	GET TIME NEEDED TO GROW ALL</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>`
+	$(growTimeNeededItem).insertAfter('#item-box-bonemealBin')
+	
+	let bonemealNeededItem = `<div class="main-button-lighter" id="scriptBonemealNeeded" style="background-color: rgb(26, 51, 0);">
+	<table>
+		<tbody>
+			<tr>
+				<td style="width: 20%; position: relative;"><img src="images/ashes.png" id="item-img-energy" class="img-medium"></td>
+				<td class="main-button-table-tr-td2" style="padding-bottom: 6px;">
+					<span class="main-button-span-item-owned" id="bonemealNeeded">0</span><span> BONEMEAL NEEDED</span>
+					<hr class="no-space">
+					<span class="main-button-span-desc" onclick="getBonemealNeeded()" style="background-color: darkcyan;padding: 4px;">	GET BONEMEAL NEEDED</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>`
+	$(bonemealNeededItem).insertAfter('#item-box-bonemealBin')
 }
 
 function addWikiButton() {
