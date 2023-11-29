@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7.1
+// @version      1.4.7.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -515,7 +515,7 @@ function autoSpell() {
 		}
 		}
 		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
-			if ((monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') || (monsterCharge <= 7 && monsterCharge !== 0))) {
+			if ((monsterName !== 'robotMage' || robotMageCharge !== 0) && (monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') ||  monsterCharge !== 0)) {
 				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
 			}
 		}
@@ -566,17 +566,17 @@ function autoCombatPot() {
 
 function autoCombatSwap() {
 	if (typeof monsterName === 'string' && monsterName !== 'none') {
-	if (monsterName.includes('castleMage')) {
-		if (monsterName == 'castleMage2' && melee.includes(weapon)) {
+	if (monsterName.includes('castleMage') || monsterName.includes('robotMage')) {
+		if ((monsterName == 'castleMage2' || monsterName == 'robotMage2') && melee.includes(weapon)) {
 			clicksItem('bow');
 			clicksItem('superBow');
 			clicksItem('enchantedSuperBow');
-		} else if (monsterName == 'castleMage3' && ranged.includes(weapon)){
+		} else if ((monsterName == 'castleMage3' || monsterName == 'robotMage') && ranged.includes(weapon)){
 			clicksItem('scythe');
 			clicksItem('mace');
 			clicksItem('trident');
 		}
-	} 
+	}
 	}
 }
 
