@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7.5
+// @version      1.4.7.6
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -32,6 +32,7 @@ const ranged = ['bow','superBow','enchantedSuperBow']
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
+const blockedHTML = ['<iframe','<button','<script','<html','<link','<div','<footer','onclick','<object','<embed','<form','<meta','onmouseover','onmouseout','onmousemove','<input','<applet','javascript:']
 const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav")
 
 window.hideAllTabs = function() {
@@ -822,12 +823,12 @@ function scriptAddTabs() {
 	$(scriptConfBar).insertAfter(miscTab)
 	
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
-		<div style="margin-bottom:5px;font-weight: bold;color: black;">Chat Box</div>
+		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">Chat Box <button onclick="window.clearChat()">Clear</button></div>
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
 
 		</div>
 		<div style="margin-top: 5px;">
-			<input id="message-body" type="text" maxlength="200" size="100%" onkeydown="window.handleKeyDown(event)">
+			<input id="message-body" type="text" maxlength="100" size="100%" onkeydown="window.handleKeyDown(event)">
 			<button onclick="window.sendChat()">Send</button>
 		</div>
 	</div>`
@@ -2318,14 +2319,25 @@ function addOptions(select, optionsArray) {
 
 //Chat
 const chatSend = () => {
-        var input = document.getElementById('message-body');
-        publishMessage(input.value);
+        var inputValue = document.getElementById('message-body').value.slice(-100);
+		if (blockedHTML.some(item => inputValue.includes(item))) {
+			inputValue = '';
+			showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before try again.</b>",'ChatBot')
+		}
+        publishMessage(inputValue);
         input.value = '';
 };
 
 window.sendChat = chatSend
 
+window.clearChat = function() {
+	document.getElementById('messages').innerHTML = ''
+}
+
 const showMessage = (msg, sender) => {
+		if (blockedHTML.some(item => msg.includes(item))) {
+			msg = 'This message was blocked for safety';
+		}
 		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
@@ -2362,9 +2374,6 @@ const setupPubNub = () => {
             },
             message: (messageEvent) => {
                 showMessage(messageEvent.message.description, messageEvent.message.sender);
-            },
-            presence: (presenceEvent) => {
-                // handle presence
             }
         };
         pubnub.addListener(listener);
