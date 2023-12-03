@@ -2323,9 +2323,10 @@ const chatSend = () => {
 		if (blockedHTML.some(item => inputValue.includes(item))) {
 			inputValue = '';
 			showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before try again.</b>",'ChatBot')
+		} else {
+			publishMessage(inputValue);
 		}
-        publishMessage(inputValue);
-        input.value = '';
+        document.getElementById('message-body').value = '';
 };
 
 window.sendChat = chatSend
