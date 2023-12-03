@@ -2327,13 +2327,16 @@ window.sendChat = chatSend
 
 const showMessage = (msg, sender) => {
 		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
-		if (msg.includes('@'+username)) {ding.play()}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
         senderElement.innerText = sender + ": ";
         messageContainer.appendChild(senderElement);
         var message = document.createElement('span');
         message.innerHTML = msg;
+		if (msg.includes('@'+username)) {
+			message.style.backgroundColor = 'gold';
+			ding.play()
+		};
 		messageContainer.style.wordWrap = "break-word";
         messageContainer.appendChild(message);
         var messageArea = document.getElementById('messages');
