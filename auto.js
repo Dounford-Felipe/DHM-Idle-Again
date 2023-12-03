@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7.4
+// @version      1.4.7.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -32,6 +32,7 @@ const ranged = ['bow','superBow','enchantedSuperBow']
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
+const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav")
 
 window.hideAllTabs = function() {
 	oldHideAllTabs()
@@ -2326,6 +2327,7 @@ window.sendChat = chatSend
 
 const showMessage = (msg, sender) => {
 		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
+		if (msg.includes('@'+username)) {ding.play()}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
         senderElement.innerText = sender + ": ";
