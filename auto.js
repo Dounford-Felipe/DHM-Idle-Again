@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7.6
+// @version      1.4.7.7
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -263,7 +263,10 @@ function autoSmelt() {
 		chooseOreForFurnace(selectedOre)
 		startSmelting()
 		closeSmittysDialogue('dialogue-furnace2')
-		console.log(selectedOre)
+		const date = new Date();
+		const hour = date.getHours();
+		const min = date.getMinutes();
+		console.log('['+hour+':'+min+'] '+selectedOre)
 		break;
       }
     }
@@ -485,6 +488,10 @@ function autoExplore() {
 		if (totalDonations >= 32) {areaCost = scriptAreaEnergy[scriptAreaLocal] * 0.8}
 		if (energy < areaCost) {scriptAreaLocal = 'fields'}
 		sendBytes('EXPLORE='+scriptAreaLocal)
+		const date = new Date();
+		const hour = date.getHours();
+		const min = date.getMinutes();
+		console.log('['+hour+':'+min+'] '+scriptAreaLocal)
 		if (scriptVars.toggleShiny == true || scriptVars.toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
 	}
 }
@@ -774,7 +781,10 @@ function loadUserVars() {
 }
 
 window.autoChangeVar = function(variName,variValue,id) {
-	console.log(variName+' '+variValue+' '+id)
+	const date = new Date();
+	const hour = date.getHours();
+	const min = date.getMinutes();
+	console.log('['+hour+':'+min+'] '+variName+' '+variValue+' '+id)
 	let key = `idleAgain-${window.username}`;
 	scriptVars[variName] = variValue
 	localStorage.setItem(key, JSON.stringify(scriptVars))
@@ -789,7 +799,10 @@ window.autoChangeVar = function(variName,variValue,id) {
 }
 
 window.autoChangeObject = function(variName,variKey,variValue,id) {
-	let key = `idleAgain-${window.username}`;
+	const date = new Date();
+	const hour = date.getHours();
+	const min = date.getMinutes();
+	console.log('['+hour+':'+min+'] '+variName+' '+variKey+':'+variValue+' '+id)
 	scriptVars[variName][variKey] = variValue
 	localStorage.setItem(key, JSON.stringify(scriptVars))
 	if (typeof id !== 'undefined') {
@@ -2342,7 +2355,10 @@ const showMessage = (msg, sender) => {
 		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
-        senderElement.innerText = sender + ": ";
+		const date = new Date();
+		const hour = date.getHours();
+		const min = date.getMinutes();
+        senderElement.innerText = '[' +hour+ ':' +min+ '] '+ sender + ": ";
         messageContainer.appendChild(senderElement);
         var message = document.createElement('span');
         message.innerHTML = msg;
