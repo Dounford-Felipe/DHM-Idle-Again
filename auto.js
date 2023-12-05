@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7.8
+// @version      1.4.8
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -840,9 +840,10 @@ function scriptAddTabs() {
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
 
 		</div>
-		<div style="margin-top: 5px;">
-			<input id="message-body" type="text" maxlength="100" size="100%" onkeydown="window.handleKeyDown(event)">
+		<input id="message-body" type="text" maxlength="150" size="100%" onkeydown="window.handleKeyDown(event)" style="margin-top: 5px;">
+		<div style="margin-top: 5px;justify-content: space-between;display: flex;">
 			<button onclick="window.sendChat()">Send</button>
+			<button onclick="window.chatHelp()">HELP</button>
 		</div>
 	</div>`
 	
@@ -2332,10 +2333,13 @@ function addOptions(select, optionsArray) {
 
 //Chat
 const chatSend = () => {
-        var inputValue = document.getElementById('message-body').value.slice(-100);
+        var inputValue = document.getElementById('message-body').value.slice(-150);
 		if (blockedHTML.some(item => inputValue.includes(item))) {
 			inputValue = '';
 			showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before try again.</b>",'ChatBot')
+		} else if (inputValue.match(/img=(["].*?["])/g)) {
+			inputValue = inputValue.replace(/img=(["].*?["])/g,'<img src=$1 class="img-small">')
+			publishMessage(inputValue)
 		} else {
 			publishMessage(inputValue);
 		}
@@ -2346,6 +2350,10 @@ window.sendChat = chatSend
 
 window.clearChat = function() {
 	document.getElementById('messages').innerHTML = ''
+}
+
+window.chatHelp = function() {
+	showMessage('Use <b>/help</b> for Chat Bot Commands, <b>!help</b> for hangman commands and <b>img="image-url"</b> to send images','ChatBot')
 }
 
 const showMessage = (msg, sender) => {
