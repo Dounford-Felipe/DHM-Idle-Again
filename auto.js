@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.8
+// @version      1.4.8.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -2359,8 +2359,8 @@ window.chatHelp = function() {
 const showMessage = (msg, sender) => {
 		if (blockedHTML.some(item => msg.includes(item))) {
 			msg = 'This message was blocked for safety';
-		}
-		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'}
+		};
+		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'};
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
 		const date = new Date();
@@ -2372,7 +2372,11 @@ const showMessage = (msg, sender) => {
         message.innerHTML = msg;
 		if (msg.includes('@'+username)) {
 			message.style.backgroundColor = 'gold';
-			ding.play()
+			ding.play();
+		};
+		if (msg.includes('@everyone') && sender == 'felipewolf') {
+			message.style.backgroundColor = 'gold';
+			ding.play();
 		};
 		messageContainer.style.wordWrap = "break-word";
         messageContainer.appendChild(message);
