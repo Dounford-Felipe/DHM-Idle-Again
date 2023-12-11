@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.8.2
+// @version      1.4.8.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -797,6 +797,7 @@ window.autoChangeObject = function(variName,variKey,variValue,id) {
 	const hour = date.getHours();
 	const min = date.getMinutes();
 	console.log('['+hour+':'+min+'] '+variName+' '+variKey+':'+variValue+' '+id)
+	let key = `idleAgain-${window.username}`;
 	scriptVars[variName][variKey] = variValue
 	localStorage.setItem(key, JSON.stringify(scriptVars))
 	if (typeof id !== 'undefined') {
