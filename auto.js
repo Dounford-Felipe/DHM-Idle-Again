@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.8.1
+// @version      1.4.8.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -24,9 +24,7 @@ const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northern
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
 const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
 const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
-var scriptWaitTeleport = true
-var oldEquip = []
-var oldWeapon;
+var scriptWaitTeleport = true;
 const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
 const ranged = ['bow','superBow','enchantedSuperBow']
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
@@ -524,7 +522,6 @@ function autoFight() {
 
 window.autoPoison = function() {
 	if (typeof poisonSpear !== 'undefined') {
-		oldWeapon = weapon
 		clicksItem('poisonSpear')
 		const poisonInterval = setInterval(function(){
 			if (poisonEnemyTimer == 1) {
@@ -565,16 +562,15 @@ function autoSpell() {
 	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-				if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {clicksItem('staff')}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
-				clicksItem(oldEquip[0]);
-				clicksItem(oldEquip[1]);
-				clicksItem(oldEquip[2]);
-				clicksItem(oldEquip[3]);
+				clicksItem('presetHead1');
+				clicksItem('presetBody1');
+				clicksItem('presetLeg1');
+				clicksItem('presetWeapon1');
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
@@ -586,16 +582,15 @@ function autoSpell() {
 		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-				if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {clicksItem('staff')}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-				clicksItem(oldEquip[0]);
-				clicksItem(oldEquip[1]);
-				clicksItem(oldEquip[2]);
-				clicksItem(oldEquip[3]);
+				clicksItem('presetHead1');
+				clicksItem('presetBody1');
+				clicksItem('presetLeg1');
+				clicksItem('presetWeapon1');
 			} else {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			}
@@ -603,16 +598,15 @@ function autoSpell() {
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			if (head !== 'darkMageHood') {oldEquip = [head,body,leg,weapon]}
 			clicksItem('darkMageHood');
 			clicksItem('darkMageTop');
 			clicksItem('darkMageBottom');
 			if (staff >= 1) {clicksItem('staff')}
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
-			clicksItem(oldEquip[0]);
-			clicksItem(oldEquip[1]);
-			clicksItem(oldEquip[2]);
-			clicksItem(oldEquip[3]);
+			clicksItem('presetHead1');
+			clicksItem('presetBody1');
+			clicksItem('presetLeg1');
+			clicksItem('presetWeapon1');
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
@@ -631,8 +625,8 @@ function autoCombatPot() {
 
 function autoCombatSwap() {
 	if (typeof monsterName === 'string' && monsterName !== 'none') {
-	if (monsterName.includes('castleMage') || monsterName.includes('robotMage')) {
-		if ((monsterName == 'castleMage2' || monsterName == 'robotMage2') && melee.includes(weapon)) {
+	if (monsterName.includes('castleMage') || monsterName.includes('robotMage') || monsterName.includes('pufferFish')) {
+		if ((monsterName == 'castleMage2' || monsterName == 'robotMage2' || monsterName == 'pufferFish') && melee.includes(weapon)) {
 			clicksItem('bow');
 			clicksItem('superBow');
 			clicksItem('enchantedSuperBow');
