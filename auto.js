@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.8.4
+// @version      1.4.9
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -18,7 +18,7 @@
     'use strict';
 $("head").append('<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script><script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script><script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js"></script><link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" type="text/css">');
 //Variables
-window.scriptVars = {toggleGlobal:true, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+window.scriptVars = {toggleGlobal:true, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
@@ -619,7 +619,7 @@ function autoCombatPot() {
 		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},19000);}
 		if (typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
 		if ((ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
-		setTimeout(function(){if (monsterName !== 'none' && scriptAreaEnergy[exploringArea] > 2000000 && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
+		setTimeout(function(){if (monsterName !== 'none' && scriptVars.scriptStrength[exploringArea] == true && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
 	}
 }
 
@@ -771,6 +771,9 @@ function loadUserVars() {
 	}
 	if (typeof scriptVars.toggleMap == 'undefined') {
 		scriptVars.toggleMap = true
+	}
+	if (typeof scriptVars.scriptStrength == 'undefined') {
+		scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}
 	}
 }
 
@@ -1544,6 +1547,77 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
+  <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
+	<thead>
+		<th style="color: white;"><img src="images/strengthCombatPotion.png" class="img-small"> STRENGTH POTION</th>
+	</thead>
+    <tbody>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','fields',!scriptVars.scriptStrength.fields,this.id)" id="fieldsStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/fields.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Fields</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','forests',!scriptVars.scriptStrength.forests,this.id)" id="forestsStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/forests.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Forests</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','caves',!scriptVars.scriptStrength.caves,this.id)" id="cavesStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/caves.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Caves</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','volcano',!scriptVars.scriptStrength.volcano,this.id)" id="volcanoStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/volcano.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Volcano</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','northernFields',!scriptVars.scriptStrength.northernFields,this.id)" id="northernFieldsStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/northernFields.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Northern Fields</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','hauntedMansion',!scriptVars.scriptStrength.hauntedMansion,this.id)" id="hauntedMansionStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedMansion.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Haunted Mansion</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','desert',!scriptVars.scriptStrength.desert,this.id)" id="desertStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/desert.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Desert</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','ocean',!scriptVars.scriptStrength.ocean,this.id)" id="oceanStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/ocean.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Ocean</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','jungle',!scriptVars.scriptStrength.jungle,this.id)" id="jungleStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/jungle.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Jungle</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','dungeonEntrance',!scriptVars.scriptStrength.dungeonEntrance,this.id)" id="dungeonEntranceStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/dungeonEntrance.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Dungeon Entrance</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','dungeon',!scriptVars.scriptStrength.dungeon,this.id)" id="dungeonStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/dungeon.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Dungeon</td>
+      </tr>
+      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','castle',!scriptVars.scriptStrength.castle,this.id)" id="castleStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/castle.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Castle</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','cemetery',!scriptVars.scriptStrength.cemetery,this.id)" id="cemeteryStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/cemetery.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Cemetery</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','factory',!scriptVars.scriptStrength.factory,this.id)" id="factoryStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/factory.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Factory</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','hauntedWoods',!scriptVars.scriptStrength.hauntedWoods,this.id)" id="hauntedWoodsStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedWoods.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Haunted Woods</td>
+      </tr>
+      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','deepOcean',!scriptVars.scriptStrength.deepOcean,this.id)" id="deepOceanStrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/deepOcean.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">Deep Ocean</td>
+      </tr>
+    </tbody>
+  </table>
 </div>`
 
 	let scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
@@ -2111,6 +2185,22 @@ function scriptStyleTabs() {
 	document.getElementById('bananaTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.bananaTree ? 'green' : 'red';
 	document.getElementById('palmTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.palmTree ? 'green' : 'red';
 	document.getElementById('pineappleTreeUpgradeToggle').style.color = scriptVars.scriptTreeUpgrade.pineappleTree ? 'green' : 'red';
+	document.getElementById('fieldsStrengthToggle').style.color = scriptVars.scriptStrength.fields ? 'green' : 'red';
+	document.getElementById('forestsStrengthToggle').style.color = scriptVars.scriptStrength.forests ? 'green' : 'red';
+	document.getElementById('cavesStrengthToggle').style.color = scriptVars.scriptStrength.caves ? 'green' : 'red';
+	document.getElementById('volcanoStrengthToggle').style.color = scriptVars.scriptStrength.volcano ? 'green' : 'red';
+	document.getElementById('northernFieldsStrengthToggle').style.color = scriptVars.scriptStrength.northernFields ? 'green' : 'red';
+	document.getElementById('hauntedMansionStrengthToggle').style.color = scriptVars.scriptStrength.hauntedMansion ? 'green' : 'red';
+	document.getElementById('desertStrengthToggle').style.color = scriptVars.scriptStrength.desert ? 'green' : 'red';
+	document.getElementById('oceanStrengthToggle').style.color = scriptVars.scriptStrength.ocean ? 'green' : 'red';
+	document.getElementById('jungleStrengthToggle').style.color = scriptVars.scriptStrength.jungle ? 'green' : 'red';
+	document.getElementById('dungeonEntranceStrengthToggle').style.color = scriptVars.scriptStrength.dungeonEntrance ? 'green' : 'red';
+	document.getElementById('dungeonStrengthToggle').style.color = scriptVars.scriptStrength.dungeon ? 'green' : 'red';
+	document.getElementById('castleStrengthToggle').style.color = scriptVars.scriptStrength.castle ? 'green' : 'red';
+	document.getElementById('cemeteryStrengthToggle').style.color = scriptVars.scriptStrength.cemetery ? 'green' : 'red';
+	document.getElementById('factoryStrengthToggle').style.color = scriptVars.scriptStrength.factory ? 'green' : 'red';
+	document.getElementById('hauntedWoodsStrengthToggle').style.color = scriptVars.scriptStrength.hauntedWoods ? 'green' : 'red';
+	document.getElementById('deepOceanStrengthToggle').style.color = scriptVars.scriptStrength.deepOcean ? 'green' : 'red';
 	document.getElementById('scriptExploreToggle').style.color = scriptVars.toggleExplore ? 'green' : 'red';
 	document.getElementById('scriptAreaOptions').value = scriptVars.scriptArea;
 	window.monsterOptions(scriptVars.scriptArea);
