@@ -773,7 +773,7 @@ function loadUserVars() {
 		scriptVars.toggleMap = true
 	}
 	if (typeof scriptVars.scriptStrength == 'undefined') {
-		scriptVars.scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}
+		scriptVars.scriptStrength = {fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}
 	}
 }
 
