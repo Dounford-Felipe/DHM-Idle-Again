@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.9
+// @version      1.4.9.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -835,7 +835,7 @@ function scriptAddTabs() {
 	
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">Chat Box <button onclick="window.clearChat()">Clear</button></div>
-		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;">
+		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;user-select:text;">
 
 		</div>
 		<input id="message-body" type="text" maxlength="150" size="100%" onkeydown="window.handleKeyDown(event)" style="margin-top: 5px;">
