@@ -26,6 +26,7 @@ const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'nor
 var scriptWaitTeleport = true;
 const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
 const ranged = ['bow','superBow','enchantedSuperBow']
+let oldWeapon;
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
@@ -564,12 +565,15 @@ function autoSpell() {
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
-				if (staff >= 1) {clicksItem('staff')}
+				if (staff >= 1) {
+					oldWeapon = weapon;
+					clicksItem('staff');
+				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
 				clicksItem(presetHead1);
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
-				clicksItem(presetWeapon1);
+				clicksItem(oldWeapon);
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
@@ -584,12 +588,15 @@ function autoSpell() {
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
-				if (staff >= 1) {clicksItem('staff')}
+				if (staff >= 1) {
+					oldWeapon = weapon;
+					clicksItem('staff');
+				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
 				clicksItem(presetHead1);
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
-				clicksItem(presetWeapon1);
+				clicksItem(oldWeapon);
 			} else {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			}
@@ -597,15 +604,18 @@ function autoSpell() {
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
-			clicksItem('darkMageHood');
-			clicksItem('darkMageTop');
-			clicksItem('darkMageBottom');
-			if (staff >= 1) {clicksItem('staff')}
-			sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
+				clicksItem('darkMageHood');
+				clicksItem('darkMageTop');
+				clicksItem('darkMageBottom');
+				if (staff >= 1) {
+					oldWeapon = weapon;
+					clicksItem('staff');
+				}
+				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
 				clicksItem(presetHead1);
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
-				clicksItem(presetWeapon1);
+				clicksItem(oldWeapon);
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
