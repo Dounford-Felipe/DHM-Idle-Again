@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.9.4
+// @version      1.4.9.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -2264,7 +2264,7 @@ function scriptStyleTabs() {
 	document.getElementById('scriptFieldsBagsToggle').style.color = scriptVars.toggleFieldsBags ? 'green' : 'red';
 	document.getElementById('scriptStatueToggle').style.color = scriptVars.toggleStatue ? 'green' : 'red';
 	document.getElementById('scriptArtifactToggle').style.color = scriptVars.toggleArtifact ? 'green' : 'red';
-	document.getElementById('scriptautoKnightqToggle').style.color = scriptVars.toggleautoKnightq ? 'green' : 'red';
+	document.getElementById('scriptKnightq').style.color = scriptVars.toggleautoKnightq ? 'green' : 'red';
 	document.getElementById('scriptBoatToggle').style.color = scriptVars.toggleBoat ? 'green' : 'red';
 	document.getElementById('rowBoatSendToggle').style.color = scriptVars.scriptBoatSend.rowBoat ? 'green' : 'red';
 	document.getElementById('canoeBoatSendToggle').style.color = scriptVars.scriptBoatSend.canoeBoat ? 'green' : 'red';
