@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.9.5
+// @version      1.4.9.6
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -566,7 +566,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = weapon;
+					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
@@ -589,7 +589,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = weapon;
+					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -608,7 +608,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = weapon;
+					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
