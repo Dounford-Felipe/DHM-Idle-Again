@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.4.9.6
+// @version      1.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -27,6 +27,7 @@ var scriptWaitTeleport = true;
 const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
 const ranged = ['bow','superBow','enchantedSuperBow']
 let oldWeapon;
+let bestWeapon;
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
 const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
@@ -502,7 +503,8 @@ function autoFight() {
 			if (infectedTimer > 0) {sendBytes('DRINK=cureInfectionPotion')}
 			sendBytes('LOOK_FOR_FIGHT');
 			window.autoPoison();
-			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000); 
+			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000);
+			bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
@@ -566,7 +568,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
+					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
@@ -589,7 +591,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
+					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -601,14 +603,17 @@ function autoSpell() {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			}
 		}
-		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')}
+		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {
+			sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')
+			if (ranged.includes(weapon)) {clicksItem(bestWeapon)}
+		}
 		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
 			if (darkMageBottom >= 1 && darkMageHood >= 1 && darkMageTop >= 1) {
 				clicksItem('darkMageHood');
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 1 ? presetWeapon1 : 'poisonSpear'
+					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
