@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.0.1
+// @version      1.5.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -511,8 +511,6 @@ function autoFight() {
 };
 
 /*function scriptedFight() {
-	if (monsterName == robotMage) {
-		 - charge and melee/ranged barrier
 	} else if (monsterName == bloodGolem) {
 		- needs to swap between bearfur and titanium armor
 	} else if (monsterName == bloodDesertLizard2) {
@@ -581,7 +579,7 @@ function autoSpell() {
 		}
 		}
 		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
-			if ((monsterName !== 'robotMage' || robotMageCharge !== 0) && (monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') ||  monsterCharge !== 0)) {
+			if ((monsterName !== 'robotMage' || robotMageCharge !== 0) && (monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') ||  monsterCharge !== 0) && reflectSpellEnemyTimer == 0) {
 				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
 			}
 		}
@@ -786,6 +784,7 @@ function loadUserVars() {
 	if (localStorage.getItem(key)) {
 		scriptVars = JSON.parse(localStorage.getItem(key));
 	}
+	bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
 	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
 		scriptVars.toggleCombatSwap = true
 	}
@@ -860,6 +859,7 @@ function scriptAddTabs() {
 	$(scriptConfBar).insertAfter(miscTab)
 	
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
+		<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
 		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">Chat Box <button onclick="window.clearChat()">Clear</button></div>
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;user-select:text;">
 
@@ -867,7 +867,10 @@ function scriptAddTabs() {
 		<input id="message-body" type="text" maxlength="150" size="100%" onkeydown="window.handleKeyDown(event)" style="margin-top: 5px;">
 		<div style="margin-top: 5px;justify-content: space-between;display: flex;">
 			<button onclick="window.sendChat()">Send</button>
-			<button onclick="window.chatHelp()">HELP</button>
+			<div>
+				<button onclick="window.chatHelp()" style="cursor: pointer;">HELP</button>
+				<button style="cursor: pointer;border: 1px solid black;border-radius: 12px;padding: 2px;" id="emojis">&#128512;</button>
+			</div>
 		</div>
 	</div>`
 	
@@ -2127,6 +2130,13 @@ function scriptAddTabs() {
 	</table>
 	</div>`
 	$(bonemealNeededItem).insertAfter('#item-box-bonemealBin')
+	
+	$("#div-emojis").draggable()
+	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native},maxFrequentRows:1}
+	const picker = new EmojiMart.Picker(pickerOptions)
+	picker.style.height='350px'
+	document.getElementById("div-emojis").appendChild(picker)
+	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker)
 }
 
 function addWikiButton() {
@@ -2549,6 +2559,11 @@ const publishMessage = async (message) => {
 }
 
 setupPubNub();
+
+function toggleEmojiPicker() {
+    var emojiPicker = document.getElementById("div-emojis");
+    emojiPicker.style.display = (emojiPicker.style.display === "none" || emojiPicker.style.display === "") ? "block" : "none";
+}
 
 window.onload = function() {
 	var sortableSeeds = document.getElementById('sortableSeeds');
