@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.1.2
+// @version      1.5.1.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -18,7 +18,7 @@
     'use strict';
 $("head").append('<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js">');
 //Variables
-window.scriptVars = {toggleGlobal:true, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields',toggleautoKnightq:false, scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true}}
+window.scriptVars = {toggleGlobal:true, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields',toggleautoKnightq:false, scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true},chatAutoScroll:true}
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
@@ -801,6 +801,9 @@ function loadUserVars() {
 	if (typeof scriptVars.toggleautoKnightq == 'undefined') {
 		scriptVars.toggleautoKnightq = false
 	}
+	if (typeof scriptVars.chatAutoScroll == 'undefined') {
+		scriptVars.chatAutoScroll = true
+	}
 }
 
 window.autoChangeVar = function(variName,variValue,id) {
@@ -861,7 +864,15 @@ function scriptAddTabs() {
 	
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 		<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
-		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">Chat Box <button onclick="window.clearChat()">Clear</button></div>
+		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">
+			<div>
+				Chat Box 
+				<button onclick="window.autoScroll()" style="cursor: pointer;">
+					Auto Scroll <img src="images/check.png" class="img-tiny" id="scriptAutoScroll">
+				</button>
+			</div>
+			<button onclick="window.clearChat()">Clear</button>
+		</div>
 		<div id="messages" style="border: 1px solid grey;background-color: white;height: 200px;padding-left: 5px;overflow-y: auto;color:black;user-select:text;">
 
 		</div>
@@ -2288,6 +2299,7 @@ function scriptStyleTabs() {
 	document.getElementById('highWindSendToggle').style.color = scriptVars.scriptBoatSend.highWind ? 'green' : 'red';
 	document.getElementById('steamBoatSendToggle').style.color = scriptVars.scriptBoatSend.steamBoat ? 'green' : 'red';
 	document.getElementById('trawlerSendToggle').style.color = scriptVars.scriptBoatSend.trawler ? 'green' : 'red';
+	document.getElementById('scriptAutoScroll').src = scriptVars.chatAutoScroll ? 'images/check.png' :'images/x.png';
 }
 
 function saveOreOrder() {
@@ -2483,6 +2495,11 @@ window.clearChat = function() {
 	document.getElementById('messages').innerHTML = ''
 }
 
+window.autoScroll = function() {
+	scriptVars.chatAutoScroll = !scriptVars.chatAutoScroll;
+	document.getElementById('scriptAutoScroll').src = scriptVars.chatAutoScroll ? 'images/check.png' :'images/x.png';
+}
+
 window.chatHelp = function() {
 	showMessage('Use <b>/help</b> for Chat Bot Commands, <b>!help</b> for hangman commands and <b>img="image-url"</b> to send images','ChatBot')
 }
@@ -2513,7 +2530,7 @@ const showMessage = (msg, sender) => {
         messageContainer.appendChild(message);
         var messageArea = document.getElementById('messages');
         messageArea.appendChild(messageContainer);
-        messageArea.scrollTop = messageArea.scrollHeight;
+        if (scriptVars.chatAutoScroll == true) {messageArea.scrollTop = messageArea.scrollHeight;}
 };
 
 let pubnub;
