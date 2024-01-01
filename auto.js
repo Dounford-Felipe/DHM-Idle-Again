@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.1
+// @version      1.5.1.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
 // @require      https://greasyfork.org/scripts/478182-pubnub-js/code/PubNub%20JS.js?version=1269788
 // @require	     https://update.greasyfork.org/scripts/482500/1297545/Sortable%20JS.js
+// @require      https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js
 // @match        https://dhm.idle-pixel.com/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=greasyfork.org
 // @grant        none
