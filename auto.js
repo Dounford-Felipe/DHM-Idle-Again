@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3.1
+// @version      1.5.3.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -508,7 +508,7 @@ function autoFight() {
 			window.autoPoison();
 			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000);
 			bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
-			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof superPoisonSpear !== 'undefined' ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
+			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 			bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
@@ -790,7 +790,7 @@ function loadUserVars() {
 		scriptVars = JSON.parse(localStorage.getItem(key));
 	}
 	bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
-	bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof superPoisonSpear !== 'undefined' ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
+	bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 	bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
 		scriptVars.toggleCombatSwap = true
