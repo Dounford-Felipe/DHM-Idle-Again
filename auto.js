@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3
+// @version      1.5.3.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -508,7 +508,7 @@ function autoFight() {
 			window.autoPoison();
 			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000);
 			bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
-			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
+			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof superPoisonSpear !== 'undefined' ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 			bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
@@ -527,7 +527,7 @@ function autoFight() {
 
 window.autoPoison = function() {
 	if (bestPoison !== '' && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) {
-		clicksItem('poisonSpear')
+		clicksItem(bestPoison)
 		const poisonInterval = setInterval(function(){
 			if (poisonEnemyTimer == 1) {
 				clicksItem(presetWeapon1);
@@ -571,7 +571,7 @@ function autoSpell() {
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? bestPoison : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
@@ -594,7 +594,7 @@ function autoSpell() {
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? bestPoison : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -616,7 +616,7 @@ function autoSpell() {
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? bestPoison : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
@@ -790,7 +790,7 @@ function loadUserVars() {
 		scriptVars = JSON.parse(localStorage.getItem(key));
 	}
 	bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
-	bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
+	bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof superPoisonSpear !== 'undefined' ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 	bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
 		scriptVars.toggleCombatSwap = true
