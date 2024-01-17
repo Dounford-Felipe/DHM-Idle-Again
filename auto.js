@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.1.3
+// @version      1.5.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -522,7 +522,7 @@ function autoFight() {
 }*/
 
 window.autoPoison = function() {
-	if (typeof poisonSpear !== 'undefined') {
+	if (typeof poisonSpear !== 'undefined' && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) {
 		clicksItem('poisonSpear')
 		const poisonInterval = setInterval(function(){
 			if (poisonEnemyTimer == 1) {
@@ -567,7 +567,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
@@ -590,7 +590,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -612,7 +612,7 @@ function autoSpell() {
 				clicksItem('darkMageTop');
 				clicksItem('darkMageBottom');
 				if (staff >= 1) {
-					oldWeapon = poisonEnemyTimer == 0 ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
+					oldWeapon = poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0) ? 'poisonSpear' : lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1) ? bestWeapon : presetWeapon1
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
