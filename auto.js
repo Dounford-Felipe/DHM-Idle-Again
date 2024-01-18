@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3.3
+// @version      1.5.3.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -32,7 +32,7 @@ let bestWeapon;
 let bestPoison = '';
 let bestMage = '';
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
-const cookableFood = ['rawShrimp', 'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
+const cookableFood = ['rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
 const oldHideAllTabs = hideAllTabs
 const blockedHTML = ['<iframe','<button','<script','<html','<link','<div','<footer','onclick','<object','<embed','<form','<meta','onmouseover','onmouseout','onmousemove','<input','<applet','javascript:']
 const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav")
