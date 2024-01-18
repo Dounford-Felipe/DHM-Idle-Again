@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3.4
+// @version      1.5.4
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -981,6 +981,15 @@ function scriptAddTabs() {
         <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
         <td style="text-align:right;padding-right:20px;width:100%">AUTO LOGIN</td>
       </tr>
+    </tbody>
+  </table>
+  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+    <tbody>
+      <tr id="scriptExportImport" style="cursor: pointer;color: white;text-align: center;">
+        <td style="padding-right:20px;border-right: 1px solid white;" onclick="scriptExportConfig()">EXPORT CONFIG</td>
+      <td id="scriptImportConfig">IMPORT CONFIG</td>
+	  <td style="display:none;"><input type="file" id="saveInput"></td>
+	  </tr>
     </tbody>
   </table>
 </div>`
@@ -2155,6 +2164,9 @@ function scriptAddTabs() {
 	picker.style.height='350px'
 	document.getElementById("div-emojis").appendChild(picker)
 	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker)
+	document.getElementById('scriptImportConfig').addEventListener('click', function () {
+		document.getElementById('saveInput').click();
+	});
 }
 
 function addWikiButton() {
@@ -2177,7 +2189,7 @@ function addWikiButton() {
 	}
 }
 
-function scriptStyleTabs() {
+window.scriptStyleTabs = function () {
 	document.getElementById('scriptGlobalToggle').style.color = scriptVars.toggleGlobal ? 'green' : 'red';
 	document.getElementById('scriptLoginToggle').style.color = JSON.parse(localStorage.getItem('autoLogin')) ? 'green' : 'red';
 	document.getElementById('scriptGeodeToggle').style.color = scriptVars.toggleGeodeOpen ? 'green' : 'red';
@@ -2324,7 +2336,7 @@ function saveOreOrder() {
   localStorage.setItem(key, JSON.stringify(oreOrder));
 }
 
-function loadOreOrder() {
+window.loadOreOrder = function () {
   let key = `idleAgain-oreOrder${window.username}`;
   var oreOrderData = localStorage.getItem(key);
 
@@ -2361,7 +2373,7 @@ function saveSeedOrder() {
   localStorage.setItem(key, JSON.stringify(seedOrder));
 }
 
-function loadSeedOrder() {
+window.loadSeedOrder = function () {
   let key = `idleAgain-seedOrder${window.username}`;
   var seedOrderData = localStorage.getItem(key);
 
@@ -2409,7 +2421,7 @@ window.savePotions = function() {
   localStorage.setItem(key, JSON.stringify(potionState));
 }
 
-function loadPotions() {
+window.loadPotions = function () {
   let key = `idleAgain-potionState${window.username}`;
   var potionState = localStorage.getItem(key);
 
@@ -2429,6 +2441,19 @@ function loadPotions() {
       brewCheckbox.checked = isBrewChecked;
     }
   }
+}
+
+window.scriptExportConfig = function () {
+	let saveData = '';
+	saveData += JSON.stringify(scriptVars) + ',,,';
+	saveData += localStorage.getItem(`idleAgain-oreOrder${window.username}`) !== null ? localStorage.getItem(`idleAgain-oreOrder${window.username}`) + ',,,' : 'empty,,,';
+	saveData += localStorage.getItem(`idleAgain-potionState${window.username}`) !== null ? localStorage.getItem(`idleAgain-potionState${window.username}`) + ',,,' : 'empty,,,';	
+	saveData += localStorage.getItem(`idleAgain-seedOrder${window.username}`) !== null ? localStorage.getItem(`idleAgain-seedOrder${window.username}`) : 'empty';
+	var a = document.createElement("a");
+    var file = new Blob([saveData], {type: 'text/plain'});
+    a.href = URL.createObjectURL(file);
+    a.download = 'IdleAgain-' + username;
+    a.click();
 }
 
 window.monsterOptions = function(monsterArea) {
@@ -2657,6 +2682,30 @@ function onLogin() {
 	loadPotions();
 	localStorage.setItem('lastLogin',username);
 }
+
+document.getElementById('saveInput').addEventListener('change', function () {
+	var fileInput = this;
+	if (fileInput.files.length > 0) {
+		var file = fileInput.files[0];
+		var reader = new FileReader();
+		reader.readAsText(file);
+		
+		reader.onload = function (e) {
+			var importedData = e.target.result;
+
+			importedData = importedData.split(',,,');
+			scriptVars = JSON.parse(importedData[0]);
+			scriptStyleTabs()
+			localStorage.setItem(`idleAgain-${window.username}`, JSON.stringify(scriptVars));
+			localStorage.setItem(`idleAgain-oreOrder${window.username}`, importedData[1]);
+			loadOreOrder();
+			localStorage.setItem(`idleAgain-potionState${window.username}`, importedData[2]);
+			loadPotions();
+			localStorage.setItem(`idleAgain-seedOrder${window.username}`, importedData[3]);
+			loadSeedOrder();
+		};
+	}
+});
 
 function handleKeyDown2(event) {
   if (event.keyCode === 13) {
