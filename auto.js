@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4
+// @version      1.5.4.1
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -579,6 +579,10 @@ function autoSpell() {
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
 				clicksItem(oldWeapon);
+				if (weapon == 'staff') {
+					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+					clicksItem(oldWeapon);
+				}
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=fireSpell')
 		}
@@ -602,6 +606,10 @@ function autoSpell() {
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
 				clicksItem(oldWeapon);
+				if (weapon == 'staff') {
+					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+					clicksItem(oldWeapon);
+				}
 			} else {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			}
@@ -624,6 +632,10 @@ function autoSpell() {
 				clicksItem(presetBody1);
 				clicksItem(presetLeg1);
 				clicksItem(oldWeapon);
+				if (weapon == 'staff') {
+					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+					clicksItem(oldWeapon);
+				}
 		} else {
 			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 		}
