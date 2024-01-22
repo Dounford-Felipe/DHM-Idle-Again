@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4.2
+// @version      1.5.4.3
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -575,12 +575,9 @@ function autoSpell() {
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
-				if (monsterName == 'bloodGolem') {
-					if (golem)
-						clicksItem(presetHead1);
-						clicksItem(presetBody1);
-						clicksItem(presetLeg1);
-				}
+				clicksItem(presetHead1);
+				clicksItem(presetBody1);
+				clicksItem(presetLeg1);
 				clicksItem(oldWeapon);
 				if (weapon == 'staff') {
 					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
