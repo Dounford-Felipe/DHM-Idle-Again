@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4.1
+// @version      1.5.4.2
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -495,6 +495,9 @@ function autoExplore() {
 		const min = date.getMinutes();
 		console.log('['+hour+':'+min+'] '+scriptAreaLocal)
 		if (scriptVars.toggleShiny == true || scriptVars.toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
+		bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
+		bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
+		bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 	}
 }
 
@@ -507,9 +510,6 @@ function autoFight() {
 			sendBytes('LOOK_FOR_FIGHT');
 			window.autoPoison();
 			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000);
-			bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
-			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
-			bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 		};
 		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
 	};
@@ -575,9 +575,12 @@ function autoSpell() {
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
-				clicksItem(presetHead1);
-				clicksItem(presetBody1);
-				clicksItem(presetLeg1);
+				if (monsterName == 'bloodGolem') {
+					if (golem)
+						clicksItem(presetHead1);
+						clicksItem(presetBody1);
+						clicksItem(presetLeg1);
+				}
 				clicksItem(oldWeapon);
 				if (weapon == 'staff') {
 					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
