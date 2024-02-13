@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4.4
+// @version      1.5.4.5
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -567,6 +567,9 @@ function autoSpell() {
 	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (bestMage != '') {
+				let oldHead = head
+				let oldBody = body
+				let oldLeg = leg
 				clicksItem(bestMage+'Hood');
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
@@ -575,9 +578,15 @@ function autoSpell() {
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
-				clicksItem(presetHead1);
-				clicksItem(presetBody1);
-				clicksItem(presetLeg1);
+				if (monsterName == 'bloodGolem') {
+					clicksItem(oldHead);
+					clicksItem(oldBody);
+					clicksItem(oldLeg);
+				} else {
+					clicksItem(presetHead1);
+					clicksItem(presetBody1);
+					clicksItem(presetLeg1);
+				}
 				clicksItem(oldWeapon);
 				if (weapon == 'staff') {
 					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
@@ -594,6 +603,9 @@ function autoSpell() {
 		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (bestMage != '') {
+				let oldHead = head
+				let oldBody = body
+				let oldLeg = leg
 				clicksItem(bestMage+'Hood');
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
@@ -602,9 +614,15 @@ function autoSpell() {
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-				clicksItem(presetHead1);
-				clicksItem(presetBody1);
-				clicksItem(presetLeg1);
+				if (monsterName == 'bloodGolem') {
+					clicksItem(oldHead);
+					clicksItem(oldBody);
+					clicksItem(oldLeg);
+				} else {
+					clicksItem(presetHead1);
+					clicksItem(presetBody1);
+					clicksItem(presetLeg1);
+				}
 				clicksItem(oldWeapon);
 				if (weapon == 'staff') {
 					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
@@ -618,27 +636,38 @@ function autoSpell() {
 			sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')
 			if (ranged.includes(weapon)) {clicksItem(bestWeapon)}
 		}
-		if (monsterName !== 'none' && sandstormSpell == 1 && sandstormSpellCooldown == 0) {
-			if (bestMage != '') {
-				clicksItem(bestMage+'Hood');
-				clicksItem(bestMage+'Top');
-				clicksItem(bestMage+'Bottom');
-				if (staff >= 1) {
-					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
-					clicksItem('staff');
-				}
-				sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
-				clicksItem(presetHead1);
-				clicksItem(presetBody1);
-				clicksItem(presetLeg1);
-				clicksItem(oldWeapon);
-				if (weapon == 'staff') {
-					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+		if (monsterName !== 'none' && sandstormSpell == 1 && typeof sandstormSpellCooldown !== 'undefined') {
+			if (sandstormSpellCooldown == 0) {
+				if (bestMage != '') {
+					let oldHead = head
+					let oldBody = body
+					let oldLeg = leg
+					clicksItem(bestMage+'Hood');
+					clicksItem(bestMage+'Top');
+					clicksItem(bestMage+'Bottom');
+					if (staff >= 1) {
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						clicksItem('staff');
+					}
+					sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
+					if (monsterName == 'bloodGolem') {
+						clicksItem(oldHead);
+						clicksItem(oldBody);
+						clicksItem(oldLeg);
+					} else {
+						clicksItem(presetHead1);
+						clicksItem(presetBody1);
+						clicksItem(presetLeg1);
+					}
 					clicksItem(oldWeapon);
+					if (weapon == 'staff') {
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						clicksItem(oldWeapon);
+					}
+				} else {
+					sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 				}
-		} else {
-			sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
-		}
+			}
 		}
 	}
 }
