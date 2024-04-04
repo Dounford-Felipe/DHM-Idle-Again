@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4.8
+// @version      1.5.4.9
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
@@ -19,9 +19,9 @@
 
 (function () {
     'use strict';
-$("head").append('<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js">');
+document.head.insertAdjacentHTML('beforeend', '<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js">');
 //Variables
-window.scriptVars = {toggleGlobal:false, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields',toggleautoKnightq:false, scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true},chatAutoScroll:true};
+window.scriptVars = {toggleGlobal:false, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields', scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true},chatAutoScroll:true};
 //Const
 const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000};
 const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23};
@@ -784,15 +784,6 @@ function autoArtifact() {
 	}
 }
 
-function autoKnightq() {
-if (teleportSpellCooldown == 0) {
-    sendBytes('QUEST=knightsQuest~0');
-    setTimeout(function () {
-		sendBytes('CAST_COMBAT_SPELL=teleportSpell');
-    }, 1000);
-   }
-}
-
 window.cookAll = function() {
     for (let i = 0; i < cookableFood.length; i++) {
       if (window[cookableFood[i]] > 0) {sendBytes('COOK='+cookableFood[i]+'~'+window[cookableFood[i]]);}
@@ -872,9 +863,6 @@ function loadUserVars() {
 	if (typeof scriptVars.scriptStrength == 'undefined') {
 		scriptVars.scriptStrength = {fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true};
 	}
-	if (typeof scriptVars.toggleautoKnightq == 'undefined') {
-		scriptVars.toggleautoKnightq = false;
-	}
 	if (typeof scriptVars.chatAutoScroll == 'undefined') {
 		scriptVars.chatAutoScroll = true;
 	}
@@ -925,6 +913,36 @@ window.toggleAutoLogin = function() {
 };
 
 function scriptAddTabs() {
+	let style = document.createElement('style');
+	style.innerHTML = `
+		.idleAgainConfTable {
+			cursor: pointer;
+			border: 1px solid grey;
+			border-radius: 6px;
+			margin: 10px 7px;
+			background: #1a1a1a;
+			font-size: 32px;
+		}
+		.idleAgainConfTd {
+			text-align:right;
+			padding-right:20px;
+			width:100%;
+		}
+		.idleAgainSortables {
+			border-radius: 6px;
+			background: #1a1a1a;
+			color: white;
+			justify-content: space-between;
+			display: flex;
+		}
+		.sortableItem {
+			border-radius: 6px;
+			background: #1a1a1a !important;
+			color: white !important;
+			justify-content: space-between;
+			display: flex;
+		}`;
+	document.head.appendChild(style);
 	let miscTab = document.querySelectorAll("#tab-misc > .main-button")[2];
 	let scriptConfBar = `<div onclick="navigate('scriptConfig')" class="main-button" style="cursor: pointer;">
 <table>
@@ -934,13 +952,13 @@ function scriptAddTabs() {
 	</tr>
 </tbody></table>
 </div>`;
-	$(scriptConfBar).insertAfter(miscTab);
-
+	miscTab.insertAdjacentHTML('afterend', scriptConfBar);
+	
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 		<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
 		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">
 			<div>
-				Chat Box
+				Chat Box 
 				<button onclick="window.autoScroll()" style="cursor: pointer;">
 					Auto Scroll <img src="images/check.png" class="img-tiny" id="scriptAutoScroll">
 				</button>
@@ -958,8 +976,8 @@ function scriptAddTabs() {
 				<button style="cursor: pointer;border: 1px solid black;border-radius: 12px;padding: 2px;" id="emojis">&#128512;</button>
 			</div>
 		</div>
-	</div>`;
-
+	</div>`
+	
 	let scriptConfTab = `<div id="tab-scriptConfig" style="display:none">
   <div class="main-button-lighter">
     <table>
@@ -971,87 +989,87 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptGlobalToggle" onclick="window.autoChangeVar('toggleGlobal',!scriptVars.toggleGlobal,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SCRIPT TOGGLE</td>
+        <td class="idleAgainConfTd">SCRIPT TOGGLE</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptMiningTogglesBar" onclick="navigate('scriptConfigMining')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/miningSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">MINING TOGGLES</td>
+        <td class="idleAgainConfTd">MINING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptCraftingTogglesBar" onclick="navigate('scriptConfigCrafting')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/craftingSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">CRAFTING TOGGLES</td>
+        <td class="idleAgainConfTd">CRAFTING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptWoodcuttingTogglesBar" onclick="navigate('scriptConfigWoodcutting')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/woodcuttingSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">WOODCUTTING TOGGLES</td>
+        <td class="idleAgainConfTd">WOODCUTTING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFarmingTogglesBar" onclick="navigate('scriptConfigFarming')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/farmingSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">FARMING TOGGLES</td>
+        <td class="idleAgainConfTd">FARMING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBrewingTogglesBar" onclick="navigate('scriptConfigBrewing')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/brewingSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">BREWING TOGGLES</td>
+        <td class="idleAgainConfTd">BREWING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptExploringTogglesBar" onclick="navigate('scriptConfigExploring')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/exploringSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">EXPLORING TOGGLES</td>
+        <td class="idleAgainConfTd">EXPLORING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptCookingTogglesBar" onclick="navigate('scriptConfigCooking')" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/cookingSkill.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">COOKING TOGGLES</td>
+        <td class="idleAgainConfTd">COOKING TOGGLES</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptCityUnlock" onclick="if(isMayor == 0) {window.autoCityUnlock();console.log('City Unlocked')}" style="cursor: pointer; color: white;">
         <td style="padding-left: 10px;"><img src="images/mayorsHouse.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">CITY UNLOCK</td>
+        <td class="idleAgainConfTd">CITY UNLOCK</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptLoginToggle" onclick="window.toggleAutoLogin()" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/whiteGear.png" class="img-medium"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">AUTO LOGIN</td>
+        <td class="idleAgainConfTd">AUTO LOGIN</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptExportImport" style="cursor: pointer;color: white;text-align: center;">
         <td style="padding-right:20px;border-right: 1px solid white;" onclick="scriptExportConfig()">EXPORT CONFIG</td>
@@ -1060,7 +1078,7 @@ function scriptAddTabs() {
 	  </tr>
     </tbody>
   </table>
-</div>`;
+</div>`
 
 
 	let scriptConfMiningTab  = `<div id="tab-scriptConfigMining" style="display:none">
@@ -1074,35 +1092,35 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptGeodeToggle" onclick="window.autoChangeVar('toggleGeodeOpen',!scriptVars.toggleGeodeOpen,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/geode5.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">GEODE OPENING</td>
+        <td class="idleAgainConfTd">GEODE OPENING</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptMineralToggle" onclick="window.autoChangeVar('toggleMineralIdentify',!scriptVars.toggleMineralIdentify,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/tanzaniteMineral.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">MINERAL IDENTIFY</td>
+        <td class="idleAgainConfTd">MINERAL IDENTIFY</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptNecklaceToggle" onclick="window.autoChangeVar('toggleNecklaceCharge',!scriptVars.toggleNecklaceCharge,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/mineralNecklace.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">NECKLACE CHARGE</td>
+        <td class="idleAgainConfTd">NECKLACE CHARGE</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptTrainToggle" onclick="window.autoChangeVar('toggleTrain',!scriptVars.toggleTrain,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/train.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">TRAIN</td>
+        <td class="idleAgainConfTd">TRAIN</td>
       </tr>
     </tbody>
   </table>
@@ -1119,15 +1137,15 @@ function scriptAddTabs() {
             <option value="5">5</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">TRAINS TO SEND</td>
+        <td class="idleAgainConfTd">TRAINS TO SEND</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptRocketToggle" onclick="window.autoChangeVar('toggleRocket',!scriptVars.toggleRocket,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/rocket.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">ROCKET</td>
+        <td class="idleAgainConfTd">ROCKET</td>
       </tr>
     </tbody>
   </table>
@@ -1142,11 +1160,11 @@ function scriptAddTabs() {
             <option value="Sun">Sun</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">ROCKET DESTINATION</td>
+        <td class="idleAgainConfTd">ROCKET DESTINATION</td>
       </tr>
     </tbody>
   </table>
-</div>`;
+</div>`
 
 	let scriptConfCraftingTab = `<div id="tab-scriptConfigCrafting" style="display:none">
   <div class="main-button-lighter">
@@ -1159,11 +1177,11 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptSmeltingToggle" onclick="window.autoChangeVar('toggleSmelting',!scriptVars.toggleSmelting,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/ancientFurnace.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SMELTING</td>
+        <td class="idleAgainConfTd">SMELTING</td>
       </tr>
     </tbody>
   </table>
@@ -1190,11 +1208,11 @@ function scriptAddTabs() {
       <img src="images/ancientBars.png" class="img-small" style="padding-right: 10px;">Ancient Bar<input type="number" class="oreMinimum" min="1" placeholder="Minimum to Smelt" value="1">
     </li>
   </ol>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptRefinaryToggle" onclick="window.autoChangeVar('toggleRefinary',!scriptVars.toggleRefinary,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goldBarRefinery.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">REFINARY</td>
+        <td class="idleAgainConfTd">REFINARY</td>
       </tr>
     </tbody>
   </table>
@@ -1208,15 +1226,15 @@ function scriptAddTabs() {
             <option value="promethium">Promethium</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">REFINARY BAR</td>
+        <td class="idleAgainConfTd">REFINARY BAR</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFoundryToggle" onclick="window.autoChangeVar('toggleCharcoal',!scriptVars.toggleCharcoal,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/charcoalFoundry.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">CHARCOAL FOUNDRY</td>
+        <td class="idleAgainConfTd">CHARCOAL FOUNDRY</td>
       </tr>
     </tbody>
   </table>
@@ -1240,11 +1258,11 @@ function scriptAddTabs() {
             <option value="magicLogs">Magic Logs</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">CHARCOAL LOG</td>
+        <td class="idleAgainConfTd">CHARCOAL LOG</td>
       </tr>
     </tbody>
   </table>
-</div>`;
+</div>`
 
 	let scriptConfWoodcuttingTab = `<div id="tab-scriptConfigWoodcutting" style="display:none">
   <div class="main-button-lighter">
@@ -1257,11 +1275,11 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptLumberToggle" onclick="window.autoChangeVar('toggleWoodcutting',!scriptVars.toggleWoodcutting,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/lumberjack.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">LUMBERJACK</td>
+        <td class="idleAgainConfTd">LUMBERJACK</td>
       </tr>
     </tbody>
   </table>
@@ -1337,7 +1355,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`;
+</div>`
 
 	let scriptConfFarmingTab = `<div id="tab-scriptConfigFarming" style="display:none">
   <div class="main-button-lighter">
@@ -1350,11 +1368,11 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFarmingToggle" onclick="window.autoChangeVar('toggleFarming',!scriptVars.toggleFarming,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/farmer.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">HARVEST AND PLANT</td>
+        <td class="idleAgainConfTd">HARVEST AND PLANT</td>
       </tr>
     </tbody>
   </table>
@@ -1362,15 +1380,15 @@ function scriptAddTabs() {
     <tbody>
       <tr id="scriptSeedToggleBar" onclick="navigate('scriptConfigSeeds')" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/goldLeafSeeds.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SEED SELECTOR</td>
+        <td class="idleAgainConfTd">SEED SELECTOR</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBonesToggle" onclick="window.autoChangeVar('toggleBones',!scriptVars.toggleBones,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bonemealBin.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">BONEMEAL</td>
+        <td class="idleAgainConfTd">BONEMEAL</td>
       </tr>
     </tbody>
   </table>
@@ -1402,11 +1420,11 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFertilizeToggle" onclick="window.autoChangeVar('toggleFertilize',!scriptVars.toggleFertilize,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/fertilizeSoilPotion.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">FERTILIZE</td>
+        <td class="idleAgainConfTd">FERTILIZE</td>
       </tr>
     </tbody>
   </table>
@@ -1447,7 +1465,7 @@ function scriptAddTabs() {
         <td style="text-align: center;width: 40%">STRIPED CRYSTAL LEAF FERTILIZE</td>
       </tr></tbody>
   </table>
-</div>`;
+</div>`
 
 	let scriptConfSeedsTab = `<div id="tab-scriptConfigSeeds" style="display:none">
   <div class="main-button-lighter">
@@ -1471,90 +1489,8 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-  <ol id="sortableSeeds" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;">
-    <li class="ui-state-default" value="redMushroomSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Red Mushroom Seeds<img src="images/redMushroomSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="dottedGreenLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Dotted Green Leaf Seeds<img src="images/dottedGreenLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="greenLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Green Leaf Seeds<img src="images/greenLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="limeLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Lime Leaf Seeds<img src="images/limeLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="goldLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Gold Leaf Seeds<img src="images/goldLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="crystalLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Crystal Leaf Seeds<img src="images/crystalLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="stripedGreenLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Striped Green Leaf Seeds<img src="images/stripedGreenLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="stripedGoldLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Striped Gold Leaf Seeds<img src="images/stripedGoldLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="stripedCrystalLeafSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Striped Crystal Leaf Seeds<img src="images/stripedCrystalLeafSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="treeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Tree Seeds<img src="images/treeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="oakTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Oak Tree Seeds<img src="images/oakTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="willowTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Willow Tree Seeds<img src="images/willowTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="mapleTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Maple Tree Seeds<img src="images/mapleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="redwoodTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Redwood Tree Seeds<img src="images/redwoodTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="pineTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Pine Tree Seeds<img src="images/pineTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="hauntedTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Haunted Tree Seeds<img src="images/hauntedTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="jungleTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Jungle Tree Seeds<img src="images/jungleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="lavaTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Lava Tree Seeds<img src="images/lavaTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="goldTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Gold Tree Seeds<img src="images/goldTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="magicTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Magic Tree Seeds<img src="images/magicTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="appleTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Apple Tree Seeds<img src="images/appleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="cactusTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Cactus Tree Seeds<img src="images/cactusTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="bananaTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Banana Tree Seeds<img src="images/bananaTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="palmTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Palm Tree Seeds<img src="images/palmTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="pineappleTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Pineapple Tree Seeds<img src="images/pineappleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="starfruitTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Starfruit Tree Seeds<img src="images/starfruitTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-    <li class="ui-state-default" value="goldAppleTreeSeeds" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="seed-checkbox"> Gold Apple Tree Seeds<img src="images/goldAppleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
-    </li>
-  </ol>
-</div>`;
+  <ol id="sortableSeeds" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;"></ol>
+</div>`
 
 	let scriptConfBrewingTab = `<div id="tab-scriptConfigBrewing" style="display:none">
   <div class="main-button-lighter">
@@ -1567,19 +1503,19 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptDrinkToggle" onclick="window.autoChangeVar('toggleDrink',!scriptVars.toggleDrink,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/diamondBrewingKit.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">POTION DRINK</td>
+        <td class="idleAgainConfTd">POTION DRINK</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBrewToggle" onclick="window.autoChangeVar('toggleBrew',!scriptVars.toggleBrew,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goldLeaf.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">POTION BREW</td>
+        <td class="idleAgainConfTd">POTION BREW</td>
       </tr>
     </tbody>
   </table>
@@ -1587,15 +1523,15 @@ function scriptAddTabs() {
     <tbody>
       <tr id="scriptPotionToggleBar" onclick="navigate('scriptConfigPotions')" style="color: white;">
         <td style="padding-left: 10px;"><img src="images/researchSpeedPotion.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">POTION SELECTOR</td>
+        <td class="idleAgainConfTd">POTION SELECTOR</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptTreeUpgradeToggle" onclick="window.autoChangeVar('toggleTreeUpgrade',!scriptVars.toggleTreeUpgrade,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/woodcuttingUpgradePotion.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">TREE UPGRADE POTION</td>
+        <td class="idleAgainConfTd">TREE UPGRADE POTION</td>
       </tr>
     </tbody>
   </table>
@@ -1675,168 +1611,46 @@ function scriptAddTabs() {
 	<thead>
 		<th style="color: white;"><img src="images/strengthCombatPotion.png" class="img-small"> STRENGTH POTION</th>
 	</thead>
-    <tbody>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','fields',!scriptVars.scriptStrength.fields,this.id)" id="fieldsStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/fields.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Fields</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','forests',!scriptVars.scriptStrength.forests,this.id)" id="forestsStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/forests.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Forests</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','caves',!scriptVars.scriptStrength.caves,this.id)" id="cavesStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/caves.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Caves</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','volcano',!scriptVars.scriptStrength.volcano,this.id)" id="volcanoStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/volcano.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Volcano</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','northernFields',!scriptVars.scriptStrength.northernFields,this.id)" id="northernFieldsStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/northernFields.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Northern Fields</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','hauntedMansion',!scriptVars.scriptStrength.hauntedMansion,this.id)" id="hauntedMansionStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedMansion.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Haunted Mansion</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','desert',!scriptVars.scriptStrength.desert,this.id)" id="desertStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/desert.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Desert</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','ocean',!scriptVars.scriptStrength.ocean,this.id)" id="oceanStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/ocean.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Ocean</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','jungle',!scriptVars.scriptStrength.jungle,this.id)" id="jungleStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/jungle.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Jungle</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','dungeonEntrance',!scriptVars.scriptStrength.dungeonEntrance,this.id)" id="dungeonEntranceStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/dungeonEntrance.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Dungeon Entrance</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','dungeon',!scriptVars.scriptStrength.dungeon,this.id)" id="dungeonStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/dungeon.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Dungeon</td>
-      </tr>
-      <tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','castle',!scriptVars.scriptStrength.castle,this.id)" id="castleStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/castle.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Castle</td>
-      </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','cemetery',!scriptVars.scriptStrength.cemetery,this.id)" id="cemeteryStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/cemetery.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Cemetery</td>
-      </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','factory',!scriptVars.scriptStrength.factory,this.id)" id="factoryStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/factory.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Factory</td>
-      </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','hauntedWoods',!scriptVars.scriptStrength.hauntedWoods,this.id)" id="hauntedWoodsStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/hauntedWoods.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Haunted Woods</td>
-      </tr>
-      <tr style="display: inline-block; color: green; width: 50%;" onclick="window.autoChangeObject('scriptStrength','deepOcean',!scriptVars.scriptStrength.deepOcean,this.id)" id="deepOceanStrengthToggle">
-        <td style="padding-left: 10px;width: 5%;"><img src="images/deepOcean.png" class="img-small"></td>
-        <td style="text-align: center;width: 40%">Deep Ocean</td>
-      </tr>
-    </tbody>
+    <tbody id="strengthTableBody"></tbody>
   </table>
-</div>`;
+</div>`
 
 	let scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
   <div class="main-button-lighter">
-    <table>
-      <tbody>
-        <tr onclick="navigate('scriptConfigBrewing');playPreviousMenuSound();" style="cursor: pointer;">
-          <td><img src="images/back.png" class="img-small"></td>
-          <td class="back-label">BACK</td>
-        </tr>
-      </tbody>
-    </table>
+	<table>
+	  <tbody>
+		<tr onclick="navigate('scriptConfigBrewing');playPreviousMenuSound();" style="cursor: pointer;">
+		  <td><img src="images/back.png" class="img-small"></td>
+		  <td class="back-label">BACK</td>
+		</tr>
+	  </tbody>
+	</table>
   </div>
   <table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
-    <tbody>
-      <tr id="scriptPotionsInfo" style="color: white;">
-        <td style="padding-left: 10px;"></td>
-        <td style="text-align: center;padding-right:20px;width: 100%;">IT WILL ONLY BREW IF DRINK IS ALSO SELECTED AND DOES NOT CHECK THE INGREDIENTS</td>
-      </tr>
-    </tbody>
+	<tbody>
+	  <tr id="scriptPotionsInfo" style="color: white;">
+		<td style="padding-left: 10px;"></td>
+		<td style="text-align: center;padding-right:20px;width: 100%;">IT WILL ONLY BREW IF DRINK IS ALSO SELECTED AND DOES NOT CHECK THE INGREDIENTS</td>
+	  </tr>
+	</tbody>
   </table>
   <div class="ui-state-default" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;margin: 10px;font-size: 25px;">
-    <p style="
-      margin-top: 0px;
-      margin-bottom: 0px;
-      padding-left: 10px;
-      ">DRINK</p>
-    <p style="
-      margin-top: 0px;
-      margin-bottom: 0px;
-      padding-left: 0px;
-      padding-right: 10px;
-      ">BREW</p>
+	<p style="
+	  margin-top: 0px;
+	  margin-bottom: 0px;
+	  padding-left: 10px;
+	  ">DRINK</p>
+	<p style="
+	  margin-top: 0px;
+	  margin-bottom: 0px;
+	  padding-left: 0px;
+	  padding-right: 10px;
+	  ">BREW</p>
   </div>
   <ol id="sortablePotions" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;">
-    <li class="ui-state-default" value="furnaceSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FURNACE SPEED POTION<img src="images/furnaceSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="seedFinderPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">SEED FINDER POTION<img src="images/seedFinderPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="compostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">COMPOST POTION<img src="images/compostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="treeCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">TREE COMPOST POTION<img src="images/treeCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="fishingSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FISHING SPEED POTION<img src="images/fishingSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="woodcuttingXpPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">WOODCUTTING XP POTION<img src="images/woodcuttingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="exploringSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">EXPLORER SPEED POTION<img src="images/exploringSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="baitPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">BAIT POTION<img src="images/baitPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="farmingXpPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FARMING XP POTION<img src="images/farmingXpPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="fastCompostPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FAST COMPOST POTION<img src="images/fastCompostPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="oilPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">OIL POTION<img src="images/oilPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="coinPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">COIN POTION<img src="images/coinPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="piratesPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">PIRATES POTION<img src="images/piratesPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="promethiumPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">PROMETHIUM POTION<img src="images/promethiumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="rocketSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">ROCKET SPEED POTION<img src="images/rocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="fruitTreePotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">FRUIT TREE POTION<img src="images/fruitTreePotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="titaniumPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">TITANIUM POTION<img src="images/titaniumPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="researchSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">RESEARCH SPEED POTION<img src="images/researchSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
-    <li class="ui-state-default" value="superRocketSpeedPotion" style="border-radius: 6px;background: #1a1a1a;color: white;justify-content: space-between;display: flex;">
-      <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">SUPER ROCKET SPEED POTION<img src="images/superRocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
-    </li>
   </ol>
-</div>`;
-
+</div>`
+	
 	let scriptConfExploringTab = `<div id="tab-scriptConfigExploring" style="display:none">
   <div class="main-button-lighter">
     <table>
@@ -1848,11 +1662,11 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptExploreToggle" onclick="window.autoChangeVar('toggleExplore',!scriptVars.toggleExplore,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/explorer.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">EXPLORER</td>
+        <td class="idleAgainConfTd">EXPLORER</td>
       </tr>
     </tbody>
   </table>
@@ -1880,23 +1694,23 @@ function scriptAddTabs() {
             <option value="deepOcean">Deep Ocean</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">EXPLORER AREA</td>
+        <td class="idleAgainConfTd">EXPLORER AREA</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFightToggle" onclick="window.autoChangeVar('toggleFight',!scriptVars.toggleFight,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/combat.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">FIGHT</td>
+        <td class="idleAgainConfTd">FIGHT</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptResetToggle" onclick="window.autoChangeVar('toggleResetFight',!scriptVars.toggleResetFight,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/resetFightingPotion.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">RESET POTION</td>
+        <td class="idleAgainConfTd">RESET POTION</td>
       </tr>
     </tbody>
   </table>
@@ -1968,11 +1782,11 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptMonsterFindToggle" onclick="window.autoChangeVar('toggleMonsterFind',!scriptVars.toggleMonsterFind,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/skeletonMonster.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SEARCH FOR MONSTER</td>
+        <td class="idleAgainConfTd">SEARCH FOR MONSTER</td>
       </tr>
     </tbody>
   </table>
@@ -1983,55 +1797,55 @@ function scriptAddTabs() {
         <td style="padding-left: 50px;"><select name="scriptMonsterOptions" onchange="window.autoChangeVar('scriptMonster',this.value)" id="scriptMonsterOptions">
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">MONSTER TO SEARCH</td>
+        <td class="idleAgainConfTd">MONSTER TO SEARCH</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptShinyToggle" onclick="window.autoChangeVar('toggleShiny',!scriptVars.toggleShiny,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/shiny.gif" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SHINY/GEM GOBLIN HUNT</td>
+        <td class="idleAgainConfTd">SHINY/GEM GOBLIN HUNT</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptSpellToggle" onclick="window.autoChangeVar('toggleSpell',!scriptVars.toggleSpell,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/fireSpell.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">SPELL</td>
+        <td class="idleAgainConfTd">SPELL</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptCombatPotionToggle" onclick="window.autoChangeVar('toggleCombatPotion',!scriptVars.toggleCombatPotion,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/ghostScanCombatPotion.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">COMBAT POTION</td>
+        <td class="idleAgainConfTd">COMBAT POTION</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptHealToggle" onclick="window.autoChangeVar('toggleHeal',!scriptVars.toggleHeal,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/autoTickHeal.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">TICK HEAL</td>
+        <td class="idleAgainConfTd">TICK HEAL</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBloodMoonToggle" onclick="window.autoChangeVar('toggleBM',!scriptVars.toggleBM,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bloodMoonIcon.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">BLOOD MOON</td>
+        <td class="idleAgainConfTd">BLOOD MOON</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptCousinToggle" onclick="window.autoChangeVar('toggleCousin',!scriptVars.toggleCousin,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/goblinCousin.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">GOBLIN COUSIN</td>
+        <td class="idleAgainConfTd">GOBLIN COUSIN</td>
       </tr>
     </tbody>
   </table>
@@ -2059,39 +1873,39 @@ function scriptAddTabs() {
             <option value="deepOcean">Deep Ocean</option>
           </select>
         </td>
-        <td style="text-align:right;padding-right:20px;width:100%">COUSIN AREA</td>
+        <td class="idleAgainConfTd">COUSIN AREA</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBagsToggle" onclick="window.autoChangeVar('toggleBags',!scriptVars.toggleBags,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/oceanLoot.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">BAGS OPENING</td>
+        <td class="idleAgainConfTd">BAGS OPENING</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptFieldsBagsToggle" onclick="window.autoChangeVar('toggleFieldsBags',!scriptVars.toggleFieldsBags,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/fieldsLoot.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">FIELDS BAGS OPENING</td>
+        <td class="idleAgainConfTd">FIELDS BAGS OPENING</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptStatueToggle" onclick="window.autoChangeVar('toggleStatue',!scriptVars.toggleStatue,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/bronzeStatueMetalDetector.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">STATUE SELL</td>
+        <td class="idleAgainConfTd">STATUE SELL</td>
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptArtifactToggle" onclick="window.autoChangeVar('toggleArtifact',!scriptVars.toggleArtifact,this.id)" style="cursor: pointer; color: red;">
         <td style="padding-left: 10px;"><img src="images/skullArtifact.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">ARTIFACT CONVERT</td>
+        <td class="idleAgainConfTd">ARTIFACT CONVERT</td>
       </tr>
     </tbody>
   </table>
@@ -2102,8 +1916,7 @@ function scriptAddTabs() {
         <td style="text-align:right;padding-right:20px;width:100%">Knight Quest</td>
       </tr>
     </tbody>
-  </table>
-</div>`;
+</div>`
 
 	let scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
   <div class="main-button-lighter">
@@ -2116,11 +1929,11 @@ function scriptAddTabs() {
       </tbody>
     </table>
   </div>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+  <table class="idleAgainConfTable">
     <tbody>
       <tr id="scriptBoatToggle" onclick="window.autoChangeVar('toggleBoat',!scriptVars.toggleBoat,this.id)" style="cursor: pointer; color: green;">
         <td style="padding-left: 10px;"><img src="images/sailBoat.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">BOAT</td>
+        <td class="idleAgainConfTd">BOAT</td>
       </tr>
     </tbody>
   </table>
@@ -2164,7 +1977,11 @@ function scriptAddTabs() {
 	$(scriptConfCraftingTab).insertAfter('#tab-logout');
 	$(scriptConfMiningTab).insertAfter('#tab-logout');
 	$(scriptConfTab).insertAfter('#tab-logout');
+      </tr>`;
 
+		sortablePotionsOl.insertAdjacentHTML('beforeend', potionli);
+	});
+	
 	let compareBar = `<a href="https://dounford-felipe.github.io/DHM-Compare/" target="_blank" style="text-decoration:none;">
 		<div class="main-button">
 			<table>
@@ -2177,6 +1994,9 @@ function scriptAddTabs() {
 	</a>`;
 	$(compareBar).insertAfter('#your-profile-link');
 
+	let profileLink = document.getElementById('your-profile-link');
+	profileLink.insertAdjacentHTML('afterend', compareBar);
+	
 	let cookAllItem = `<div class="main-button-lighter" id="scriptCook" style="background-color: rgb(0, 77, 0);">
 	<table>
 		<tbody>
@@ -2194,6 +2014,9 @@ function scriptAddTabs() {
 	</div>`;
 	$(cookAllItem).insertAfter('#item-box-energy');
 
+	let energyItemBox = document.getElementById('item-box-energy');
+	energyItemBox.insertAdjacentHTML('afterend', cookAllItem);
+	
 	let growTimeNeededItem = `<div class="main-button-lighter" id="scriptgrowTimeNeeded" style="background-color: rgb(26, 51, 0);">
 	<table>
 		<tbody>
@@ -2209,7 +2032,8 @@ function scriptAddTabs() {
 	</table>
 	</div>`;
 	$(growTimeNeededItem).insertAfter('#item-box-bonemealBin');
-
+	</div>`
+	
 	let bonemealNeededItem = `<div class="main-button-lighter" id="scriptBonemealNeeded" style="background-color: rgb(26, 51, 0);">
 	<table>
 		<tbody>
@@ -2232,6 +2056,12 @@ function scriptAddTabs() {
 	picker.style.height='350px';
 	document.getElementById("div-emojis").appendChild(picker);
 	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker);
+	$("#div-emojis").draggable()
+	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native},maxFrequentRows:1}
+	const picker = new EmojiMart.Picker(pickerOptions)
+	picker.style.height='350px'
+	document.getElementById("div-emojis").appendChild(picker)
+	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker)
 	document.getElementById('scriptImportConfig').addEventListener('click', function () {
 		document.getElementById('saveInput').click();
 	});
@@ -2377,7 +2207,6 @@ window.scriptStyleTabs = function () {
 	document.getElementById('scriptFieldsBagsToggle').style.color = scriptVars.toggleFieldsBags ? 'green' : 'red';
 	document.getElementById('scriptStatueToggle').style.color = scriptVars.toggleStatue ? 'green' : 'red';
 	document.getElementById('scriptArtifactToggle').style.color = scriptVars.toggleArtifact ? 'green' : 'red';
-	document.getElementById('scriptKnightq').style.color = scriptVars.toggleautoKnightq ? 'green' : 'red';
 	document.getElementById('scriptBoatToggle').style.color = scriptVars.toggleBoat ? 'green' : 'red';
 	document.getElementById('rowBoatSendToggle').style.color = scriptVars.scriptBoatSend.rowBoat ? 'green' : 'red';
 	document.getElementById('canoeBoatSendToggle').style.color = scriptVars.scriptBoatSend.canoeBoat ? 'green' : 'red';
@@ -2600,7 +2429,7 @@ window.autoScroll = function() {
 };
 
 window.chatHelp = function() {
-	showMessage('Use <b>/help</b> for Chat Bot Commands, <b>!help</b> for hangman commands and <b>img="image-url"</b> to send images','ChatBot');
+	showMessage('Use <b>img="image-url"</b> to send images','ChatBot');
 };
 
 const showMessage = (msg, sender) => {
@@ -2826,7 +2655,6 @@ function autoGameLoopFast() {
 		if (scriptVars.toggleShiny === true || scriptVars.toggleMonsterFind === true) autoMonsterHunt();
 		if (scriptVars.toggleCombatPotion === true) autoCombatPot();
 		if (scriptVars.toggleCombatSwap === true) autoCombatSwap();
-		if (scriptVars.toggleautoKnightq === true) autoKnightq();
 	}
 }
 
