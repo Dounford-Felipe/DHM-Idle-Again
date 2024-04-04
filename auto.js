@@ -1,44 +1,47 @@
 // ==UserScript==
 // @name         DHM - Idle Again
 // @namespace    http://tampermonkey.net/
-// @version      1.5.4.7
+// @version      1.5.4.8
 // @description  Automate most of DHM features
 // @author       Felipe Dounford
 // @require      https://greasyfork.org/scripts/461221-hack-timer-js-by-turuslan/code/Hack%20Timerjs%20By%20Turuslan.js?version=1159560
 // @require      https://greasyfork.org/scripts/478182-pubnub-js/code/PubNub%20JS.js?version=1269788
-// @require	     https://update.greasyfork.org/scripts/482500/1297545/Sortable%20JS.js
+// @require      https://update.greasyfork.org/scripts/482500/1297545/Sortable%20JS.js
 // @require      https://cdn.jsdelivr.net/npm/emoji-mart@5.5.2/dist/browser.js
 // @match        https://dhm.idle-pixel.com/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=greasyfork.org
 // @grant        none
 // @license      MIT
+// @downloadURL https://update.greasyfork.org/scripts/475537/DHM%20-%20Idle%20Again.user.js
+// @updateURL https://update.greasyfork.org/scripts/475537/DHM%20-%20Idle%20Again.meta.js
 // ==/UserScript==
 
-(function() {
+
+(function () {
     'use strict';
 $("head").append('<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.1.js">');
 //Variables
-window.scriptVars = {toggleGlobal:false, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields',toggleautoKnightq:false, scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true},chatAutoScroll:true}
+window.scriptVars = {toggleGlobal:false, toggleMap:true, toggleGeodeOpen:false, toggleMineralIdentify:false, toggleNecklaceCharge:false, toggleTrain:false, toggleRocket:false, toggleSmelting:true, toggleRefinary:false, toggleCharcoal:false, toggleWoodcutting:true, toggleFarming:false, toggleBones:false, toggleFertilize:false, toggleDrink:false, toggleTreeUpgrade:false, toggleBrew:false, toggleExplore:false, toggleFight:false, toggleResetFight:false, toggleMonsterFind:false, toggleSpell:false, toggleCombatPotion:false, toggleHeal:true, toggleShiny:false, toggleCombatSwap:true, toggleBM:false, toggleCousin:false, toggleBags:false, toggleFieldsBags:false, toggleStatue:false, toggleArtifact:false, toggleBoat:true, toggleEvent:true, scriptTrainAmount:1, scriptRocket:'moon', scriptSmeltingOre:'copper', scriptRefinaryBar:'gold', scriptFoundryWood:'cheapest', scriptTreeIgnore:{tree:false,oakTree:false,willowTree:false,mapleTree: false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:true}, scriptBonesIgnore:{bones:true,ashes:false,iceBones:true,zombieBones:true,bloodBones:true,fishBones:true}, scriptFertilize:{redMushroomSeeds:false,dottedGreenLeafSeeds:false,greenLeafSeeds:false,limeLeafSeeds:false,goldLeafSeeds:false,crystalLeafSeeds:false,stripedGreenLeafSeeds:false,stripedGoldLeafSeeds:false,stripedCrystalLeafSeeds:false}, scriptTreeUpgrade:{tree:false,oakTree:false,willowTree:false,mapleTree:false,redwoodTree:false,pineTree:false,hauntedTree:false,jungleTree:true,lavaTree:false,goldTree:true,magicTree:false,appleTree:false,cactusTree:false,bananaTree:false,palmTree:false,pineappleTree:true,starfruitTree:false,none:false},scriptStrength:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}, scriptArea:'fields', scriptResetArea:{fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:false,factory:false,hauntedWoods:false,deepOcean:false}, scriptMonster:'chicken', scriptCousinArea:'fields',toggleautoKnightq:false, scriptBoatSend:{rowBoat:true,canoeBoat:true,sailBoat:true,highWind:true,steamBoat:true,trawler:true},chatAutoScroll:true};
 //Const
-const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000}
-const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23}
-const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact']
-const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot']
+const scriptAreaEnergy = {fields:50,forests:250,caves:1000,volcano:5000,northernFields:8000,hauntedMansion:20000,desert:50000,ocean:120000,jungle:200000,dungeonEntrance:500000,dungeon:1000000,castle:3000000,cemetery:7000000,factory:10000000,hauntedWoods:14000000,deepOcean:20000000};
+const scriptAreaTimer = {fields:900,forests:1800,caves:3600,volcano:5400,northernFields:3600*2,hauntedMansion:3600*3,desert:3600*4+1800,ocean:3600*6,jungle:3600*8,dungeonEntrance:3600*10,dungeon:3600*12,castle:3600*15,cemetery:3600*16,factory:3600*18,hauntedWoods:3600*20,deepOcean:3600*23};
+const artifactArray = ['brokenSwordArtifact', 'cannonBallsArtifact', 'oldCannonArtifact', 'strangeLeafArtifact', 'ancientLogArtifact', 'rainbowFlowerArtifact', 'clayVaseArtifact', 'batWingArtifact', 'skullArtifact', 'sulferArtifact', 'volcanicRockArtifact', 'volcanicSmokeArtifact', 'iceArtifact', 'snowballsArtifact', 'frozenHeadArtifact', 'spiderLegsArtifact', 'broomArtifact', 'hauntedSkullArtifact', 'scorpionsTailArtifact', 'mummyArtifact', 'egyptKingArtifact', 'fossilArtifact', 'scubaArtifact', 'sharksJawArtifact', 'strangerLeafArtifact', 'mossyRockArtifact', 'monkeySkullArtifact', 'strangeJungleLeafArtifact', 'inukshukArtifact', 'hauntedMonkeySkullArtifact', 'dungeonBrickArtifact', 'candleStickArtifact', 'skeletonKingsHeadArtifact', 'lampArtifact', 'brokenShieldArtifact', 'dragonSkullArtifact', 'tombStoneArtifact', 'zombieHandArtifact', 'ancientCrossArtifact', 'cogWheelArtifact', 'robotHelmetArtifact', 'brokenTimeMachineArtifact', 'hauntedLeavesArtifact', 'eyeballArtifact', 'ghostScanPotionArtifact', 'deepFossilArtifact', 'starfishArtifact', 'ancientScubaArtifact'];
+const bagsArray = ['fieldsLoot', 'forestsLoot', 'cavesLoot', 'volcanoLoot', 'northernFieldsLoot', 'hauntedMansionLoot', 'desertLoot', 'oceanLoot', 'jungleLoot', 'dungeonEntranceLoot', 'dungeonLoot', 'castleLoot', 'cemeteryLoot', 'factoryLoot', 'hauntedWoodsLoot', 'deepOceanLoot', 'shinyFieldsLoot', 'shinyForestsLoot', 'shinyCavesLoot', 'shinyVolcanoLoot', 'shinyNorthernFieldsLoot', 'shinyHauntedMansionLoot', 'shinyDesertLoot', 'shinyOceanLoot', 'shinyJungleLoot', 'shinyDungeonEntranceLoot', 'shinyDungeonLoot', 'shinyCastleLoot', 'shinyCemeteryLoot', 'shinyFactoryLoot', 'shinyHauntedWoodsLoot', 'shinyDeepOceanLoot'];
 var scriptWaitTeleport = true;
-const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar']
-const ranged = ['bow','superBow','enchantedSuperBow']
+const melee = ['rustySword','stinger','ironDagger','skeletonSword','enchantedSkeletonSword','scythe','enchantedScythe','poisonSpear','superPoisonSpear','mace','trident','superPoisonTrident','silverScimitar'];
+const ranged = ['bow','superBow','enchantedSuperBow'];
 let oldWeapon;
 let bestWeapon;
 let bestPoison = '';
 let bestMage = '';
 //const scriptComplexMonsters = ['desertLizard2', 'robotMage', 'bloodGolem', 'bloodDesertLizard2', 'bloodPufferFish']
-const cookableFood = ['rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish']
-const oldHideAllTabs = hideAllTabs
-const blockedHTML = ['<iframe','<button','<script','<html','<link','<div','<footer','onclick','<object','<embed','<form','<meta','onmouseover','onmouseout','onmousemove','<input','<applet','javascript:']
-const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav")
+const cookableFood = ['rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish'];
+const oldHideAllTabs = hideAllTabs;
+const blockedHTML = ['<iframe','<button','<script','<html','<link','<div','<footer','onclick','<object','<embed','<form','<meta','onmouseover','onmouseout','onmousemove','<input','<applet','javascript:'];
+const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav");
 
 window.hideAllTabs = function() {
-	oldHideAllTabs()
+	oldHideAllTabs();
 	document.getElementById("tab-scriptConfig").style.display = "none";
 	document.getElementById("tab-scriptConfigMining").style.display = "none";
 	document.getElementById("tab-scriptConfigCrafting").style.display = "none";
@@ -49,15 +52,15 @@ window.hideAllTabs = function() {
 	document.getElementById("tab-scriptConfigPotions").style.display = "none";
 	document.getElementById("tab-scriptConfigExploring").style.display = "none";
 	document.getElementById("tab-scriptConfigCooking").style.display = "none";
-}
+};
 
 function autoEvent() {
 	if (eventName !== 'none' && (eventStatus == 'active' || eventStatus == 'fullActive') && eventLastClicked == 'none') {
-        sendBytes('CLICKS_EVENT')
+        sendBytes('CLICKS_EVENT');
     }
 	var glowingInterval = setInterval(function() {
         if (eventStatus == 'fullActive') {
-            sendBytes('CLICKS_EVENT')
+            sendBytes('CLICKS_EVENT');
         } else {
             clearInterval(glowingInterval);
         }
@@ -93,12 +96,12 @@ function autoMap() {
 	if (greenTreasureMap !== 0) {
 		if(greenTreasureMap == 1) {
 			if (iceBones > 0) {
-				sendBytes('ADD_BONEMEAL=iceBones~1')
+				sendBytes('ADD_BONEMEAL=iceBones~1');
 			}
 		}
 		if(greenTreasureMap == 2) {
 			if ((charcoalFoundryCurrentOreType == 0 || charcoalFoundryCurrentOreType == 'none') && lava > 0) {
-				sendBytes('CHARCOAL_FOUNDRY=logs~1')
+				sendBytes('CHARCOAL_FOUNDRY=logs~1');
 			}
 		}
 		if(greenTreasureMap == 3) {
@@ -111,39 +114,39 @@ function autoMap() {
 				sendBytes('SELL=goldLeaf~1');
 			}
 		}
-		if(greenTreasureMap == 5) clicksItem('titaniumMetalDetector')
+		if(greenTreasureMap == 5) clicksItem('titaniumMetalDetector');
 		if(greenTreasureMap == 6) {
 			navigate('bloodShop-enrichedPotions');
-			sendBytes('VISITS_ENRICHED_POTIONS_SHOP')
+			sendBytes('VISITS_ENRICHED_POTIONS_SHOP');
 		}
-		if(greenTreasureMap == 7) clicksItem('wells')
+		if(greenTreasureMap == 7) clicksItem('wells');
 	}
 }
 
 function autoGeodeOpen() {
 	if (geode1 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode1~'+geode1)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode1~'+geode1);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (geode2 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode2~'+geode2)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode2~'+geode2);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (geode3 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode3~'+geode3)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode3~'+geode3);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (geode4 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode4~'+geode4)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode4~'+geode4);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (geode5 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode5~'+geode5)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode5~'+geode5);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (geode6 > 0) {
-		sendBytes('OPEN_MULTIPLE_GEODE=geode6~'+geode6)
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_MULTIPLE_GEODE=geode6~'+geode6);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 }
 
@@ -223,7 +226,7 @@ function autoIdentify() {
 }
 
 function autoNecklaceCharge() {
-	changeMineralNecklace()
+	changeMineralNecklace();
 }
 
 function autoTrain() {
@@ -241,34 +244,34 @@ function autoTrain() {
 
 function autoRocket() {
 	if (rocketKm == 1) {
-		sendBytes('MANAGE_ROCKET=collect2')
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('MANAGE_ROCKET=collect2');
+		closeSmittysDialogue('dialogue-confirm');
 	} else if (rocket == 1 && rocketKm == 0) {
 		if (scriptVars.scriptRocket == 'Moon' && oil >= 4000000) {
-			sendBytes('MANAGE_ROCKET=send')
+			sendBytes('MANAGE_ROCKET=send');
 		} else if (scriptVars.scriptRocket == 'Mars' && oil >= 15000000) {
-			sendBytes('MANAGE_ROCKET=send_mars')
-		} else if (scriptVars.scriptRocket == 'Sun' & oil >= 30000000 && charcoal >= 100) {
-			sendBytes('MANAGE_ROCKET=send_sun')
+			sendBytes('MANAGE_ROCKET=send_mars');
+		} else if (scriptVars.scriptRocket == 'Sun' && oil >= 30000000 && charcoal >= 100) {
+			sendBytes('MANAGE_ROCKET=send_sun');
 		}
 	}
 }
 
 function autoSmelt() {
 	if (smeltingCurrentOreType == 'none') {
-    var oreItems = document.getElementById("sortableOres").getElementsByTagName("li")
+    var oreItems = document.getElementById("sortableOres").getElementsByTagName("li");
 
     for (var i = 0; i < oreItems.length; i++) {
       var minimumOre = oreItems[i].querySelector(".oreMinimum").value;
       var selectedOre = oreItems[i].getAttribute("value");
       if (smeltingCurrentOreType == 'none' && window[selectedOre] >= minimumOre && (selectedOre !== 'promethium' || lava >= minimumOre) && (selectedOre !== 'titanium' || charcoal >= minimumOre) && (selectedOre !== 'ancientOre' || plasma >= minimumOre)) {
-		chooseOreForFurnace(selectedOre)
-		startSmelting()
-		closeSmittysDialogue('dialogue-furnace2')
+		chooseOreForFurnace(selectedOre);
+		startSmelting();
+		closeSmittysDialogue('dialogue-furnace2');
 		const date = new Date();
 		const hour = date.getHours();
 		const min = date.getMinutes();
-		console.log('['+hour+':'+min+'] '+selectedOre)
+		console.log('['+hour+':'+min+'] '+selectedOre);
 		break;
       }
     }
@@ -277,22 +280,22 @@ function autoSmelt() {
 
 function autoRefine() {
 	if (barRefineryTimer < 2 && scriptVars.scriptRefinaryBar == 'gold' && oil > 500000 && goldBars > 99) {
-		clicksItem('goldBarRefinery')
-		sendBytes('REFINE_GOLD_BARS=goldBars')
+		clicksItem('goldBarRefinery');
+		sendBytes('REFINE_GOLD_BARS=goldBars');
 		closeSmittysDialogue('dialogue-barRefinery');
-		closeSmittysDialogue('dialogue-confirm')
+		closeSmittysDialogue('dialogue-confirm');
 
 	} else if (barRefineryTimer < 2 && scriptVars.scriptRefinaryBar == 'promethium' && oil > 2000000 && promethiumBars > 99) {
-		clicksItem('goldBarRefinery')
-		sendBytes('REFINE_GOLD_BARS=promethiumBars')
+		clicksItem('goldBarRefinery');
+		sendBytes('REFINE_GOLD_BARS=promethiumBars');
 		closeSmittysDialogue('dialogue-barRefinery');
-		closeSmittysDialogue('dialogue-confirm')
+		closeSmittysDialogue('dialogue-confirm');
 	}
 }
 
 function autoFoundry() {
 	if (charcoalFoundryCurrentOreType == 0 || charcoalFoundryCurrentOreType == 'none') {
-	let scriptFoundryWoodLocal = scriptVars.scriptFoundryWood
+	let scriptFoundryWoodLocal = scriptVars.scriptFoundryWood;
 	if (scriptFoundryWoodLocal == 'cheapest') {
 		logs > 100 ? scriptFoundryWoodLocal = 'logs'
 		: oakLogs > 100 ? scriptFoundryWoodLocal = 'oakLogs'
@@ -307,7 +310,7 @@ function autoFoundry() {
 		: magicLogs > 100 ? scriptFoundryWoodLocal = 'magicLogs'
 		: scriptFoundryWoodLocal = 'none';
 	}
-	let scriptLava
+	let scriptLava;
 	switch (scriptFoundryWoodLocal) {
 		case 'logs':
 		scriptLava = 1;
@@ -345,32 +348,32 @@ function autoFoundry() {
 		default:
 		break;
 	}
-	console.log(scriptFoundryWoodLocal+' used')
+	console.log(scriptFoundryWoodLocal+' used');
 	if (window[scriptFoundryWoodLocal] > 99 && lava >= scriptLava * 100 && scriptFoundryWoodLocal !== 'none') {
-	sendBytes('CHARCOAL_FOUNDRY='+scriptFoundryWoodLocal+'~'+100)
-	closeSmittysDialogue('dialogue-confirm')
+	sendBytes('CHARCOAL_FOUNDRY='+scriptFoundryWoodLocal+'~'+100);
+	closeSmittysDialogue('dialogue-confirm');
     }
 	}
 }
 
 function autoLumber() {
 	if (scriptVars.scriptTreeIgnore[tree6] === false && treeTimer6 == 1) {
-	sendBytes('CHOP_TREE=6')}
+	sendBytes('CHOP_TREE=6');}
 	if (scriptVars.scriptTreeIgnore[tree5] === false && treeTimer5 == 1) {
-	sendBytes('CHOP_TREE=5')}
+	sendBytes('CHOP_TREE=5');}
 	if (scriptVars.scriptTreeIgnore[tree4] === false && treeTimer4 == 1) {
-	sendBytes('CHOP_TREE=4')}
+	sendBytes('CHOP_TREE=4');}
 	if (scriptVars.scriptTreeIgnore[tree3] === false && treeTimer3 == 1) {
-	sendBytes('CHOP_TREE=3')}
+	sendBytes('CHOP_TREE=3');}
 	if (scriptVars.scriptTreeIgnore[tree2] === false && treeTimer2 == 1) {
-	sendBytes('CHOP_TREE=2')}
+	sendBytes('CHOP_TREE=2');}
 	if (scriptVars.scriptTreeIgnore[tree1] === false && treeTimer1 == 1) {
-	sendBytes('CHOP_TREE=1')}
+	sendBytes('CHOP_TREE=1');}
 }
 
 function autoPlant() {
   if (farmTimer1 < 2 || farmTimer2 < 2 || (farmTimer3 < 2 && farmUnlocked3 == 1) || (farmTimer4 < 2 && farmUnlocked4 == 1) || (farmTimer5 < 2 && farmUnlocked5 == 1) || (farmTimer6 < 2 && farmUnlocked6 == 1)) {
-    var seedItems = document.getElementById("sortableSeeds").getElementsByTagName("li")
+    var seedItems = document.getElementById("sortableSeeds").getElementsByTagName("li");
 
     for (var i = 0; i < seedItems.length; i++) {
       var seedCheckbox = seedItems[i].querySelector(".seed-checkbox");
@@ -380,7 +383,7 @@ function autoPlant() {
         setBobsAutoReplantSeed(selectedSeed);
         closeSmittysDialogue("dialogue-bob");
         sendBytes("HARVEST_AND_PLANT_ALL");
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm');},300);
       }
 	  }
     }
@@ -389,55 +392,55 @@ function autoPlant() {
 
 function autoBones() {
 	if (scriptVars.scriptBonesIgnore.bones === false && bones > 0) {
-	sendBytes('ADD_BONEMEAL=bones~'+bones)}
+	sendBytes('ADD_BONEMEAL=bones~'+bones);}
 	if (scriptVars.scriptBonesIgnore.ashes === false && ashes > 0) {
-	sendBytes('ADD_BONEMEAL=ashes~'+ashes)}
+	sendBytes('ADD_BONEMEAL=ashes~'+ashes);}
 	if (scriptVars.scriptBonesIgnore.iceBones === false && iceBones > 0) {
-	sendBytes('ADD_BONEMEAL=iceBones~'+iceBones)}
+	sendBytes('ADD_BONEMEAL=iceBones~'+iceBones);}
 	if (scriptVars.scriptBonesIgnore.zombieBones === false && zombieBones > 0) {
-	sendBytes('ADD_BONEMEAL=zombieBones~'+zombieBones)}
+	sendBytes('ADD_BONEMEAL=zombieBones~'+zombieBones);}
 	if (scriptVars.scriptBonesIgnore.bloodBones === false && bloodBones > 0) {
-	sendBytes('ADD_BONEMEAL=bloodBones~'+bloodBones)}
+	sendBytes('ADD_BONEMEAL=bloodBones~'+bloodBones);}
 	if (scriptVars.scriptBonesIgnore.fishBones === false && fishBones > 9) {
-	sendBytes('ADD_BONEMEAL=fishBones~'+(Math.floor(fishBones/10))*10)}
+	sendBytes('ADD_BONEMEAL=fishBones~'+(Math.floor(fishBones/10))*10);}
 }
 
 function autoFertilize() {
 	if (fertilizeSoilPotion >= 1) {
 		if (scriptVars.scriptFertilize[farm6] === true && fertilizeSoil6 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~6')}
+			sendBytes('PLANT=fertilizeSoilPotion~6');}
 		if (scriptVars.scriptFertilize[farm5] === true && fertilizeSoil5 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~5')}
+			sendBytes('PLANT=fertilizeSoilPotion~5');}
 		if (scriptVars.scriptFertilize[farm4] === true && fertilizeSoil4 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~4')}
+			sendBytes('PLANT=fertilizeSoilPotion~4');}
 		if (scriptVars.scriptFertilize[farm3] === true && fertilizeSoil3 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~3')}
+			sendBytes('PLANT=fertilizeSoilPotion~3');}
 		if (scriptVars.scriptFertilize[farm2] === true && fertilizeSoil2 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~2')}
+			sendBytes('PLANT=fertilizeSoilPotion~2');}
 		if (scriptVars.scriptFertilize[farm1] === true && fertilizeSoil1 == 0) {
-			sendBytes('PLANT=fertilizeSoilPotion~1')}
+			sendBytes('PLANT=fertilizeSoilPotion~1');}
 	}
 }
 
 window.getBonemealNeeded = function() {
-	let bonemealNeeded = 0
+	let bonemealNeeded = 0;
 	for (let i = 0; i < seedsArrayGlobal.length; i++) {
-      bonemealNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].bonemealCost * window[seedsArrayGlobal[i].itemName] : 0
+      bonemealNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].bonemealCost * window[seedsArrayGlobal[i].itemName] : 0;
     }
-	document.getElementById('bonemealNeeded').innerText = bonemealNeeded.toLocaleString('en-us')
-}
+	document.getElementById('bonemealNeeded').innerText = bonemealNeeded.toLocaleString('en-us');
+};
 
 window.getTimeNeeded = function() {
-	let timeNeeded = 0
-    let plotsUnlocked = farmUnlocked6 == 1 ? 6 : farmUnlocked5 == 1 ? 5 : farmUnlocked4 == 1 ? 4 : farmUnlocked3 == 1 ? 3 : 2
+	let timeNeeded = 0;
+    let plotsUnlocked = farmUnlocked6 == 1 ? 6 : farmUnlocked5 == 1 ? 5 : farmUnlocked4 == 1 ? 4 : farmUnlocked3 == 1 ? 3 : 2;
 	for (let i = 0; i < seedsArrayGlobal.length; i++) {
-      timeNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].growtime * window[seedsArrayGlobal[i].itemName] : 0
+      timeNeeded += window[seedsArrayGlobal[i].itemName] ? seedsArrayGlobal[i].growtime * window[seedsArrayGlobal[i].itemName] : 0;
     }
-	document.getElementById('growTimeNeeded').innerText = formatTime(timeNeeded/10/plotsUnlocked)
-}
+	document.getElementById('growTimeNeeded').innerText = formatTime(timeNeeded/10/plotsUnlocked);
+};
 
 function autoDrink() {
-    var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li")
+    var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li");
 
     for (var i = 0; i < potionItems.length; i++) {
       var drinkCheckbox = potionItems[i].querySelector(".drink-checkbox");
@@ -445,7 +448,7 @@ function autoDrink() {
 
       if (drinkCheckbox.checked && window[selectedPotion] > 0 && window[selectedPotion+'Timer'] == 0) {
 		sendBytes('DRINK='+selectedPotion);
-        setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+        setTimeout(function(){closeSmittysDialogue('dialogue-confirm');},300);
       }
     }
 }
@@ -453,22 +456,22 @@ function autoDrink() {
 function autoTreeUpgrade() {
 	if (woodcuttingUpgradePotionCooldown == 0 && woodcuttingUpgradePotion >= 1) {
 		if (scriptVars.scriptTreeUpgrade[tree6] === true && woodcuttingUpgradePotionUsed6 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=6')}
+			sendBytes('POTION_UPGRADE_TREE=6');}
 		if (scriptVars.scriptTreeUpgrade[tree5] === true && woodcuttingUpgradePotionUsed5 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=5')}
+			sendBytes('POTION_UPGRADE_TREE=5');}
 		if (scriptVars.scriptTreeUpgrade[tree4] === true && woodcuttingUpgradePotionUsed4 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=4')}
+			sendBytes('POTION_UPGRADE_TREE=4');}
 		if (scriptVars.scriptTreeUpgrade[tree3] === true && woodcuttingUpgradePotionUsed3 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=3')}
+			sendBytes('POTION_UPGRADE_TREE=3');}
 		if (scriptVars.scriptTreeUpgrade[tree2] === true && woodcuttingUpgradePotionUsed2 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=2')}
+			sendBytes('POTION_UPGRADE_TREE=2');}
 		if (scriptVars.scriptTreeUpgrade[tree1] === true && woodcuttingUpgradePotionUsed1 == 0) {
-			sendBytes('POTION_UPGRADE_TREE=1')}
+			sendBytes('POTION_UPGRADE_TREE=1');}
 	}
 }
 
 function autoBrew() {
-    var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li")
+    var potionItems = document.getElementById("sortablePotions").getElementsByTagName("li");
 
     for (var i = 0; i < potionItems.length; i++) {
       var drinkCheckbox = potionItems[i].querySelector(".drink-checkbox");
@@ -477,24 +480,24 @@ function autoBrew() {
 
       if (brewCheckbox.checked && drinkCheckbox.checked && window[selectedPotion] == 0) {
 		sendBytes('BREW='+selectedPotion+'~1');
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm');},300);
       }
     }
 }
 
 function autoExplore() {
 	if (explorerCooldown == 0) {
-		let scriptAreaLocal = scriptVars.scriptArea
-		if (scriptAreaLocal == 'dungeon' && dungeonKey == 0) (scriptAreaLocal = 'dungeonEntrance')
-		let areaCost = scriptAreaEnergy[scriptAreaLocal]
-		if (totalDonations >= 32) {areaCost = scriptAreaEnergy[scriptAreaLocal] * 0.8}
-		if (energy < areaCost) {scriptAreaLocal = 'fields'}
-		sendBytes('EXPLORE='+scriptAreaLocal)
+		let scriptAreaLocal = scriptVars.scriptArea;
+		if (scriptAreaLocal == 'dungeon' && dungeonKey == 0) {scriptAreaLocal = 'dungeonEntrance';}
+		let areaCost = scriptAreaEnergy[scriptAreaLocal];
+		if (totalDonations >= 32) {areaCost = scriptAreaEnergy[scriptAreaLocal] * 0.8;}
+		if (energy < areaCost) {scriptAreaLocal = 'fields';}
+		sendBytes('EXPLORE='+scriptAreaLocal);
 		const date = new Date();
 		const hour = date.getHours();
 		const min = date.getMinutes();
-		console.log('['+hour+':'+min+'] '+scriptAreaLocal)
-		if (scriptVars.toggleShiny == true || scriptVars.toggleMonsterFind == true) {scriptWaitTeleport = true} else {scriptWaitTeleport = false}
+		console.log('['+hour+':'+min+'] '+scriptAreaLocal);
+		if (scriptVars.toggleShiny == true || scriptVars.toggleMonsterFind == true) {scriptWaitTeleport = true;} else {scriptWaitTeleport = false;}
 		bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
 		bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 		bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
@@ -506,28 +509,18 @@ function autoFight() {
 		var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 		scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 		if (scriptWaitTeleport === false || (scriptWaitTeleport === true && teleportSpellCooldown === 0)) {
-			if (infectedTimer > 0) {sendBytes('DRINK=cureInfectionPotion')}
+			if (infectedTimer > 0) {sendBytes('DRINK=cureInfectionPotion');}
 			sendBytes('LOOK_FOR_FIGHT');
 			window.autoPoison();
-			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow')}},3000);
-		};
-		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport === false};
-	};
-};
-
-/*function scriptedFight() {
-	} else if (monsterName == bloodGolem) {
-		- needs to swap between bearfur and titanium armor
-	} else if (monsterName == bloodDesertLizard2) {
-		- charge
-	} else if (monsterName == bloodPufferFish) {
-		- bow first then trident+
-	} 
-}*/
+			setTimeout(function(){if (monsterName == 'pufferFish'){clicksItem('bow');clicksItem('superBow');clicksItem('enchantedSuperBow');}},3000);
+		}
+		if (scriptVars.toggleShiny == false && scriptVars.toggleMonsterFind == false) {scriptWaitTeleport = false;}
+	}
+}
 
 window.autoPoison = function() {
 	if (bestPoison !== '' && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) {
-		clicksItem(bestPoison)
+		clicksItem(bestPoison);
 		const poisonInterval = setInterval(function(){
 			if (poisonEnemyTimer == 1) {
 				clicksItem(presetWeapon1);
@@ -535,21 +528,21 @@ window.autoPoison = function() {
 			}
 		}, 2000);
 	}
-}
+};
 
 function autoReset() {
 	if (exploringArea !== 'none' && fightDone == 1 && monsterName == 'none' && resetFightingPotion >= 1 && resetFightingPotionUsed == 0) {
 		if (scriptVars.scriptResetArea[exploringArea] === true) {
-			sendBytes('DRINK=resetFightingPotion')
+			sendBytes('DRINK=resetFightingPotion');
 		}
 	}
 }
 
 function autoMonsterHunt() {
-	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || (((scriptVars.scriptMonster == 'ghost' && monsterName !== 'ghost') || (scriptVars.scriptMonster == 'lizard' && (monsterName !== 'lizard' || monsterName !== 'bloodLizard'))) || (scriptVars.scriptMonster !== 'ghost' && scriptVars.scriptMonster !== 'lizard' && !monsterName.toLocaleLowerCase().includes(scriptVars.scriptMonster.toLocaleLowerCase())))) && !shield.includes('Feed') && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
-		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
-	} 
-	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
+	if (monsterName !== 'none' && exploringArea !== 'none' && (scriptVars.toggleMonsterFind == false || (((scriptVars.scriptMonster == 'ghost' && monsterName !== 'ghost') || (scriptVars.scriptMonster == 'lizard' && (monsterName !== 'lizard' && monsterName !== 'bloodLizard'))) || (scriptVars.scriptMonster !== 'ghost' && scriptVars.scriptMonster !== 'lizard' && !monsterName.toLocaleLowerCase().includes(scriptVars.scriptMonster.toLocaleLowerCase())))) && !shield.includes('Feed') && monsterName !== 'gemGoblin' && monsterName !== 'bloodGemGoblin' && shinyMonster == 0) {
+		sendBytes('CAST_COMBAT_SPELL=teleportSpell');
+	}
+	var teleportCooldown = (teleportSpellUpgraded == 1) ? 300 : 900;
 	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 }
 
@@ -559,7 +552,7 @@ function autoHeal() {
 	} else if (monsterName !== 'none' && heroHp == 0 && superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
 		sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
 	} else if (exploringArea !== 'none' && monsterName !== 'none' && heroHp == 0 && teleportSpellCooldown == 0 && teleportSpell == 1) {
-		sendBytes('CAST_COMBAT_SPELL=teleportSpell')
+		sendBytes('CAST_COMBAT_SPELL=teleportSpell');
 	}
 }
 
@@ -567,14 +560,14 @@ function autoSpell() {
 	if (monsterName !== 'none') {
 		if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
 			if (bestMage != '') {
-				let oldHead = head
-				let oldBody = body
-				let oldLeg = leg
+				let oldHead = head;
+				let oldBody = body;
+				let oldLeg = leg;
 				clicksItem(bestMage+'Hood');
 				clicksItem(bestMage+'Top');
 				clicksItem(bestMage+'Bottom');
 				if (staff >= 1) {
-					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 					clicksItem('staff');
 				}
 				sendBytes('CAST_COMBAT_SPELL=fireSpell');
@@ -589,30 +582,30 @@ function autoSpell() {
 				}
 				clicksItem(oldWeapon);
 				if (weapon == 'staff') {
-					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+					oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 					clicksItem(oldWeapon);
 				}
 		} else {
-			sendBytes('CAST_COMBAT_SPELL=fireSpell')
+			sendBytes('CAST_COMBAT_SPELL=fireSpell');
 		}
 		}
 		if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
 			if ((monsterName !== 'robotMage' || robotMageCharge !== 0) && (monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') ||  monsterCharge !== 0) && reflectSpellEnemyTimer == 0) {
-				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
+				sendBytes('CAST_COMBAT_SPELL=reflectSpell');
 			}
 		}
 		if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
 			if (sandstormSpellUpgraded == 1) {
 				if (sandstormSpellEnemyTimer > 0 || sandstormSpellCooldown > 10) {
 					if (bestMage != '') {
-						let oldHead = head
-						let oldBody = body
-						let oldLeg = leg
+						let oldHead = head;
+						let oldBody = body;
+						let oldLeg = leg;
 						clicksItem(bestMage+'Hood');
 						clicksItem(bestMage+'Top');
 						clicksItem(bestMage+'Bottom');
 						if (staff >= 1) {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 							clicksItem('staff');
 						}
 						sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -627,23 +620,23 @@ function autoSpell() {
 						}
 						clicksItem(oldWeapon);
 						if (weapon == 'staff') {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 							clicksItem(oldWeapon);
 						}
 					} else {
-						sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
+						sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
 					}
 				}
 			} else {
 				if (bestMage != '') {
-					let oldHead = head
-					let oldBody = body
-					let oldLeg = leg
+					let oldHead = head;
+					let oldBody = body;
+					let oldLeg = leg;
 					clicksItem(bestMage+'Hood');
 					clicksItem(bestMage+'Top');
 					clicksItem(bestMage+'Bottom');
 					if (staff >= 1) {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 						clicksItem('staff');
 					}
 					sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
@@ -658,29 +651,29 @@ function autoSpell() {
 					}
 					clicksItem(oldWeapon);
 					if (weapon == 'staff') {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 						clicksItem(oldWeapon);
 					}
 				} else {
-					sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
+					sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
 				}
 			}
 		}
 		if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {
-			sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')
-			if (ranged.includes(weapon)) {clicksItem(bestWeapon)}
+			sendBytes('CAST_COMBAT_SPELL=lifeStealSpell');
+			if (ranged.includes(weapon)) {clicksItem(bestWeapon);}
 		}
 		if (monsterName !== 'none' && sandstormSpell == 1 && typeof sandstormSpellCooldown !== 'undefined') {
 			if (sandstormSpellCooldown == 0) {
 				if (bestMage != '') {
-					let oldHead = head
-					let oldBody = body
-					let oldLeg = leg
+					let oldHead = head;
+					let oldBody = body;
+					let oldLeg = leg;
 					clicksItem(bestMage+'Hood');
 					clicksItem(bestMage+'Top');
 					clicksItem(bestMage+'Bottom');
 					if (staff >= 1) {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 						clicksItem('staff');
 					}
 					sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
@@ -695,11 +688,11 @@ function autoSpell() {
 					}
 					clicksItem(oldWeapon);
 					if (weapon == 'staff') {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
 						clicksItem(oldWeapon);
 					}
 				} else {
-					sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
+					sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
 				}
 			}
 		}
@@ -708,10 +701,10 @@ function autoSpell() {
 
 function autoCombatPot() {
 	if (monsterName !== 'none') {
-		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion')},19000);}
-		if (typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion')}
-		if ((ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion')}
-		setTimeout(function(){if (monsterName !== 'none' && scriptVars.scriptStrength[exploringArea] == true && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion')}},3000); 
+		if ((freezeCombatPotionFree == 1 || freezeCombatPotion >= 1) && freezeCombatPotionUsed == 0) {setTimeout(function(){sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion');},19000);}
+		if (typeof ignoreDefenceCombatPotion !== 'undefined' && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1) && ignoreDefenceCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion');}
+		if ((ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1) && ghostScanCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion');}
+		setTimeout(function(){if (monsterName !== 'none' && scriptVars.scriptStrength[exploringArea] == true && (strengthCombatPotionFree == 1 || strengthCombatPotion >= 1) && strengthCombatPotionUsed == 0) {sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion');}},3000);
 	}
 }
 
@@ -733,18 +726,18 @@ function autoCombatSwap() {
 
 function autoBM() {
 	if ($('#explore-select-area').children(':last').attr("onclick") == 'setAreaScreenByIndex(17);navigate("explore");' && bloodMoonTimer <= 60) {
-		sendBytes('STARE_BLOOD_MOON')
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+		sendBytes('STARE_BLOOD_MOON');
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm');},300);
 	}
 }
 
 function autoCousin() {
 	if (typeof goblinExploringArea == 'undefined' || goblinExploringArea == 'none') {
-		let scriptCousinAreaLocal = scriptVars.scriptCousinArea
-		if (energy < scriptAreaEnergy[scriptCousinAreaLocal]) {scriptCousinAreaLocal = 'fields'}
+		let scriptCousinAreaLocal = scriptVars.scriptCousinArea;
+		if (energy < scriptAreaEnergy[scriptCousinAreaLocal]) {scriptCousinAreaLocal = 'fields';}
 		goblinCousin=1;
-		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal)		
-		setTimeout(function(){closeSmittysDialogue('dialogue-confirm')},300);
+		sendBytes('EXPLORE_GOBLIN='+scriptCousinAreaLocal);
+		setTimeout(function(){closeSmittysDialogue('dialogue-confirm');},300);
 	}
 }
 
@@ -752,20 +745,20 @@ function autoBags() {
 	for (var i = 0; i < bagsArray.length; i++) {
 		var bag = bagsArray[i];
 		if (window[bag] > 0) {
-			sendBytes('OPEN_LOOT_MULTI='+bag+'~'+window[bag])
-			closeSmittysDialogue('dialogue-confirm')
+			sendBytes('OPEN_LOOT_MULTI='+bag+'~'+window[bag]);
+			closeSmittysDialogue('dialogue-confirm');
 		}
 	}
 }
 
 function autoFieldsBags() {
 	if (window['fieldsLoot'] > 0) {
-		sendBytes('OPEN_LOOT_MULTI=fieldsLoot~'+window['fieldsLoot'])
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_LOOT_MULTI=fieldsLoot~'+window['fieldsLoot']);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 	if (window['shinyFieldsLoot'] > 0) {
-		sendBytes('OPEN_LOOT_MULTI=shinyFieldsLoot~'+window['shinyFieldsLoot'])
-		closeSmittysDialogue('dialogue-confirm')
+		sendBytes('OPEN_LOOT_MULTI=shinyFieldsLoot~'+window['shinyFieldsLoot']);
+		closeSmittysDialogue('dialogue-confirm');
 	}
 }
 
@@ -784,15 +777,15 @@ function autoArtifact() {
 	for (var i = 0; i < artifactArray.length; i++) {
 		var artifact = artifactArray[i];
 		if (window[artifact] > 0) {
-			sendBytes('CONVERT_ALL_ARTIFACTS')
-			closeSmittysDialogue('dialogue-confirm')
+			sendBytes('CONVERT_ALL_ARTIFACTS');
+			closeSmittysDialogue('dialogue-confirm');
 			break;
 		}
 	}
 }
 
 function autoKnightq() {
-if (teleportSpellCooldown = 0) {
+if (teleportSpellCooldown == 0) {
     sendBytes('QUEST=knightsQuest~0');
     setTimeout(function () {
 		sendBytes('CAST_COMBAT_SPELL=teleportSpell');
@@ -802,62 +795,62 @@ if (teleportSpellCooldown = 0) {
 
 window.cookAll = function() {
     for (let i = 0; i < cookableFood.length; i++) {
-      if (window[cookableFood[i]] > 0) {sendBytes('COOK='+cookableFood[i]+'~'+window[cookableFood[i]])}
+      if (window[cookableFood[i]] > 0) {sendBytes('COOK='+cookableFood[i]+'~'+window[cookableFood[i]]);}
     }
-}
+};
 
 window.getHeatNeeded = function() {
-	let heatNeeded = 0
+	let heatNeeded = 0;
 	for (let i = 0; i < cookableFood.length; i++) {
-      heatNeeded += foodArrayGlobal[cookableFood[i]].heatRequired * window[cookableFood[i]]
+      heatNeeded += foodArrayGlobal[cookableFood[i]].heatRequired * window[cookableFood[i]];
     }
-	document.getElementById('heatNeeded').innerText = heatNeeded.toLocaleString('en-us')
-}
+	document.getElementById('heatNeeded').innerText = heatNeeded.toLocaleString('en-us');
+};
 
 function autoBoat() {
 	if (rowBoat == 1 && scriptVars.scriptBoatSend.rowBoat == true && rowBoatTimer < 2) {
 		if (bait > 4){
-		sendBytes('CLICKS_BOAT=rowBoat')
-		closeSmittysDialogue('dialogue-confirm2')
-		} else {clicksItem('rowBoat');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=rowBoat');
+		closeSmittysDialogue('dialogue-confirm2');
+		} else {clicksItem('rowBoat');closeSmittysDialogue('dialogue-confirm2');}
 	}
 	if (canoeBoat == 1 && scriptVars.scriptBoatSend.canoeBoat == true && canoeBoatTimer < 2) {
 		if (bait > 24) {
-		sendBytes('CLICKS_BOAT=canoeBoat')
-		closeSmittysDialogue('dialogue-confirm2')
-		} else {clicksItem('canoeBoat');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=canoeBoat');
+		closeSmittysDialogue('dialogue-confirm2');
+		} else {clicksItem('canoeBoat');closeSmittysDialogue('dialogue-confirm2');}
 	}
 	if (scriptVars.scriptBoatSend.highWind == true) {
 		if (sailBoat == 1 && scriptVars.scriptBoatSend.sailBoat == true && currentWind > 1 && sailBoatTimer < 2) {
 		if (bait > 99) {
-		sendBytes('CLICKS_BOAT=sailBoat')
-		closeSmittysDialogue('dialogue-confirm2')
-		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=sailBoat');
+		closeSmittysDialogue('dialogue-confirm2');
+		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2');}
 		}
 	} else if (sailBoat == 1 && scriptVars.scriptBoatSend.sailBoat == true && sailBoatTimer < 2) {
 		if (bait > 99) {
-		sendBytes('CLICKS_BOAT=sailBoat')
-		closeSmittysDialogue('dialogue-confirm2')
-		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=sailBoat');
+		closeSmittysDialogue('dialogue-confirm2');
+		} else {clicksItem('sailBoat');closeSmittysDialogue('dialogue-confirm2');}
 	}
 	if (steamBoat == 1 && scriptVars.scriptBoatSend.steamBoat == true && steamBoatTimer < 2) {
 		if (bait > 249) {
-		sendBytes('CLICKS_BOAT=steamBoat')
-		closeSmittysDialogue('dialogue-confirm2')
-		} else {clicksItem('steamBoat');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=steamBoat');
+		closeSmittysDialogue('dialogue-confirm2');
+		} else {clicksItem('steamBoat');closeSmittysDialogue('dialogue-confirm2');}
 	}
 	if (trawler == 1 && scriptVars.scriptBoatSend.trawler == true && trawlerTimer < 2) {
 		if (bait > 499) {
-		sendBytes('CLICKS_BOAT=trawler')
-		closeSmittysDialogue('dialogue-confirm2')
-	} else {clicksItem('trawler');closeSmittysDialogue('dialogue-confirm2')}
+		sendBytes('CLICKS_BOAT=trawler');
+		closeSmittysDialogue('dialogue-confirm2');
+	} else {clicksItem('trawler');closeSmittysDialogue('dialogue-confirm2');}
 	}
 }
 
 window.autoCityUnlock = function() {
 	sendBytes('CLICKS_SHOP_VOTE=9');
-	sendBytes("COLLECT_VOTES")
-}
+	sendBytes("COLLECT_VOTES");
+};
 
 function loadUserVars() {
 	let key = `idleAgain-${window.username}`;
@@ -868,22 +861,22 @@ function loadUserVars() {
 	bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
 	bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
 	if (typeof scriptVars.toggleCombatSwap == 'undefined') {
-		scriptVars.toggleCombatSwap = true
+		scriptVars.toggleCombatSwap = true;
 	}
 	if (typeof scriptVars.toggleBM == 'undefined') {
-		scriptVars.toggleBM = false
+		scriptVars.toggleBM = false;
 	}
 	if (typeof scriptVars.toggleMap == 'undefined') {
-		scriptVars.toggleMap = true
+		scriptVars.toggleMap = true;
 	}
 	if (typeof scriptVars.scriptStrength == 'undefined') {
-		scriptVars.scriptStrength = {fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true}
+		scriptVars.scriptStrength = {fields:false,forests:false,caves:false,volcano:false,northernFields:false,hauntedMansion:false,desert:false,ocean:false,jungle:false,dungeonEntrance:false,dungeon:false,castle:false,cemetery:true,factory:true,hauntedWoods:true,deepOcean:true};
 	}
 	if (typeof scriptVars.toggleautoKnightq == 'undefined') {
-		scriptVars.toggleautoKnightq = false
+		scriptVars.toggleautoKnightq = false;
 	}
 	if (typeof scriptVars.chatAutoScroll == 'undefined') {
-		scriptVars.chatAutoScroll = true
+		scriptVars.chatAutoScroll = true;
 	}
 }
 
@@ -891,45 +884,45 @@ window.autoChangeVar = function(variName,variValue,id) {
 	const date = new Date();
 	const hour = date.getHours();
 	const min = date.getMinutes();
-	console.log('['+hour+':'+min+'] '+variName+' '+variValue+' '+id)
+	console.log('['+hour+':'+min+'] '+variName+' '+variValue+' '+id);
 	let key = `idleAgain-${window.username}`;
-	scriptVars[variName] = variValue
-	localStorage.setItem(key, JSON.stringify(scriptVars))
+	scriptVars[variName] = variValue;
+	localStorage.setItem(key, JSON.stringify(scriptVars));
 	if (typeof id !== 'undefined') {
 		if (variValue == true) {
-			document.getElementById(id).style.color = "green"
+			document.getElementById(id).style.color = "green";
 		} else {
-			document.getElementById(id).style.color = "red"
+			document.getElementById(id).style.color = "red";
 		}
-		console.log(id)
+		console.log(id);
 	}
-}
+};
 
 window.autoChangeObject = function(variName,variKey,variValue,id) {
 	const date = new Date();
 	const hour = date.getHours();
 	const min = date.getMinutes();
-	console.log('['+hour+':'+min+'] '+variName+' '+variKey+':'+variValue+' '+id)
+	console.log('['+hour+':'+min+'] '+variName+' '+variKey+':'+variValue+' '+id);
 	let key = `idleAgain-${window.username}`;
-	scriptVars[variName][variKey] = variValue
-	localStorage.setItem(key, JSON.stringify(scriptVars))
+	scriptVars[variName][variKey] = variValue;
+	localStorage.setItem(key, JSON.stringify(scriptVars));
 	if (typeof id !== 'undefined') {
 		if (variValue == true) {
-			document.getElementById(id).style.color = "green"
+			document.getElementById(id).style.color = "green";
 		} else {
-			document.getElementById(id).style.color = "red"
+			document.getElementById(id).style.color = "red";
 		}
 	}
-}
+};
 
 window.toggleAutoLogin = function() {
-	localStorage.setItem('autoLogin', !JSON.parse(localStorage.getItem('autoLogin')))
+	localStorage.setItem('autoLogin', !JSON.parse(localStorage.getItem('autoLogin')));
 	if (JSON.parse(localStorage.getItem('autoLogin')) == true) {
-		document.getElementById('scriptLoginToggle').style.color = "green"
+		document.getElementById('scriptLoginToggle').style.color = "green";
 	} else {
-		document.getElementById('scriptLoginToggle').style.color = "red"
+		document.getElementById('scriptLoginToggle').style.color = "red";
 	}
-}
+};
 
 function scriptAddTabs() {
 	let miscTab = document.querySelectorAll("#tab-misc > .main-button")[2];
@@ -941,13 +934,13 @@ function scriptAddTabs() {
 	</tr>
 </tbody></table>
 </div>`;
-	$(scriptConfBar).insertAfter(miscTab)
-	
+	$(scriptConfBar).insertAfter(miscTab);
+
 	let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 		<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
 		<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">
 			<div>
-				Chat Box 
+				Chat Box
 				<button onclick="window.autoScroll()" style="cursor: pointer;">
 					Auto Scroll <img src="images/check.png" class="img-tiny" id="scriptAutoScroll">
 				</button>
@@ -965,8 +958,8 @@ function scriptAddTabs() {
 				<button style="cursor: pointer;border: 1px solid black;border-radius: 12px;padding: 2px;" id="emojis">&#128512;</button>
 			</div>
 		</div>
-	</div>`
-	
+	</div>`;
+
 	let scriptConfTab = `<div id="tab-scriptConfig" style="display:none">
   <div class="main-button-lighter">
     <table>
@@ -1067,7 +1060,7 @@ function scriptAddTabs() {
 	  </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 
 	let scriptConfMiningTab  = `<div id="tab-scriptConfigMining" style="display:none">
@@ -1153,7 +1146,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfCraftingTab = `<div id="tab-scriptConfigCrafting" style="display:none">
   <div class="main-button-lighter">
@@ -1251,7 +1244,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfWoodcuttingTab = `<div id="tab-scriptConfigWoodcutting" style="display:none">
   <div class="main-button-lighter">
@@ -1344,7 +1337,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfFarmingTab = `<div id="tab-scriptConfigFarming" style="display:none">
   <div class="main-button-lighter">
@@ -1454,7 +1447,7 @@ function scriptAddTabs() {
         <td style="text-align: center;width: 40%">STRIPED CRYSTAL LEAF FERTILIZE</td>
       </tr></tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfSeedsTab = `<div id="tab-scriptConfigSeeds" style="display:none">
   <div class="main-button-lighter">
@@ -1561,7 +1554,7 @@ function scriptAddTabs() {
       <input type="checkbox" class="seed-checkbox"> Gold Apple Tree Seeds<img src="images/goldAppleTreeSeeds.png" class="img-small" style="padding-right: 10px;">
     </li>
   </ol>
-</div>`
+</div>`;
 
 	let scriptConfBrewingTab = `<div id="tab-scriptConfigBrewing" style="display:none">
   <div class="main-button-lighter">
@@ -1749,7 +1742,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
   <div class="main-button-lighter">
@@ -1842,7 +1835,7 @@ function scriptAddTabs() {
       <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">SUPER ROCKET SPEED POTION<img src="images/superRocketSpeedPotion.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
     </li>
   </ol>
-</div>`
+</div>`;
 
 	let scriptConfExploringTab = `<div id="tab-scriptConfigExploring" style="display:none">
   <div class="main-button-lighter">
@@ -2110,7 +2103,7 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-</div>`
+</div>`;
 
 	let scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
   <div class="main-button-lighter">
@@ -2171,7 +2164,7 @@ function scriptAddTabs() {
 	$(scriptConfCraftingTab).insertAfter('#tab-logout');
 	$(scriptConfMiningTab).insertAfter('#tab-logout');
 	$(scriptConfTab).insertAfter('#tab-logout');
-	
+
 	let compareBar = `<a href="https://dounford-felipe.github.io/DHM-Compare/" target="_blank" style="text-decoration:none;">
 		<div class="main-button">
 			<table>
@@ -2183,7 +2176,7 @@ function scriptAddTabs() {
 		</div>
 	</a>`;
 	$(compareBar).insertAfter('#your-profile-link');
-	
+
 	let cookAllItem = `<div class="main-button-lighter" id="scriptCook" style="background-color: rgb(0, 77, 0);">
 	<table>
 		<tbody>
@@ -2198,9 +2191,9 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`
-	$(cookAllItem).insertAfter('#item-box-energy')
-	
+	</div>`;
+	$(cookAllItem).insertAfter('#item-box-energy');
+
 	let growTimeNeededItem = `<div class="main-button-lighter" id="scriptgrowTimeNeeded" style="background-color: rgb(26, 51, 0);">
 	<table>
 		<tbody>
@@ -2214,9 +2207,9 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`
-	$(growTimeNeededItem).insertAfter('#item-box-bonemealBin')
-	
+	</div>`;
+	$(growTimeNeededItem).insertAfter('#item-box-bonemealBin');
+
 	let bonemealNeededItem = `<div class="main-button-lighter" id="scriptBonemealNeeded" style="background-color: rgb(26, 51, 0);">
 	<table>
 		<tbody>
@@ -2230,15 +2223,15 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`
-	$(bonemealNeededItem).insertAfter('#item-box-bonemealBin')
-	
-	$("#div-emojis").draggable()
-	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native},maxFrequentRows:1}
-	const picker = new EmojiMart.Picker(pickerOptions)
-	picker.style.height='350px'
-	document.getElementById("div-emojis").appendChild(picker)
-	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker)
+	</div>`;
+	$(bonemealNeededItem).insertAfter('#item-box-bonemealBin');
+
+	$("#div-emojis").draggable();
+	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native;},maxFrequentRows:1};
+	const picker = new EmojiMart.Picker(pickerOptions);
+	picker.style.height='350px';
+	document.getElementById("div-emojis").appendChild(picker);
+	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker);
 	document.getElementById('scriptImportConfig').addEventListener('click', function () {
 		document.getElementById('saveInput').click();
 	});
@@ -2254,11 +2247,11 @@ function addWikiButton() {
 		let wikiURL = itemBox[i].id.substr(9).replace(/([A-Z0-9])/g, ' $1').trim();
 		wikiURL = wikiURL.charAt(0).toUpperCase() + wikiURL.slice(1);
 		let wikiButton = document.createElement("a");
-		wikiButton.href = 'https://diamondhuntmobile.fandom.com/wiki/'+wikiURL
-		wikiButton.target = '_blank'
-		wikiButton.style.position = 'absolute'
+		wikiButton.href = 'https://diamondhuntmobile.fandom.com/wiki/'+wikiURL;
+		wikiButton.target = '_blank';
+		wikiButton.style.position = 'absolute';
         wikiButton.style.top = '0';
-		wikiButton.innerHTML = '<img src="images/wiki.png" style="width:25px;height:25px;">'
+		wikiButton.innerHTML = '<img src="images/wiki.png" style="width:25px;height:25px;">';
 		itemBox[i].querySelector('td').style.position = 'relative';
 		itemBox[i].querySelector('td').appendChild(wikiButton);
 	}
@@ -2393,7 +2386,7 @@ window.scriptStyleTabs = function () {
 	document.getElementById('steamBoatSendToggle').style.color = scriptVars.scriptBoatSend.steamBoat ? 'green' : 'red';
 	document.getElementById('trawlerSendToggle').style.color = scriptVars.scriptBoatSend.trawler ? 'green' : 'red';
 	document.getElementById('scriptAutoScroll').src = scriptVars.chatAutoScroll ? 'images/check.png' :'images/x.png';
-}
+};
 
 function saveOreOrder() {
   let key = `idleAgain-oreOrder${window.username}`;
@@ -2423,13 +2416,13 @@ window.loadOreOrder = function () {
       var oreValue = oreOrderData[i].value;
       var minimum = oreOrderData[i].minimum;
       var oreItem = oreOrderList.querySelector("[value='" + oreValue + "']");
-      
+
       oreOrderList.appendChild(oreItem);
 	  var oreMinimum = oreItem.querySelector(".oreMinimum");
-      oreMinimum.value = minimum
+      oreMinimum.value = minimum;
     }
   }
-}
+};
 
 function saveSeedOrder() {
   let key = `idleAgain-seedOrder${window.username}`;
@@ -2471,7 +2464,7 @@ window.loadSeedOrder = function () {
       seedOrderList.appendChild(seedItem);
     }
   }
-}
+};
 
 window.savePotions = function() {
   let key = `idleAgain-potionState${window.username}`;
@@ -2494,7 +2487,7 @@ window.savePotions = function() {
   }
 
   localStorage.setItem(key, JSON.stringify(potionState));
-}
+};
 
 window.loadPotions = function () {
   let key = `idleAgain-potionState${window.username}`;
@@ -2516,20 +2509,20 @@ window.loadPotions = function () {
       brewCheckbox.checked = isBrewChecked;
     }
   }
-}
+};
 
 window.scriptExportConfig = function () {
 	let saveData = '';
 	saveData += JSON.stringify(scriptVars) + ',,,';
 	saveData += localStorage.getItem(`idleAgain-oreOrder${window.username}`) !== null ? localStorage.getItem(`idleAgain-oreOrder${window.username}`) + ',,,' : 'empty,,,';
-	saveData += localStorage.getItem(`idleAgain-potionState${window.username}`) !== null ? localStorage.getItem(`idleAgain-potionState${window.username}`) + ',,,' : 'empty,,,';	
+	saveData += localStorage.getItem(`idleAgain-potionState${window.username}`) !== null ? localStorage.getItem(`idleAgain-potionState${window.username}`) + ',,,' : 'empty,,,';
 	saveData += localStorage.getItem(`idleAgain-seedOrder${window.username}`) !== null ? localStorage.getItem(`idleAgain-seedOrder${window.username}`) : 'empty';
 	var a = document.createElement("a");
     var file = new Blob([saveData], {type: 'text/plain'});
     a.href = URL.createObjectURL(file);
     a.download = 'IdleAgain-' + username;
     a.click();
-}
+};
 
 window.monsterOptions = function(monsterArea) {
     var select = document.getElementById("scriptMonsterOptions");
@@ -2568,7 +2561,7 @@ window.monsterOptions = function(monsterArea) {
     } else if (monsterArea === "deepOcean") {
         addOptions(select, ["poisonSquid", "tridentSoldier", "piranhas"]);
     }
-}
+};
 
 function addOptions(select, optionsArray) {
     for (var i = 0; i < optionsArray.length; i++) {
@@ -2585,36 +2578,36 @@ const chatSend = () => {
         var inputValue = document.getElementById('message-body').value.slice(-150);
 		if (blockedHTML.some(item => inputValue.includes(item))) {
 			inputValue = '';
-			showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before try again.</b>",'ChatBot')
+			showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before try again.</b>",'ChatBot');
 		} else if (inputValue.match(/img=(["].*?["])/g)) {
-			inputValue = inputValue.replace(/img=(["].*?["])/g,'<img src=$1 class="img-small">')
-			publishMessage(inputValue)
+			inputValue = inputValue.replace(/img=(["].*?["])/g,'<img src=$1 class="img-small">');
+			publishMessage(inputValue);
 		} else {
 			publishMessage(inputValue);
 		}
         document.getElementById('message-body').value = '';
 };
 
-window.sendChat = chatSend
+window.sendChat = chatSend;
 
 window.clearChat = function() {
-	document.getElementById('messages').innerHTML = ''
-}
+	document.getElementById('messages').innerHTML = '';
+};
 
 window.autoScroll = function() {
 	scriptVars.chatAutoScroll = !scriptVars.chatAutoScroll;
 	document.getElementById('scriptAutoScroll').src = scriptVars.chatAutoScroll ? 'images/check.png' :'images/x.png';
-}
+};
 
 window.chatHelp = function() {
-	showMessage('Use <b>/help</b> for Chat Bot Commands, <b>!help</b> for hangman commands and <b>img="image-url"</b> to send images','ChatBot')
-}
+	showMessage('Use <b>/help</b> for Chat Bot Commands, <b>!help</b> for hangman commands and <b>img="image-url"</b> to send images','ChatBot');
+};
 
 const showMessage = (msg, sender) => {
 		if (blockedHTML.some(item => msg.includes(item))) {
 			msg = 'This message was blocked for safety';
-		};
-		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>'};
+		}
+		if (msg.startsWith('https') || msg.startsWith('www')) {msg = '<a href='+msg+' target="_blank">'+msg+'</a>';}
         var messageContainer = document.createElement('div');
         var senderElement = document.createElement('strong');
 		const date = new Date();
@@ -2627,11 +2620,11 @@ const showMessage = (msg, sender) => {
 		if (msg.includes('@'+username)) {
 			message.style.backgroundColor = 'gold';
 			ding.play();
-		};
+		}
 		if (msg.includes('@everyone') && sender == 'felipewolf') {
 			message.style.backgroundColor = 'gold';
 			ding.play();
-		};
+		}
 		messageContainer.style.wordWrap = "break-word";
         messageContainer.appendChild(message);
         var messageArea = document.getElementById('messages');
@@ -2680,7 +2673,7 @@ const publishMessage = async (message) => {
             }
         };
         await pubnub.publish(publishPayload);
-}
+};
 
 setupPubNub();
 
@@ -2694,22 +2687,22 @@ window.onload = function() {
 	new Sortable(sortableSeeds, {
 		animation: 150,
 		onChange: function() {
-			saveSeedOrder()
+			saveSeedOrder();
 		}
 	});
 	var sortableOres = document.getElementById('sortableOres');
 	new Sortable(sortableOres, {
 		animation: 150,
 		onChange: function() {
-			saveOreOrder()
+			saveOreOrder();
 		}
 	});
 	var teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
-	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false
+	scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 	if (JSON.parse(localStorage.getItem('IANotification')) !== 1) {
 		alert('You need to config the Idle Again Script');
-		localStorage.setItem('IANotification',1)
-	};
+		localStorage.setItem('IANotification',1);
+	}
 	addWikiButton();
 	document.getElementById('fight-button').querySelectorAll('td')[0].setAttribute('onclick', 'clicksFightButton();window.autoPoison();');
 	document.getElementById('fight-button').querySelectorAll('td')[1].setAttribute('onclick', 'clicksFightButton();window.autoPoison();');
@@ -2726,22 +2719,22 @@ function initLoginNotifications() {
 				navigate('main');
 				setTimeout(function(){onLogin()},10000);
 			}
-		});    
+		});
     });
-		
+
 	var loginTarget = document.getElementById('game-screen');
     loginObserver.observe(loginTarget, { attributes : true, attributeFilter : ['style'] });
-	
-	
+
+
 	var reloadObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
 			if (document.getElementById("dialogue-reconnecting").style.display !== "none") {
-				console.log('reloading')
-				setTimeout(function(){window.location.reload()},10000);
+				console.log('reloading');
+				setTimeout(function(){window.location.reload();},10000);
 			}
-		});    
+		});
     });
-		
+
 	var reloadTarget = document.getElementById('dialogue-reconnecting');
     reloadObserver.observe(reloadTarget, { attributes : true, attributeFilter : ['style'] });
 }
@@ -2749,7 +2742,7 @@ function initLoginNotifications() {
 initLoginNotifications();
 
 function onLogin() {
-	console.log('log in')
+	console.log('log in');
 	loadUserVars();
 	scriptStyleTabs();
 	loadSeedOrder();
@@ -2764,13 +2757,13 @@ document.getElementById('saveInput').addEventListener('change', function () {
 		var file = fileInput.files[0];
 		var reader = new FileReader();
 		reader.readAsText(file);
-		
+
 		reader.onload = function (e) {
 			var importedData = e.target.result;
 
 			importedData = importedData.split(',,,');
 			scriptVars = JSON.parse(importedData[0]);
-			scriptStyleTabs()
+			scriptStyleTabs();
 			localStorage.setItem(`idleAgain-${window.username}`, JSON.stringify(scriptVars));
 			localStorage.setItem(`idleAgain-oreOrder${window.username}`, importedData[1]);
 			loadOreOrder();
@@ -2788,7 +2781,7 @@ function handleKeyDown2(event) {
   }
 }
 
-window.handleKeyDown = handleKeyDown2
+window.handleKeyDown = handleKeyDown2;
 
 function autoGameLoop() {
     if (scriptVars.toggleGlobal === true) {
@@ -2844,23 +2837,23 @@ function autoGameLoopVeryFast() {
 }
 
 const gameLoopInterval = setInterval(function(){
-    autoGameLoop()
+    autoGameLoop();
 }, 5000);
 
 const gameLoopSlowInterval = setInterval(function(){
-    autoGameLoopSlow()
+    autoGameLoopSlow();
 }, 60000);
 
 const gameLoopFastInterval = setInterval(function(){
-    autoGameLoopFast()
+    autoGameLoopFast();
 }, 750);
 
 const gameLoopVeryFastInterval = setInterval(function(){
-    autoGameLoopVeryFast()
+    autoGameLoopVeryFast();
 }, 250);
 
 if (JSON.parse(localStorage.getItem('autoLogin')) == true) {
-	let lastUser = localStorage.getItem('lastLogin')
+	let lastUser = localStorage.getItem('lastLogin');
 	document.querySelector('#login-preset-'+lastUser+' tbody tr td:first-child').click();
 }
 
