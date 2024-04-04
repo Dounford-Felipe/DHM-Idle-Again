@@ -1909,13 +1909,6 @@ function scriptAddTabs() {
       </tr>
     </tbody>
   </table>
-  <table style="cursor: pointer;border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
-    <tbody>
-  <tr id="scriptKnightq" onclick="window.autoChangeVar('toggleautoKnightq',!scriptVars.toggleautoKnightq,this.id)" style="cursor: pointer; color: red;">
-        <td style="padding-left: 10px;"><img src="images/knight.png" class="img-small"></td>
-        <td style="text-align:right;padding-right:20px;width:100%">Knight Quest</td>
-      </tr>
-    </tbody>
 </div>`
 
 	let scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
@@ -1966,19 +1959,44 @@ function scriptAddTabs() {
     </tbody>
   </table>
 </div>`;
-	$(chatDiv).insertAfter('#tab-logout');
-	$(scriptConfCookingTab).insertAfter('#tab-logout');
-	$(scriptConfExploringTab).insertAfter('#tab-logout');
-	$(scriptConfPotionsTab).insertAfter('#tab-logout');
-	$(scriptConfBrewingTab).insertAfter('#tab-logout');
-	$(scriptConfSeedsTab).insertAfter('#tab-logout');
-	$(scriptConfFarmingTab).insertAfter('#tab-logout');
-	$(scriptConfWoodcuttingTab).insertAfter('#tab-logout');
-	$(scriptConfCraftingTab).insertAfter('#tab-logout');
-	$(scriptConfMiningTab).insertAfter('#tab-logout');
-	$(scriptConfTab).insertAfter('#tab-logout');
+	let logoutTab = document.getElementById('tab-logout');
+	logoutTab.insertAdjacentHTML('afterend', chatDiv);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfCookingTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfExploringTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfPotionsTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfBrewingTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfSeedsTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfFarmingTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfWoodcuttingTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfCraftingTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfMiningTab);
+	logoutTab.insertAdjacentHTML('afterend', scriptConfTab);
+	
+	let seeds = ["red Mushroom Seeds","dotted Green Leaf Seeds","green Leaf Seeds","lime Leaf Seeds","gold Leaf Seeds","crystal Leaf Seeds","striped Green Leaf Seeds","striped Gold Leaf Seeds","striped Crystal Leaf Seeds","tree Seeds","oak Tree Seeds","willow Tree Seeds","maple Tree Seeds","redwood Tree Seeds","pine Tree Seeds","haunted Tree Seeds","jungle Tree Seeds","lava Tree Seeds","gold Tree Seeds","magic Tree Seeds","apple Tree Seeds","cactus Tree Seeds","banana Tree Seeds","palm Tree Seeds","pineapple Tree Seeds","starfruit Tree Seeds","gold Apple Tree Seeds"];
+	let sortableSeedsOl = document.getElementById('sortableSeeds');
+	seeds.forEach(function(seed) {
+		let seedLi = `<li class="ui-state-default sortableItem" value="${seed.replaceAll(' ','')}" class="idleAgainSortables">
+      <input type="checkbox" class="seed-checkbox"> ${seed.toUpperCase()}<img src="images/${seed.replaceAll(' ','')}.png" class="img-small" style="padding-right: 10px;">
+    </li>`;
+		sortableSeedsOl.insertAdjacentHTML('beforeend', seedLi);
+	});
+	
+	let areas = ['fields', 'forests', 'caves', 'volcano', 'northern Fields', 'haunted Mansion', 'desert', 'ocean', 'jungle', 'dungeon Entrance', 'dungeon', 'castle', 'cemetery', 'factory', 'haunted Woods', 'deep Ocean'];
+	let strengthTableBody = document.getElementById('strengthTableBody');
+	areas.forEach(function(area) {
+		let areaTr = `<tr style="display: inline-block; color: red; width: 50%;" onclick="window.autoChangeObject('scriptStrength','${area.replace(" ","")}',!scriptVars.scriptStrength.${area.replace(" ","")},this.id)" id="${area.replace(" ","")}StrengthToggle">
+        <td style="padding-left: 10px;width: 5%;"><img src="images/${area.replace(" ","")}.png" class="img-small"></td>
+        <td style="text-align: center;width: 40%">${area.toUpperCase()}</td>
       </tr>`;
+		strengthTableBody.insertAdjacentHTML('beforeend', areaTr);
+	});
 
+	let potionsList = ["furnace Speed Potion","seed Finder Potion","compost Potion","tree Compost Potion","fishing Speed Potion","woodcutting Xp Potion","exploring Speed Potion","bait Potion","farming Xp Potion","fast Compost Potion","oil Potion","coin Potion","pirates Potion","promethium Potion","rocket Speed Potion","fruit Tree Potion","titanium Potion","research Speed Potion","super Rocket Speed Potion"];
+	let sortablePotionsOl = document.getElementById('sortablePotions');
+	potionsList.forEach(function(potion) {
+		let potionli = `<li class="ui-state-default sortableItem" value="${potion.replaceAll(' ','')}" class="idleAgainSortables">
+		  <input type="checkbox" class="drink-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">${potion.toUpperCase()}<img src="images/${potion.replaceAll(' ','')}.png" class="img-small" style="padding-right: 10px;"><input type="checkbox" class="brew-checkbox" style="margin-right: 30px;" onchange="window.savePotions()">
+		</li>`;
 		sortablePotionsOl.insertAdjacentHTML('beforeend', potionli);
 	});
 	
@@ -1992,8 +2010,6 @@ function scriptAddTabs() {
 			</table>
 		</div>
 	</a>`;
-	$(compareBar).insertAfter('#your-profile-link');
-
 	let profileLink = document.getElementById('your-profile-link');
 	profileLink.insertAdjacentHTML('afterend', compareBar);
 	
@@ -2011,9 +2027,7 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`;
-	$(cookAllItem).insertAfter('#item-box-energy');
-
+	</div>`
 	let energyItemBox = document.getElementById('item-box-energy');
 	energyItemBox.insertAdjacentHTML('afterend', cookAllItem);
 	
@@ -2030,8 +2044,6 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`;
-	$(growTimeNeededItem).insertAfter('#item-box-bonemealBin');
 	</div>`
 	
 	let bonemealNeededItem = `<div class="main-button-lighter" id="scriptBonemealNeeded" style="background-color: rgb(26, 51, 0);">
@@ -2047,15 +2059,11 @@ function scriptAddTabs() {
 			</tr>
 		</tbody>
 	</table>
-	</div>`;
-	$(bonemealNeededItem).insertAfter('#item-box-bonemealBin');
-
-	$("#div-emojis").draggable();
-	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native;},maxFrequentRows:1};
-	const picker = new EmojiMart.Picker(pickerOptions);
-	picker.style.height='350px';
-	document.getElementById("div-emojis").appendChild(picker);
-	document.getElementById('emojis').addEventListener('click', toggleEmojiPicker);
+	</div>`
+	let bonemealBinItemBox = document.getElementById('item-box-bonemealBin');
+	bonemealBinItemBox.insertAdjacentHTML('afterend', growTimeNeededItem);
+	bonemealBinItemBox.insertAdjacentHTML('afterend', bonemealNeededItem);
+	
 	$("#div-emojis").draggable()
 	const pickerOptions = {onEmojiSelect: function(emoji) {document.getElementById('message-body').value += emoji.native},maxFrequentRows:1}
 	const picker = new EmojiMart.Picker(pickerOptions)
