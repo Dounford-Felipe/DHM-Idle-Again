@@ -158,6 +158,7 @@ const cookableFood = [
 (function () {
     'use strict';
 const IdleAgain = {
+	username: "",
 	//Configs
 	scriptVars: {
 		"toggleGlobal": false,
@@ -680,7 +681,7 @@ const IdleAgain = {
 	},
 
 	autoExplore() {
-		if (explorerCooldown == 0) {
+		if (explorerCooldown == 0 && monsterName == "none") {
 			let scriptAreaLocal = IdleAgain.scriptVars.scriptArea;
 			if (scriptAreaLocal == 'dungeon' && dungeonKey == 0) {
 				scriptAreaLocal = 'dungeonEntrance';
@@ -707,7 +708,7 @@ const IdleAgain = {
 	},
 
 	autoFight() {
-		if (fightDone === 0 && exploringArea !== 'none') {
+		if (fightDone === 0 && exploringArea !== 'none' && monsterName == "none") {
 			let teleportCooldown = (teleportSpellUpgraded === 1) ? 300 : 900;
 			scriptWaitTeleport = (explorerCooldown > teleportCooldown + 10) ? true : false;
 			if (scriptWaitTeleport === false || (scriptWaitTeleport && teleportSpellCooldown === 0)) {
@@ -1614,27 +1615,27 @@ const IdleAgain = {
 			</table>
 			<table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 20px;width: 97%;">
 				<tbody style="display: table-row;">
-				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','bones','toggle',this.id)" id="bonesIgnoreToggle">
+				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','bones','toggle',this.id)" id="IdleAgain-bonesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/bones.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">BONES IGNORE</td>
 				</tr>
-				<tr style="display: inline-block; color: red; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','ashes','toggle',this.id)" id="ashesIgnoreToggle">
+				<tr style="display: inline-block; color: red; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','ashes','toggle',this.id)" id="IdleAgain-ashesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/ashes.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">ASHES IGNORE</td>
 				</tr>
-				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','iceBones','toggle',this.id)" id="iceBonesIgnoreToggle">
+				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','iceBones','toggle',this.id)" id="IdleAgain-iceBonesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/iceBones.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">ICE BONES IGNORE</td>
 				</tr>
-				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','zombieBones','toggle',this.id)" id="zombieBonesIgnoreToggle">
+				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','zombieBones','toggle',this.id)" id="IdleAgain-zombieBonesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/zombieBones.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">ZOMBIE BONES IGNORE</td>
 				</tr>
-				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','bloodBones','toggle',this.id)" id="bloodBonesIgnoreToggle">
+				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','bloodBones','toggle',this.id)" id="IdleAgain-bloodBonesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/bloodBones.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">BLOOD BONES IGNORE</td>
 				</tr>
-				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','fishBones','toggle',this.id)" id="fishBonesIgnoreToggle">
+				<tr style="display: inline-block; color: green; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptBonesIgnore','fishBones','toggle',this.id)" id="IdleAgain-fishBonesIgnore">
 					<td style="padding-left: 10px;width: 5%;"><img src="images/fishBones.png" class="img-small"></td>
 					<td style="text-align: center;width: 40%">FISH BONES IGNORE</td>
 				</tr>
@@ -1963,7 +1964,7 @@ const IdleAgain = {
 				<tr id="scriptExplorerArea" style="color: white;">
 					<td style="padding-left: 10px;"><img src="images/caves.png" class="img-small"></td>
 					<td style="padding-left: 50px;">
-					<select name="scriptAreaOptions" onchange="IdleAgain.autoChangeVar('scriptArea',this.value);IdleAgain.monsterOptions(this.value);IdleAgain.autoChangeVar('scriptMonster',document.getElementById('IdleAgain-selectedMonster').value)" id="IdleAgain-scriptArea">
+					<select name="IdleAgain-areaOptions" onchange="IdleAgain.autoChangeVar('scriptArea',this.value);IdleAgain.monsterOptions(this.value);IdleAgain.autoChangeVar('scriptMonster',document.getElementById('IdleAgain-selectedMonster').value)" id="IdleAgain-areaOptions">
 						<option value="fields">Fields</option>
 						<option value="forests">Forests</option>
 						<option value="caves">Caves</option>
@@ -2289,9 +2290,8 @@ const IdleAgain = {
 
 		let strengthTableBody = document.getElementById('strengthTableBody');
 		areasArray.forEach((area) => {
-			area = area.replace(" ","");
-			let areaTr = `<tr style="display: inline-block; color: red; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptStrength','${area}','toggle',this.id)" id="IdleAgain-${area}Strength">
-				<td style="padding-left: 10px;width: 5%;"><img src="images/${area}.png" class="img-small"></td>
+			let areaTr = `<tr style="display: inline-block; color: red; width: 50%;" onclick="IdleAgain.autoChangeObject('scriptStrength','${area.replace(" ","")}','toggle',this.id)" id="IdleAgain-${area.replace(" ","")}Strength">
+				<td style="padding-left: 10px;width: 5%;"><img src="images/${area.replace(" ","")}.png" class="img-small"></td>
 				<td style="text-align: center;width: 40%">${area.toUpperCase()}</td>
 			</tr>`;
 			strengthTableBody.insertAdjacentHTML('beforeend', areaTr);
@@ -2400,12 +2400,12 @@ const IdleAgain = {
 					importedData = importedData.split(',,,');
 					IdleAgain.scriptVars = JSON.parse(importedData[0]);
 					scriptStyleTabs();
-					localStorage.setItem(`idleAgain-${IdleAgain.username}`, JSON.stringify(scriptVars));
-					localStorage.setItem(`idleAgain-oreOrder${IdleAgain.username}`, importedData[1]);
+					localStorage.setItem(`idleAgain-${username}`, JSON.stringify(scriptVars));
+					localStorage.setItem(`idleAgain-oreOrder${username}`, importedData[1]);
 					loadOreOrder();
-					localStorage.setItem(`idleAgain-potionState${IdleAgain.username}`, importedData[2]);
+					localStorage.setItem(`idleAgain-potionState${username}`, importedData[2]);
 					loadPotions();
-					localStorage.setItem(`idleAgain-seedOrder${IdleAgain.username}`, importedData[3]);
+					localStorage.setItem(`idleAgain-seedOrder${username}`, importedData[3]);
 					loadSeedOrder();
 				};
 			}
@@ -2439,7 +2439,7 @@ const IdleAgain = {
 
 	scriptStyleTabs() {
 		const bolVars = [
-			"toggleGlobal","toggleGeodeOpen","toggleMineralIdentify","toggleNecklaceCharge","toggleTrain","toggleRocket","toggleSmelting","toggleRefinary","toggleCharcoal","toggleWoodcutting","toggleFarming","toggleBones","toggleFertilize","toggleDrink","toggleBrew","toggleTreeUpgrade","toggleExplore","scriptArea","toggleFight","toggleResetFight","toggleMonsterFind","toggleShiny","toggleSpell","toggleCombatPotion","toggleHeal","toggleBM","toggleCousin","toggleBags","toggleFieldsBags","toggleStatue","toggleArtifact","toggleBoat"
+			"toggleGlobal","toggleGeodeOpen","toggleMineralIdentify","toggleNecklaceCharge","toggleTrain","toggleRocket","toggleSmelting","toggleRefinary","toggleCharcoal","toggleWoodcutting","toggleFarming","toggleBones","toggleFertilize","toggleDrink","toggleBrew","toggleTreeUpgrade","toggleExplore","toggleFight","toggleResetFight","toggleMonsterFind","toggleShiny","toggleSpell","toggleCombatPotion","toggleHeal","toggleBM","toggleCousin","toggleBags","toggleFieldsBags","toggleStatue","toggleArtifact","toggleBoat"
 		]
 		bolVars.forEach((id) => {
 			document.getElementById("IdleAgain-" + id).style.color = IdleAgain.scriptVars[id] ? "green" : "red";
@@ -2473,8 +2473,8 @@ const IdleAgain = {
 		document.getElementById("IdleAgain-appleTreeUpgrade").style.color = IdleAgain.scriptVars.scriptTreeUpgrade.appleTree ? "green" : "red";
 
 		//Starfruit and magic tree can't be upgraded
-		document.getElementById("IdleAgain-magicTreeIgnore").style.color = IdleAgain.scriptVars.scriptTreeIgnore.Tree ? "green" : "red";
-		document.getElementById("IdleAgain-magicTreeDowngrade").style.color = IdleAgain.scriptVars.scriptTreeDowngrade.Tree ? "green" : "red";
+		document.getElementById("IdleAgain-magicTreeIgnore").style.color = IdleAgain.scriptVars.scriptTreeIgnore.magicTree ? "green" : "red";
+		document.getElementById("IdleAgain-magicTreeDowngrade").style.color = IdleAgain.scriptVars.scriptTreeDowngrade.magicTree ? "green" : "red";
 		document.getElementById("IdleAgain-starfruitTreeIgnore").style.color = IdleAgain.scriptVars.scriptTreeIgnore.starfruitTree ? "green" : "red";
 		document.getElementById("IdleAgain-starfruitTreeDowngrade").style.color = IdleAgain.scriptVars.scriptTreeDowngrade.starfruitTree ? "green" : "red";
 
@@ -2486,7 +2486,7 @@ const IdleAgain = {
 		})
 
 		boatsArray.forEach((boat) => {
-			document.getElementById("IdleAgain-" + boat + "Send").style.color = IdleAgain.scriptVars.scriptBoatSend[tree] ? "green" : "red";
+			document.getElementById("IdleAgain-" + boat + "Send").style.color = IdleAgain.scriptVars.scriptBoatSend[boat] ? "green" : "red";
 		})
 		//Sail and high wind are not part of the array because of the autoBoat
 		document.getElementById("IdleAgain-sailBoatSend").style.color = IdleAgain.scriptVars.scriptBoatSend.sailBoat ? "green" : "red";
@@ -2497,6 +2497,7 @@ const IdleAgain = {
 		document.getElementById('IdleAgain-rocketDestination').value = IdleAgain.scriptVars.scriptRocket;
 		document.getElementById('IdleAgain-refinaryBar').value = IdleAgain.scriptVars.scriptRefinaryBar;
 		document.getElementById('IdleAgain-foundryWood').value = IdleAgain.scriptVars.scriptFoundryWood;
+		document.getElementById('IdleAgain-areaOptions').value = IdleAgain.scriptVars.scriptArea;
 		IdleAgain.monsterOptions(IdleAgain.scriptVars.scriptArea);
 		document.getElementById('IdleAgain-selectedMonster').value = IdleAgain.scriptVars.scriptMonster;
 		document.getElementById('IdleAgain-cousinArea').value = IdleAgain.scriptVars.scriptCousinArea;
@@ -2633,10 +2634,10 @@ const IdleAgain = {
 
 	scriptExportConfig() {
 		let saveData = '';
-		saveData += JSON.stringify(scriptVars) + ',,,';
-		saveData += localStorage.getItem(`idleAgain-oreOrder${IdleAgain.username}`) !== null ? localStorage.getItem(`idleAgain-oreOrder${IdleAgain.username}`) + ',,,' : 'empty,,,';
-		saveData += localStorage.getItem(`idleAgain-potionState${IdleAgain.username}`) !== null ? localStorage.getItem(`idleAgain-potionState${IdleAgain.username}`) + ',,,' : 'empty,,,';
-		saveData += localStorage.getItem(`idleAgain-seedOrder${IdleAgain.username}`) !== null ? localStorage.getItem(`idleAgain-seedOrder${IdleAgain.username}`) : 'empty';
+		saveData += JSON.stringify(IdleAgain.scriptVars) + ',,,';
+		saveData += localStorage.getItem(`idleAgain-oreOrder${username}`) !== null ? localStorage.getItem(`idleAgain-oreOrder${username}`) + ',,,' : 'empty,,,';
+		saveData += localStorage.getItem(`idleAgain-potionState${username}`) !== null ? localStorage.getItem(`idleAgain-potionState${username}`) + ',,,' : 'empty,,,';
+		saveData += localStorage.getItem(`idleAgain-seedOrder${username}`) !== null ? localStorage.getItem(`idleAgain-seedOrder${username}`) : 'empty';
 		let a = document.createElement("a");
 		let file = new Blob([saveData], {
 			type: 'text/plain'
@@ -2764,60 +2765,40 @@ const IdleAgain = {
 	},
 
 	initialize() {
+		Object.defineProperty(window, "username", {
+			get() {
+			  	return IdleAgain.username;
+			},
+			set(val) {
+			  	IdleAgain.username = val;
+			  	IdleAgain.onLogin();
+			}
+		});
 		IdleAgain.setupPubNub(); //Chat
 		IdleAgain.scriptAddTabs();
-		IdleAgain.initLoginNotifications();
 
-		if (JSON.parse(localStorage.getItem('IANotification')) === false) {
+		if (JSON.parse(localStorage.getItem('IdleAgain-Config')) === false) {
 			alert('You need to config the Idle Again Script');
-			localStorage.setItem('IANotification', true);
+			localStorage.setItem('IdleAgain-Config', true);
 		}
-		
+
+		//Use version number to show new notification when needed
+		/* if (JSON.parse(localStorage.getItem('IdleAgain-Notification')) !== "1.6") {
+			const message = "This is a notification that changes based on version";
+			alert(message);
+			IdleAgain.showMessage(message,"Idle Again");
+			localStorage.setItem('IdleAgain-Notification', "1.6");
+		} */
+
 		//IdleAgain.addCombatUI();
 		document.addEventListener("keydown", IdleAgain.handleKeyDown);
 	},
 
-	initLoginNotifications() {
-		let loginObserver = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutationRecord) {
-				if (document.getElementById("game-screen").style.display !== "none") {
-					navigate('exploreSelect');
-					navigate('main');
-					setTimeout(function() {
-						IdleAgain.onLogin()
-					}, 3000);
-				}
-			});
-		});
-
-		let loginTarget = document.getElementById('game-screen');
-		loginObserver.observe(loginTarget, {
-			attributes: true,
-			attributeFilter: ['style']
-		});
-
-
-		let reloadObserver = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutationRecord) {
-				if (document.getElementById("dialogue-reconnecting").style.display !== "none") {
-					IdleAgain.logTime("Reloading")
-					setTimeout(function() {
-						IdleAgain.location.reload();
-					}, 10000);
-				}
-			});
-		});
-
-		let reloadTarget = document.getElementById('dialogue-reconnecting');
-		reloadObserver.observe(reloadTarget, {
-			attributes: true,
-			attributeFilter: ['style']
-		});
-	},
-
 	onLogin() {
+		navigate('exploreSelect');
+		navigate('main');
 		IdleAgain.loadUserVars();
-		//IdleAgain.scriptStyleTabs();
+		IdleAgain.scriptStyleTabs();
 		IdleAgain.loadSeedOrder();
 		IdleAgain.loadOreOrder();
 		IdleAgain.loadPotions();
