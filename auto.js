@@ -158,7 +158,13 @@ const cookableFood = [
 (function () {
     'use strict';
 const IdleAgain = {
-	username: "",
+	//Store vars that will be watched
+	props: {
+		username: "",
+		monsterName: "none",
+		heroHp: 0,
+	},
+
 	//Configs
 	scriptVars: {
 		"toggleGlobal": false,
@@ -775,14 +781,12 @@ const IdleAgain = {
 	},
 
 	autoHeal() {
-		if (monsterName !== "none" && heroHp == 0) {
-			if (hpCombatPotionUsed == 0 && (hpCombatPotion >= 1 || hpCombatPotionFree == 1)) {
-				sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
-			} else if (superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
-				sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
-			} else if (teleportSpellCooldown == 0 && teleportSpell == 1) {
-				sendBytes('CAST_COMBAT_SPELL=teleportSpell');
-			}
+		if (hpCombatPotionUsed == 0 && (hpCombatPotion >= 1 || hpCombatPotionFree == 1)) {
+			sendBytes('DRINK_COMBAT_POTION=hpCombatPotion');
+		} else if (superHpCombatPotionUsed == 0 && (superHpCombatPotion >= 1 || typeof superHpCombatPotionFree !== 'undefined')) {
+			sendBytes('DRINK_COMBAT_POTION=superHpCombatPotion');
+		} else if (teleportSpellCooldown == 0 && teleportSpell == 1) {
+			sendBytes('CAST_COMBAT_SPELL=teleportSpell');
 		}
 	},
 
@@ -2764,16 +2768,42 @@ const IdleAgain = {
 		emojiPicker.style.display = (emojiPicker.style.display === "none" || emojiPicker.style.display === "") ? "block" : "none";
 	},
 
-	initialize() {
+	setWatchers() {
 		Object.defineProperty(window, "username", {
 			get() {
-			  	return IdleAgain.username;
+			  	return IdleAgain.props.username;
 			},
 			set(val) {
-			  	IdleAgain.username = val;
+			  	IdleAgain.props.username = val;
 			  	IdleAgain.onLogin();
 			}
 		});
+		Object.defineProperty(window, "monsterName", {
+			get() {
+			  	return IdleAgain.props.monsterName;
+			},
+			set(val) {
+			  	IdleAgain.props.monsterName = val;
+				if (val !== "none" && (IdleAgain.scriptVars.toggleShiny || IdleAgain.scriptVars.toggleMonsterFind)) {
+					IdleAgain.autoMonsterHunt();
+				}
+			}
+		});
+		Object.defineProperty(window, "heroHp", {
+			get() {
+			  	return IdleAgain.props.heroHp;
+			},
+			set(val) {
+			  	IdleAgain.props.heroHp = val;
+				if (val == 0) {
+					IdleAgain.autoHeal();
+				}
+			}
+		});
+	},
+
+	initialize() {
+		IdleAgain.setWatchers();
 		IdleAgain.setupPubNub(); //Chat
 		IdleAgain.scriptAddTabs();
 
@@ -2819,10 +2849,6 @@ const IdleAgain = {
 		const gameLoopFastInterval = setInterval(function() {
 			IdleAgain.autoGameLoopFast();
 		}, 750);
-
-		const gameLoopVeryFastInterval = setInterval(function() {
-			IdleAgain.autoGameLoopVeryFast();
-		}, 250);
 
 		IdleAgain.logTime("Logged with " + username);
 	},
@@ -2904,14 +2930,7 @@ const IdleAgain = {
 		if (IdleAgain.scriptVars.toggleGlobal) {
 			if (IdleAgain.scriptVars.toggleCombatSwap) IdleAgain.autoCombatSwap();
 			if (IdleAgain.scriptVars.toggleSpell) IdleAgain.autoSpell();
-			if (monsterName !== "none" && (IdleAgain.scriptVars.toggleShiny || IdleAgain.scriptVars.toggleMonsterFind)) IdleAgain.autoMonsterHunt();
 			if (IdleAgain.scriptVars.toggleCombatPotion) IdleAgain.autoCombatPot();
-		}
-	},
-
-	autoGameLoopVeryFast() {
-		if (IdleAgain.scriptVars.toggleGlobal) {
-			if (IdleAgain.scriptVars.toggleHeal) IdleAgain.autoHeal();
 		}
 	},
 
