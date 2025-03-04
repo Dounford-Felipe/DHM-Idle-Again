@@ -148,9 +148,10 @@ const blockedHTML = [
 ];
 const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav");
 let oldWeapon;
+let bestHelmet;
 let bestWeapon;
 let bestBow;
-let bestPoison;
+let bestPoison = null;
 let bestMage;
 const cookableFood = [
 	'rawSardine', 'rawChicken', 'rawTuna', 'rawSnail', 'rawPiranha', 'rawSwordfish', 'rawSeaTurtle', 'rawLobster', 'rawEel', 'rawShark', 'rawCrab', 'rawMantaRay', 'rawBloodChicken', 'rawWhale', 'rawRainbowFish'
@@ -163,6 +164,10 @@ const IdleAgain = {
 		username: "",
 		monsterName: "none",
 		heroHp: 0,
+		golem: false,
+		golemAttack: false,
+		initialTime: 0,
+		currentTime: 0,
 	},
 
 	//Configs
@@ -190,6 +195,7 @@ const IdleAgain = {
 		"toggleResetFight": false,
 		"toggleMonsterFind": false,
 		"toggleSpell": false,
+		"lifeStealThreshold": 8,
 		"toggleCombatPotion": false,
 		"toggleHeal": true,
 		"toggleShiny": false,
@@ -341,6 +347,36 @@ const IdleAgain = {
 		const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
 		const min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
 		console.log('[' + hour + ':' + min + '] ' + extraInfo);
+	},
+
+	customMessage(data) {
+		if (data.includes("monsterName")) {
+			if (data.includes('monsterName~bloodGolem')) {
+				IdleAgain.props.initialTime = playtime;
+				IdleAgain.props.golem = true;
+			} else if (data.includes('monsterName~none')) {
+				IdleAgain.props.golem = false;
+				IdleAgain.props.golemAttack = false;
+			};
+			IdleAgain.autoPoison();
+			if (IdleAgain.scriptVars.toggleCombatPotion) (IdleAgain.autoCombatPot());
+		};
+		if(data.startsWith("HIT_SPLAT=")) {
+			if (data.includes("thunderStrikeSpell.png")) {
+				const stunTime = Math.floor(parseInt(data.slice(51,53)) / 2);
+				setTimeout(() => {
+					IdleAgain.props.golemAttack = true;
+					if (freezeCombatPotionUsed == 0 && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1)) {
+						sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion');
+					}
+				}, (stunTime * 1000) - 500);
+			}
+			if (data.includes("iceArtifact.png")) {
+				setTimeout(() => {
+					IdleAgain.props.golemAttack = true;
+				}, 4500);
+			}
+		}
 	},
 
 	autoEvent() {
@@ -701,15 +737,16 @@ const IdleAgain = {
 			}
 			sendBytes('EXPLORE=' + scriptAreaLocal);
 			this.logTime("Exploring " + scriptAreaLocal);
-			if (IdleAgain.scriptVars.toggleShiny == true || IdleAgain.scriptVars.toggleMonsterFind == true) {
+			if (IdleAgain.scriptVars.toggleShiny || IdleAgain.scriptVars.toggleMonsterFind) {
 				scriptWaitTeleport = true;
 			} else {
 				scriptWaitTeleport = false;
 			}
+			bestHelmet = tridentSoldierHelmetPlus > 0 ? 'tridentSoldierHelmetPlus' : typeof tridentSoldierHelmet !== 'undefined' ? 'tridentSoldierHelmet' : 'titaniumHelmet';
 			bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
 			bestBow = typeof enhcantedSuperBow !== "undefined" ? "enhcantedSuperBow" : typeof superBow !== "undefined" ? "superBow" : "bow";
-			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
-			bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
+			bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : null;
+			bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : null;
 		}
 	},
 
@@ -722,7 +759,6 @@ const IdleAgain = {
 					sendBytes('DRINK=cureInfectionPotion');
 				}
 				sendBytes('LOOK_FOR_FIGHT');
-				IdleAgain.autoPoison();
 				setTimeout(function() {
 					if (monsterName == 'pufferFish') {
 						clicksItem('bow');
@@ -737,10 +773,37 @@ const IdleAgain = {
 		}
 	},
 
+	autoGolem() {
+		if (IdleAgain.props.golemAttack) {
+			clicksItem('titaniumBody');
+			clicksItem('titaniumLegs');
+			clicksItem(bestHelmet);
+			IdleAgain.props.golemAttack = false;
+			IdleAgain.props.initialTime = playtime;
+
+		//The second before golem attack
+		} else if ((IdleAgain.props.currentTime - IdleAgain.props.initialTime) % 3 == 1) {
+			clicksItem('titaniumBody');
+			clicksItem('titaniumLegs');
+			clicksItem(bestHelmet);
+		} else {
+			clicksItem('bearFurMask')
+			clicksItem('bearFurMask')
+			clicksItem('bearFurBody')
+		}
+	},
+
+	canPoison() {
+		return poisonEnemyTimer !== 1 && bestPoison !== null && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)
+	},
+
 	autoPoison() {
-		if (bestPoison !== '' && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) {
+		if (IdleAgain.canPoison()) {
+			if (typeof ignoreDefenceCombatPotion !== 'undefined' && ignoreDefenceCombatPotionUsed == 0 && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1)) {
+				sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion');
+			}
 			clicksItem(bestPoison);
-			const poisonInterval = setInterval(function() {
+			const poisonInterval = setInterval(() => {
 				if (poisonEnemyTimer == 1) {
 					clicksItem(presetWeapon1);
 					clearInterval(poisonInterval);
@@ -791,169 +854,93 @@ const IdleAgain = {
 	},
 
 	autoSpell() {
-		if (monsterName !== 'none') {
-			if (monsterName !== 'none' && fireSpell == 1 && fireSpellCooldown == 0) {
-				if (bestMage != '') {
-					let oldHead = head;
-					let oldBody = body;
-					let oldLeg = leg;
-					clicksItem(bestMage + 'Hood');
-					clicksItem(bestMage + 'Top');
-					clicksItem(bestMage + 'Bottom');
-					if (staff >= 1) {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-						clicksItem('staff');
-					}
-					sendBytes('CAST_COMBAT_SPELL=fireSpell');
-					if (monsterName == 'bloodGolem') {
-						clicksItem(oldHead);
-						clicksItem(oldBody);
-						clicksItem(oldLeg);
-					} else {
-						clicksItem(presetHead1);
-						clicksItem(presetBody1);
-						clicksItem(presetLeg1);
-					}
-					clicksItem(oldWeapon);
-					if (weapon == 'staff') {
-						oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
+		if (monsterName == 'none' || fightStartTimer !== 0) {
+			return;
+		};
+
+		if (reflectSpell == 1 && reflectSpellCooldown == 0) {
+			const isRobotMage = monsterName !== 'robotMage' || robotMageCharge !== 0;
+			const isDragon = monsterName !== 'dragon' || dragonFireCharge == 4;
+			const isSkeletonCemetery = !monsterName.includes('keletonCemetery') ||  monsterCharge !== 0;
+			const isReflecting = reflectSpellEnemyTimer == 0;
+			if (isReflecting && isDragon && isRobotMage && isSkeletonCemetery) {
+				sendBytes('CAST_COMBAT_SPELL=reflectSpell')
+			}
+		}
+
+		if (fireSpell == 1 && fireSpellCooldown == 0) {
+			if (bestMage !== null) {
+				sendBytes('CAST_COMBAT_SPELL=fireSpell')
+			} else {
+				IdleAgain.spellWithMage("fire")
+			}
+		}
+		
+		if (thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
+			if (bestMage !== null) {
+				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
+			} else {
+				IdleAgain.spellWithMage("thunderStrike")
+			}
+		}
+
+		if (lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= IdleAgain.scriptVars.lifeStealThreshold) {
+			sendBytes('CAST_COMBAT_SPELL=lifeStealSpell')
+			if (ranged.includes(weapon)) {
+				oldWeapon = weapon;
+				clicksItem(bestWeapon)
+				const lsInterval = setInterval(() => {
+					if (lifeStealSpellEnemyTimer == 0) {
 						clicksItem(oldWeapon);
+						clearInterval(lsInterval);
 					}
-				} else {
-					sendBytes('CAST_COMBAT_SPELL=fireSpell');
-				}
+				}, 2000);
 			}
-			if (monsterName !== 'none' && reflectSpell == 1 && reflectSpellCooldown == 0) {
-				if ((monsterName !== 'robotMage' || robotMageCharge !== 0) && (monsterName !== 'dragon' || dragonFireCharge == 4) && (!monsterName.includes('keletonCemetery') || monsterCharge !== 0) && reflectSpellEnemyTimer == 0) {
-					sendBytes('CAST_COMBAT_SPELL=reflectSpell');
-				}
-			}
-			if (monsterName !== 'none' && thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
-				if (sandstormSpellUpgraded == 1) {
-					if (sandstormSpellEnemyTimer > 0 || sandstormSpellCooldown > 10) {
-						if (bestMage != '') {
-							let oldHead = head;
-							let oldBody = body;
-							let oldLeg = leg;
-							clicksItem(bestMage + 'Hood');
-							clicksItem(bestMage + 'Top');
-							clicksItem(bestMage + 'Bottom');
-							if (staff >= 1) {
-								oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-								clicksItem('staff');
-							}
-							sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-							if (monsterName == 'bloodGolem') {
-								clicksItem(oldHead);
-								clicksItem(oldBody);
-								clicksItem(oldLeg);
-							} else {
-								clicksItem(presetHead1);
-								clicksItem(presetBody1);
-								clicksItem(presetLeg1);
-							}
-							clicksItem(oldWeapon);
-							if (weapon == 'staff') {
-								oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-								clicksItem(oldWeapon);
-							}
-						} else {
-							sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-						}
-					}
-				} else {
-					if (bestMage != '') {
-						let oldHead = head;
-						let oldBody = body;
-						let oldLeg = leg;
-						clicksItem(bestMage + 'Hood');
-						clicksItem(bestMage + 'Top');
-						clicksItem(bestMage + 'Bottom');
-						if (staff >= 1) {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-							clicksItem('staff');
-						}
-						sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-						if (monsterName == 'bloodGolem') {
-							clicksItem(oldHead);
-							clicksItem(oldBody);
-							clicksItem(oldLeg);
-						} else {
-							clicksItem(presetHead1);
-							clicksItem(presetBody1);
-							clicksItem(presetLeg1);
-						}
-						clicksItem(oldWeapon);
-						if (weapon == 'staff') {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-							clicksItem(oldWeapon);
-						}
-					} else {
-						sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell');
-					}
-				}
-			}
-			if (monsterName !== 'none' && lifeStealSpell == 1 && lifeStealSpellCooldown == 0 && heroHp <= 8) {
-				sendBytes('CAST_COMBAT_SPELL=lifeStealSpell');
-				if (ranged.includes(weapon)) {
-					clicksItem(bestWeapon);
-				}
-			}
-			if (monsterName !== 'none' && sandstormSpell == 1 && typeof sandstormSpellCooldown !== 'undefined') {
-				if (sandstormSpellCooldown == 0) {
-					if (bestMage != '') {
-						let oldHead = head;
-						let oldBody = body;
-						let oldLeg = leg;
-						clicksItem(bestMage + 'Hood');
-						clicksItem(bestMage + 'Top');
-						clicksItem(bestMage + 'Bottom');
-						if (staff >= 1) {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-							clicksItem('staff');
-						}
-						sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
-						if (monsterName == 'bloodGolem') {
-							clicksItem(oldHead);
-							clicksItem(oldBody);
-							clicksItem(oldLeg);
-						} else {
-							clicksItem(presetHead1);
-							clicksItem(presetBody1);
-							clicksItem(presetLeg1);
-						}
-						clicksItem(oldWeapon);
-						if (weapon == 'staff') {
-							oldWeapon = (poisonEnemyTimer == 0 && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)) ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1;
-							clicksItem(oldWeapon);
-						}
-					} else {
-						sendBytes('CAST_COMBAT_SPELL=sandstormSpell');
-					}
-				}
+		}
+
+		if (sandstormSpell == 1 && sandstormSpellCooldown == 0) {
+			if (bestMage == null) {
+				sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
+			} else {
+				IdleAgain.spellWithMage("sandstorm")
 			}
 		}
 	},
 
-	autoCombatPot() {
-		if (monsterName !== 'none') {
-			if (freezeCombatPotionUsed == 0 && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1)) {
-				setTimeout(function() {
-					sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion');
-				}, 19000);
-			}
-			if (typeof ignoreDefenceCombatPotion !== 'undefined' && ignoreDefenceCombatPotionUsed == 0 && (ignoreDefenceCombatPotionFree == 1 || ignoreDefenceCombatPotion >= 1)) {
-				sendBytes('DRINK_COMBAT_POTION=ignoreDefenceCombatPotion');
-			}
-			if (ghostScanCombatPotionUsed == 0 && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1)) {
-				sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion');
-			}
-			setTimeout(function() {
-				if (monsterName !== "none" && strengthCombatPotionUsed == 0 && (strengthCombatPotionFree == 1 || (IdleAgain.scriptVars.scriptStrength[exploringArea] && strengthCombatPotion >= 1))) {
-					sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion');
-				}
-			}, 3000);
+	spellWithMage(spell) {
+		const oldHead = head
+		const oldBody = body
+		const oldLeg = leg
+
+		clicksItem(bestMage + "Hood");
+		clicksItem(bestMage + "Top");
+		clicksItem(bestMage + "Bottom");
+		
+		if (staff >= 1) {
+			oldWeapon = IdleAgain.canPoison() ? bestPoison : (lifeStealSpellEnemyTimer != 0 && ranged.includes(presetWeapon1)) ? bestWeapon : presetWeapon1
+			clicksItem("staff");
 		}
+
+		sendBytes("CAST_COMBAT_SPELL=" + spell + "Spell");
+		
+		clicksItem(oldHead);
+		clicksItem(oldBody);
+		clicksItem(oldLeg);
+		
+		if (weapon == 'staff') {
+			clicksItem(oldWeapon);
+		}
+	},
+
+	autoCombatPot() {
+		if (ghostScanCombatPotionUsed == 0 && (ghostScanCombatPotionFree == 1 || ghostScanCombatPotion >= 1)) {
+			sendBytes('DRINK_COMBAT_POTION=ghostScanCombatPotion');
+		}
+		setTimeout(() => {
+			if (monsterName !== "none" && strengthCombatPotionUsed == 0 && (strengthCombatPotionFree == 1 || (IdleAgain.scriptVars.scriptStrength[exploringArea] && strengthCombatPotion >= 1))) {
+				sendBytes('DRINK_COMBAT_POTION=strengthCombatPotion');
+			}
+		}, 3000);
 	},
 
 	autoCombatSwap() {
@@ -1086,8 +1073,8 @@ const IdleAgain = {
 		}
 		bestWeapon = typeof silverScimitar !== 'undefined' ? 'silverScimitar' : typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : typeof trident !== 'undefined' ? 'trident' : typeof mace !== 'undefined' ? 'mace' : typeof scythe !== 'undefined' ? 'scythe' : 'skeletonSword';
 		bestBow = typeof enhcantedSuperBow !== "undefined" ? "enhcantedSuperBow" : typeof superBow !== "undefined" ? "superBow" : "bow";
-		bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : '';
-		bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : '';
+		bestPoison = typeof superPoisonTrident !== 'undefined' ? 'superPoisonTrident' : superPoisonSpear > 0 ? 'superPoisonSpear' : typeof poisonSpear !== 'undefined' ? 'poisonSpear' : null;
+		bestMage = (bloodReaperTop > 0 && bloodReaperBottom > 0 && bloodReaperHood > 0) ? 'bloodReaper' : (darkMageTop > 0 && darkMageBottom > 0 && darkMageHood > 0) ? 'darkMage' : null;
 		//If a new config was added since the last save it will not break the save
 		for (const key in this.scriptVars) {
 			if (!(key in loadedVars)) {
@@ -2110,6 +2097,17 @@ const IdleAgain = {
 				</tr>
 				</tbody>
 			</table>
+			<table style="border: 1px solid grey;border-radius: 6px;margin: 10px 7px;background: #1a1a1a;font-size: 32px;">
+				<tbody>
+				<tr style="color: white;width: 100%;">
+					<td style="padding-left: 10px;"><img src="images/lifeStealSpell.png" class="img-small"></td>
+					<td>
+					<input type="number" min="1" value="8" style="width: 50px;" onchange="IdleAgain.autoChangeVar('lifeStealThreshold',parseInt(this.value))">
+					</td>
+					<td class="idleAgainConfTd">Life Steal Threshold</td>
+				</tr>
+				</tbody>
+			</table>
 			<table class="idleAgainConfTable">
 				<tbody>
 				<tr id="IdleAgain-toggleCombatPotion" onclick="IdleAgain.autoChangeVar('toggleCombatPotion','toggle',this.id)" style="cursor: pointer; color: red;">
@@ -2414,9 +2412,6 @@ const IdleAgain = {
 				};
 			}
 		});
-
-		document.getElementById('fight-button').querySelectorAll('td')[0].setAttribute('onclick', 'clicksFightButton();IdleAgain.autoPoison();');
-		document.getElementById('fight-button').querySelectorAll('td')[1].setAttribute('onclick', 'clicksFightButton();IdleAgain.autoPoison();');
 
 		IdleAgain.addWikiButton();
 	},
@@ -2795,9 +2790,18 @@ const IdleAgain = {
 			},
 			set(val) {
 			  	IdleAgain.props.heroHp = val;
-				if (IdleAgain.scriptVars.toggleGlobal && val == 0) {
+				if (IdleAgain.scriptVars.toggleGlobal && IdleAgain.scriptVars.toggleHeal && val == 0) {
 					IdleAgain.autoHeal();
 				}
+			}
+		});
+		Object.defineProperty(window, "playtime", {
+			get() {
+				  return IdleAgain.props.currentTime;
+			},
+			set(val) {
+				IdleAgain.props.currentTime = val;
+				if (IdleAgain.props.golem) {autoGolem();}
 			}
 		});
 	},
@@ -2930,7 +2934,6 @@ const IdleAgain = {
 		if (IdleAgain.scriptVars.toggleGlobal) {
 			if (IdleAgain.scriptVars.toggleCombatSwap) IdleAgain.autoCombatSwap();
 			if (IdleAgain.scriptVars.toggleSpell) IdleAgain.autoSpell();
-			if (IdleAgain.scriptVars.toggleCombatPotion) IdleAgain.autoCombatPot();
 		}
 	},
 
@@ -2962,6 +2965,45 @@ window.hideAllTabs = function() {
 };
 
 window.addEventListener("load", IdleAgain.initialize);
+
+function initWebSocketFunctions() {
+	try {
+		webSocket.onerror = function(event) {
+			showLoginMessageAsFailed();
+		};
+
+		webSocket.onopen = function(event) {
+			onOpen(event);
+		};
+	
+		webSocket.onclose = function(event) {
+			onClose(event);
+		};
+
+		webSocket.onmessage = function(event) {
+			onMessage(event);
+		};
+
+		function onMessage(event) {
+			command(event.data);
+			IdleAgain.customMessage(event.data);
+		}
+
+		function onOpen(event) {
+			websocketReadyGlobal = true;
+			sendBytes("PADE_LOAD");
+		}
+	
+		function onClose(event) {}
+
+		function onError(event) {}
+	}
+	catch(err) { 
+		alert(err.message);
+	}	
+}
+
+initWebSocketFunctions()
 
 //Auto login, sometimes this timeout your account
 if (JSON.parse(localStorage.getItem('autoLogin')) === true) {
