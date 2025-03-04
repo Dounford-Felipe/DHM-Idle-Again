@@ -2784,7 +2784,7 @@ const IdleAgain = {
 			},
 			set(val) {
 			  	IdleAgain.props.monsterName = val;
-				if (val !== "none" && (IdleAgain.scriptVars.toggleShiny || IdleAgain.scriptVars.toggleMonsterFind)) {
+				if (IdleAgain.scriptVars.toggleGlobal && val !== "none" && (IdleAgain.scriptVars.toggleShiny || IdleAgain.scriptVars.toggleMonsterFind)) {
 					IdleAgain.autoMonsterHunt();
 				}
 			}
@@ -2795,7 +2795,7 @@ const IdleAgain = {
 			},
 			set(val) {
 			  	IdleAgain.props.heroHp = val;
-				if (val == 0) {
+				if (IdleAgain.scriptVars.toggleGlobal && val == 0) {
 					IdleAgain.autoHeal();
 				}
 			}
