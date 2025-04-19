@@ -147,6 +147,9 @@ const blockedHTML = [
 	'<iframe', '<button', '<script', '<html', '<link', '<div', '<footer', 'onclick', '<object', '<embed', '<form', '<meta', 'onmouseover', 'onmouseout', 'onmousemove', '<input', '<applet', 'javascript'
 ];
 const ding = new Audio("https://github.com/Dounford-Felipe/DHM-Audio-Alerts/raw/main/ding.wav");
+const sigils = [
+	"pumpkin","santa_hat","easter_egg","ghost","tree","blue_party_hat","green_party_hat","pink_party_hat","red_party_hat","white_party_hat","yellow_party_hat","bunny","cat","snowman","carrot","spider","candy_cane","bat","snowflake","basket","basket_egg","skull","gift","chocolate","zombie","reindeer","hatching_chicken","mummy","bell","fancy_bell","mad_bunny"
+];
 let oldWeapon;
 let bestHelmet;
 let bestWeapon;
@@ -164,10 +167,6 @@ const IdleAgain = {
 		username: "",
 		monsterName: "none",
 		heroHp: 0,
-		golem: false,
-		golemAttack: false,
-		initialTime: 0,
-		currentTime: 0,
 	},
 
 	//Configs
@@ -339,7 +338,8 @@ const IdleAgain = {
 			"steamBoat": true,
 			"trawler": true
 		},
-		"chatAutoScroll": true
+		"chatAutoScroll": true,
+		"chatSigil": "none"
 	},
 
 	logTime(extraInfo) {
@@ -347,36 +347,6 @@ const IdleAgain = {
 		const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
 		const min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
 		console.log('[' + hour + ':' + min + '] ' + extraInfo);
-	},
-
-	customMessage(data) {
-		if (data.includes("monsterName")) {
-			if (data.includes('monsterName~bloodGolem')) {
-				IdleAgain.props.initialTime = playtime;
-				IdleAgain.props.golem = true;
-			} else if (data.includes('monsterName~none')) {
-				IdleAgain.props.golem = false;
-				IdleAgain.props.golemAttack = false;
-			};
-			IdleAgain.autoPoison();
-			if (IdleAgain.scriptVars.toggleCombatPotion) (IdleAgain.autoCombatPot());
-		};
-		if(data.startsWith("HIT_SPLAT=")) {
-			if (data.includes("thunderStrikeSpell.png")) {
-				const stunTime = Math.floor(parseInt(data.slice(51,53)) / 2);
-				setTimeout(() => {
-					IdleAgain.props.golemAttack = true;
-					if (freezeCombatPotionUsed == 0 && (freezeCombatPotionFree == 1 || freezeCombatPotion >= 1)) {
-						sendBytes('DRINK_COMBAT_POTION=freezeCombatPotion');
-					}
-				}, (stunTime * 1000) - 500);
-			}
-			if (data.includes("iceArtifact.png")) {
-				setTimeout(() => {
-					IdleAgain.props.golemAttack = true;
-				}, 4500);
-			}
-		}
 	},
 
 	autoEvent() {
@@ -773,26 +743,6 @@ const IdleAgain = {
 		}
 	},
 
-	autoGolem() {
-		if (IdleAgain.props.golemAttack) {
-			clicksItem('titaniumBody');
-			clicksItem('titaniumLegs');
-			clicksItem(bestHelmet);
-			IdleAgain.props.golemAttack = false;
-			IdleAgain.props.initialTime = playtime;
-
-		//The second before golem attack
-		} else if ((IdleAgain.props.currentTime - IdleAgain.props.initialTime) % 3 == 1) {
-			clicksItem('titaniumBody');
-			clicksItem('titaniumLegs');
-			clicksItem(bestHelmet);
-		} else {
-			clicksItem('bearFurMask')
-			clicksItem('bearFurMask')
-			clicksItem('bearFurBody')
-		}
-	},
-
 	canPoison() {
 		return poisonEnemyTimer !== 1 && bestPoison !== null && (ignoreDefenceCombatPotionUsed == 0 || monsterDefence == 0 || ignoreDefenceCombatPotionEnemyTimer != 0)
 	},
@@ -869,7 +819,7 @@ const IdleAgain = {
 		}
 
 		if (fireSpell == 1 && fireSpellCooldown == 0) {
-			if (bestMage !== null) {
+			if (bestMage === null) {
 				sendBytes('CAST_COMBAT_SPELL=fireSpell')
 			} else {
 				IdleAgain.spellWithMage("fire")
@@ -877,7 +827,7 @@ const IdleAgain = {
 		}
 		
 		if (thunderStrikeSpell == 1 && thunderStrikeSpellCooldown == 0) {
-			if (bestMage !== null) {
+			if (bestMage === null) {
 				sendBytes('CAST_COMBAT_SPELL=thunderStrikeSpell')
 			} else {
 				IdleAgain.spellWithMage("thunderStrike")
@@ -899,7 +849,7 @@ const IdleAgain = {
 		}
 
 		if (sandstormSpell == 1 && sandstormSpellCooldown == 0) {
-			if (bestMage == null) {
+			if (bestMage === null) {
 				sendBytes('CAST_COMBAT_SPELL=sandstormSpell')
 			} else {
 				IdleAgain.spellWithMage("sandstorm")
@@ -1122,10 +1072,12 @@ const IdleAgain = {
 		}
 	},
 
-	scriptAddTabs() {
+	addStyle() {
+		//Fix favicon
 		document.head.insertAdjacentHTML("beforeend",'<link rel="icon" type="image/x-icon" href="images/favicon.ico">');
 
-		let style = document.createElement('style');
+		//Idle again style
+		const style = document.createElement('style');
 		style.innerHTML = `
 			.idleAgainConfTable {
 				cursor: pointer;
@@ -1153,22 +1105,26 @@ const IdleAgain = {
 				color: white !important;
 				justify-content: space-between;
 				display: flex;
+			}
+			.sigilBtn {
+    			background-color: transparent;
+    			border: 0;
+			}
+			.sigilBtn:hover {
+    			background-color: bisque;
+    			cursor: pointer;
+			}
+			.chatSigil {
+				width: 25px;
+				height: 25px;
 			}`;
 		document.head.appendChild(style);
+	},
 
-		let miscTab = document.querySelectorAll("#tab-misc > .main-button")[2];
-		let scriptConfBar = `<div onclick="navigate('scriptConfig')" class="main-button" style="cursor: pointer;">
-				<table>
-					<tbody><tr>
-					<td><img src="images/whiteGear.png" class="img-small"></td>
-					<td style="text-align:right;padding-right:20px;font-size:12pt;">SCRIPT CONFIG</td>
-					</tr>
-				</tbody></table>
-			</div>`;
-		miscTab.insertAdjacentHTML('afterend', scriptConfBar);
-
-		let chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
+	addChat() {
+		const chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 			<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
+			<div style="display: none;position: fixed;top:20vh;background-color: rgb(150, 150, 150);display: flex;flex-wrap: wrap;justify-content: center;padding: 10px;width:350px" id="div-sigils"></div>
 			<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">
 				<div>
 					Chat Box 
@@ -1185,13 +1141,67 @@ const IdleAgain = {
 			<div style="margin-top: 5px;justify-content: space-between;display: flex;">
 				<button onclick="IdleAgain.sendChat()">Send</button>
 				<div>
+					<button onclick="IdleAgain.toggleSigilDiv()" style="cursor: pointer;">SIGILS</button>
 					<button onclick="IdleAgain.chatHelp()" style="cursor: pointer;">HELP</button>
-					<button style="cursor: pointer;border: 1px solid black;border-radius: 12px;padding: 2px;" id="emojis">&#128512;</button>
+					<button style="cursor: pointer;border: 1px solid black;border-radius: 12px;padding: 2px;margin-left:3px" id="emojis">&#128512;</button>
 				</div>
 			</div>
 		</div>`
+		const logoutTab = document.getElementById('tab-logout');
+		logoutTab.insertAdjacentHTML('afterend', chatDiv);
 
-		let scriptConfTab = `<div id="tab-scriptConfig" style="display:none">
+		//Emojis
+		$("#div-emojis").draggable()
+		const pickerOptions = {
+			onEmojiSelect: function(emoji) {
+				document.getElementById('message-body').value += emoji.native
+			},
+			maxFrequentRows: 1
+		}
+		const picker = new EmojiMart.Picker(pickerOptions)
+		picker.style.height = '350px'
+		document.getElementById("div-emojis").appendChild(picker)
+		document.getElementById('emojis').addEventListener('click', IdleAgain.toggleEmojiPicker);
+		
+		//Sigils
+		const sigilDiv = document.getElementById("div-sigils");
+		$(sigilDiv).draggable();
+		sigils.forEach((sigil) => {
+			const sigilBtn = document.createElement("button");
+			sigilBtn.className = "sigilBtn";
+			const img = new Image(30,30);
+			img.src = "https://cdn.idle-pixel.com/images/" + sigil + "_sigil.png";
+			img.onload = () => {
+				sigilBtn.insertAdjacentElement("beforeend", img);
+			}
+
+			sigilBtn.addEventListener("click",()=>{
+				IdleAgain.changeSigil(sigil);
+			})
+
+			sigilDiv.insertAdjacentElement("beforeend", sigilBtn);
+		})
+
+	},
+
+	scriptAddTabs() {
+		this.addStyle();
+		this.addChat();
+
+		//Add script config button on settings
+		const miscTab = document.querySelectorAll("#tab-misc > .main-button")[2];
+		const scriptConfBar = `<div onclick="navigate('scriptConfig')" class="main-button" style="cursor: pointer;">
+				<table>
+					<tbody><tr>
+					<td><img src="images/whiteGear.png" class="img-small"></td>
+					<td style="text-align:right;padding-right:20px;font-size:12pt;">SCRIPT CONFIG</td>
+					</tr>
+				</tbody></table>
+			</div>`;
+		miscTab.insertAdjacentHTML('afterend', scriptConfBar);
+
+		//Config tabs
+		const scriptConfTab = `<div id="tab-scriptConfig" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1293,7 +1303,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfMiningTab = `<div id="tab-scriptConfigMining" style="display:none">
+		const scriptConfMiningTab = `<div id="tab-scriptConfigMining" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1378,7 +1388,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfCraftingTab = `<div id="tab-scriptConfigCrafting" style="display:none">
+		const scriptConfCraftingTab = `<div id="tab-scriptConfigCrafting" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1476,7 +1486,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfWoodcuttingTab = `<div id="tab-scriptConfigWoodcutting" style="display:none">
+		const scriptConfWoodcuttingTab = `<div id="tab-scriptConfigWoodcutting" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1569,7 +1579,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfFarmingTab = `<div id="tab-scriptConfigFarming" style="display:none">
+		const scriptConfFarmingTab = `<div id="tab-scriptConfigFarming" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1679,7 +1689,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfSeedsTab = `<div id="tab-scriptConfigSeeds" style="display:none">
+		const scriptConfSeedsTab = `<div id="tab-scriptConfigSeeds" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1704,7 +1714,7 @@ const IdleAgain = {
 			<ol id="sortableSeeds" style="list-style: none;padding: 0px;border: 1px solid grey;border-radius: 6px;margin: 10px;font-size: 25px;"></ol>
 			</div>`
 
-		let scriptConfBrewingTab = `<div id="tab-scriptConfigBrewing" style="display: none;">
+		const scriptConfBrewingTab = `<div id="tab-scriptConfigBrewing" style="display: none;">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1895,7 +1905,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
+		const scriptConfPotionsTab = `<div id="tab-scriptConfigPotions" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -1931,7 +1941,7 @@ const IdleAgain = {
 			</ol>
 			</div>`
 
-		let scriptConfExploringTab = `<div id="tab-scriptConfigExploring" style="display: none;">
+		const scriptConfExploringTab = `<div id="tab-scriptConfigExploring" style="display: none;">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -2202,7 +2212,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
-		let scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
+		const scriptConfCookingTab = `<div id="tab-scriptConfigCooking" style="display:none">
 			<div class="main-button-lighter">
 				<table>
 				<tbody>
@@ -2251,8 +2261,7 @@ const IdleAgain = {
 			</table>
 			</div>`;
 
-		let logoutTab = document.getElementById('tab-logout');
-		logoutTab.insertAdjacentHTML('afterend', chatDiv);
+		const logoutTab = document.getElementById('tab-logout');
 		logoutTab.insertAdjacentHTML('afterend', scriptConfCookingTab);
 		logoutTab.insertAdjacentHTML('afterend', scriptConfExploringTab);
 		logoutTab.insertAdjacentHTML('afterend', scriptConfPotionsTab);
@@ -2310,6 +2319,7 @@ const IdleAgain = {
 			sortablePotionsOl.insertAdjacentHTML('beforeend', potionli);
 		});
 
+		//Compare Bar
 		let compareBar = `<a href="https://dounford-felipe.github.io/DHM-Compare/" target="_blank" style="text-decoration:none;">
 				<div class="main-button">
 					<table>
@@ -2323,6 +2333,7 @@ const IdleAgain = {
 		let profileLink = document.getElementById('your-profile-link');
 		profileLink.insertAdjacentHTML('afterend', compareBar);
 
+		//Heat Needed / Cook all
 		let cookAllItem = `<div class="main-button-lighter" id="scriptCook" style="background-color: rgb(0, 77, 0);">
 			<table>
 				<tbody>
@@ -2341,6 +2352,7 @@ const IdleAgain = {
 		let energyItemBox = document.getElementById('item-box-energy');
 		energyItemBox.insertAdjacentHTML('afterend', cookAllItem);
 
+		//Grow time
 		let growTimeNeededItem = `<div class="main-button-lighter" id="scriptgrowTimeNeeded" style="background-color: rgb(26, 51, 0);">
 			<table>
 				<tbody>
@@ -2356,6 +2368,7 @@ const IdleAgain = {
 			</table>
 			</div>`
 
+		//Bonemeal needed
 		let bonemealNeededItem = `<div class="main-button-lighter" id="scriptBonemealNeeded" style="background-color: rgb(26, 51, 0);">
 			<table>
 				<tbody>
@@ -2373,18 +2386,6 @@ const IdleAgain = {
 		let bonemealBinItemBox = document.getElementById('item-box-bonemealBin');
 		bonemealBinItemBox.insertAdjacentHTML('afterend', growTimeNeededItem);
 		bonemealBinItemBox.insertAdjacentHTML('afterend', bonemealNeededItem);
-
-		$("#div-emojis").draggable()
-		const pickerOptions = {
-			onEmojiSelect: function(emoji) {
-				document.getElementById('message-body').value += emoji.native
-			},
-			maxFrequentRows: 1
-		}
-		const picker = new EmojiMart.Picker(pickerOptions)
-		picker.style.height = '350px'
-		document.getElementById("div-emojis").appendChild(picker)
-		document.getElementById('emojis').addEventListener('click', IdleAgain.toggleEmojiPicker)
 
 		document.getElementById('scriptImportConfig').addEventListener('click', function() {
 			document.getElementById('saveInput').click();
@@ -2663,16 +2664,15 @@ const IdleAgain = {
 	//Chat
 	sendChat() {
 		let inputValue = document.getElementById('message-body').value.slice(-150);
+		document.getElementById('message-body').value = "";
+
 		if (blockedHTML.some(item => inputValue.includes(item))) {
-			inputValue = '';
-			IdleAgain.showMessage("<b>Something you sent is not allowed to be send, please remove anything that can cause problems to others before trying again.</b>", 'ChatBot');
-		} else if (inputValue.match(/img=(["].*?["])/g)) {
-			inputValue = inputValue.replace(/img=(["].*?["])/g, '<img src=$1 class="img-small">');
-			IdleAgain.publishMessage(inputValue);
-		} else {
-			IdleAgain.publishMessage(inputValue);
+			inputValue = "";
+			IdleAgain.showMessage("<b>Something you sent is not allowed, please remove anything that can cause problems to others before trying again.</b>", 'ChatBot');
+			return;
 		}
-		document.getElementById('message-body').value = '';
+
+		IdleAgain.publishMessage(inputValue);
 	},
 
 	clearChat() {
@@ -2684,29 +2684,54 @@ const IdleAgain = {
 		document.getElementById('IdleAgain-chatScroll').src = IdleAgain.scriptVars.chatAutoScroll ? 'images/check.png' : 'images/x.png';
 	},
 
-	chatHelp() {
-		IdleAgain.showMessage('Use <b>img="image-url"</b> to send images<br>Use "/help" to see all bot commands', 'ChatBot');
+	changeSigil(sigil) {
+		if (!sigils.includes(sigil)) {return}
+		IdleAgain.scriptVars.chatSigil = sigil;
 	},
 
-	showMessage(msg, sender) {
+	chatHelp() {
+		IdleAgain.showMessage('Use <b>img="image-url"</b> to send images', 'ChatBot');
+	},
+
+	showMessage(msg, sender, sigil) {
+		//Block unsafe html
 		if (blockedHTML.some(item => msg.includes(item))) {
 			msg = 'This message was blocked for safety';
 		}
-		if (msg.startsWith('https') || msg.startsWith('www')) {
-			msg = '<a href=' + msg + ' target="_blank">' + msg + '</a>';
+		//Clickable links
+		if (msg.includes('https') || msg.includes('www')) {
+			msg = msg.replace(/(?:https:\/\/)?www.(.*?[\S]+)/g,"<a href='https://www.$1' target='_blank'>$1</a>")
+		}
+		//Images
+		if (msg.match(/img=(["].*?["])/g)) {
+			msg = msg.replace(/img=(["].*?["])/g, '<img src=$1 class="img-small">');
 		}
 		let messageContainer = document.createElement('div');
 		let senderElement = document.createElement('strong');
+
+		//Message time, sender and sigil
 		const date = new Date();
 		const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
 		const min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-		senderElement.innerText = '[' + hour + ':' + min + '] ' + sender + ": ";
+		senderElement.innerHTML = '[' + hour + ':' + min + '] '
+
+		if (sigil !== undefined && sigil !== "none") {
+			const sigilImg = new Image();
+			sigilImg.src = "https://cdn.idle-pixel.com/images/" + sigil + "_sigil.png"
+			sigilImg.onload = ()=> {
+				senderElement.innerHTML += sigilImg;
+			}
+		}
+
+		senderElement.innerHTML += sender + ": ";
+
 		messageContainer.appendChild(senderElement);
-		let message = document.createElement('span');
+		const message = document.createElement('span');
 		message.innerHTML = msg;
 		messageContainer.style.overflowWrap = "break-word";
 		messageContainer.appendChild(message);
-		let messageArea = document.getElementById('messages');
+
+		const messageArea = document.getElementById('messages');
 		messageArea.appendChild(messageContainer);
 		if (msg.includes('@' + username) || (msg.includes('@everyone') && sender == 'felipewolf')) {
 			message.style.backgroundColor = 'gold';
@@ -2732,7 +2757,7 @@ const IdleAgain = {
 				}
 			},
 			message: (messageEvent) => {
-				IdleAgain.showMessage(messageEvent.message.description, messageEvent.message.sender);
+				IdleAgain.showMessage(messageEvent.message.description, messageEvent.message.sender, messageEvent.message.sigil);
 			}
 		};
 		pubnub.addListener(listener);
@@ -2752,7 +2777,8 @@ const IdleAgain = {
 			message: {
 				title: "greeting",
 				description: message,
-				sender: username
+				sender: username,
+				sigil: IdleAgain.scriptVars.chatSigil
 			}
 		};
 		await pubnub.publish(publishPayload);
@@ -2760,7 +2786,12 @@ const IdleAgain = {
 
 	toggleEmojiPicker() {
 		let emojiPicker = document.getElementById("div-emojis");
-		emojiPicker.style.display = (emojiPicker.style.display === "none" || emojiPicker.style.display === "") ? "block" : "none";
+		emojiPicker.style.display = emojiPicker.style.display === "none" ? "block" : "none";
+	},
+
+	toggleSigilDiv() {
+		let sigilsDiv = document.getElementById("div-sigils");
+		sigilsDiv.style.display = sigilsDiv.style.display === "none" ? "block" : "none";
 	},
 
 	setWatchers() {
@@ -2795,13 +2826,13 @@ const IdleAgain = {
 				}
 			}
 		});
-		Object.defineProperty(window, "playtime", {
+		Object.defineProperty(window, "infectedTimer", {
 			get() {
-				  return IdleAgain.props.currentTime;
+				return IdleAgain.props.infectedTimer;
 			},
 			set(val) {
-				IdleAgain.props.currentTime = val;
-				if (IdleAgain.props.golem) {autoGolem();}
+				IdleAgain.props.infectedTimer = val;
+				if (val > 0) {sendBytes('DRINK=cureInfectionPotion')};
 			}
 		});
 	},
@@ -2863,33 +2894,7 @@ const IdleAgain = {
 			if (e.key === "Enter") {
 				IdleAgain.sendChat();
 			}
-		} /* else if (document.getElementById("tab-customCombat").style.display !== "none") {
-			switch (e.key) {
-				//Presets
-				case "1": sendBytes('LOAD_PRESETS=1'); break;
-				case "2": sendBytes('LOAD_PRESETS=2'); break;
-				case "3": sendBytes('LOAD_PRESETS=3'); break;
-				case "4": sendBytes('LOAD_PRESETS=4'); break;
-				case "5": sendBytes('LOAD_PRESETS=5'); break;
-				case "6": sendBytes('LOAD_PRESETS=6'); break;
-
-				//Spells
-				case "q": IdleAgain.spell('fire'); break;
-				case "w": IdleAgain.spell('reflect'); break;
-				case "e": IdleAgain.spell('teleport'); break;
-				case "r": IdleAgain.spell('thunderStrike'); break;
-				case "t": IdleAgain.spell('lifeSteal'); break;
-				case "y": IdleAgain.spell('sandstorm'); break;
-
-				//Potions
-				case "a": IdleAgain.potion('heal'); break;
-				case "s": IdleAgain.potion('freeze'); break;
-				case "d": IdleAgain.potion('ignoreDefense'); break;
-				case "f": IdleAgain.potion('ghostScan'); break;
-				case "g": IdleAgain.potion('superHeal'); break;
-				case "h": IdleAgain.potion('strength'); break;
-			}
-		} */
+		}
 	},
 
 	autoGameLoop() {
@@ -2965,45 +2970,6 @@ window.hideAllTabs = function() {
 };
 
 window.addEventListener("load", IdleAgain.initialize);
-
-function initWebSocketFunctions() {
-	try {
-		webSocket.onerror = function(event) {
-			showLoginMessageAsFailed();
-		};
-
-		webSocket.onopen = function(event) {
-			onOpen(event);
-		};
-	
-		webSocket.onclose = function(event) {
-			onClose(event);
-		};
-
-		webSocket.onmessage = function(event) {
-			onMessage(event);
-		};
-
-		function onMessage(event) {
-			command(event.data);
-			IdleAgain.customMessage(event.data);
-		}
-
-		function onOpen(event) {
-			websocketReadyGlobal = true;
-			sendBytes("PADE_LOAD");
-		}
-	
-		function onClose(event) {}
-
-		function onError(event) {}
-	}
-	catch(err) { 
-		alert(err.message);
-	}	
-}
-
-initWebSocketFunctions()
 
 //Auto login, sometimes this timeout your account
 if (JSON.parse(localStorage.getItem('autoLogin')) === true) {
