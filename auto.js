@@ -1116,7 +1116,7 @@ const IdleAgain = {
 			}
 			.chatSigil {
 				width: 25px;
-				height: 25px;
+    			vertical-align: middle;
 			}`;
 		document.head.appendChild(style);
 	},
@@ -1124,7 +1124,7 @@ const IdleAgain = {
 	addChat() {
 		const chatDiv = `<div id="div-chat" style="margin-top: 10px;border: 1px solid silver;background: linear-gradient(rgb(238, 238, 238), rgb(221, 221, 221));padding: 5px;">
 			<div style="display: none;position: fixed;top:20vh;" id="div-emojis"></div>
-			<div style="display: none;position: fixed;top:20vh;background-color: rgb(150, 150, 150);display: flex;flex-wrap: wrap;justify-content: center;padding: 10px;width:350px" id="div-sigils"></div>
+			<div style="display: none;position: fixed;top:20vh;background-color: rgb(150, 150, 150);flex-wrap: wrap;justify-content: center;padding: 10px;width:350px" id="div-sigils"></div>
 			<div style="margin-bottom:5px;font-weight: bold;color: black;justify-content: space-between;display: flex;">
 				<div>
 					Chat Box 
@@ -1177,6 +1177,8 @@ const IdleAgain = {
 
 			sigilBtn.addEventListener("click",()=>{
 				IdleAgain.changeSigil(sigil);
+				IdleAgain.toggleSigilDiv();
+				scrollText("none","green","Sigil updated");
 			})
 
 			sigilDiv.insertAdjacentElement("beforeend", sigilBtn);
@@ -2717,10 +2719,9 @@ const IdleAgain = {
 
 		if (sigil !== undefined && sigil !== "none") {
 			const sigilImg = new Image();
+			sigilImg.className = "chatSigil"
 			sigilImg.src = "https://cdn.idle-pixel.com/images/" + sigil + "_sigil.png"
-			sigilImg.onload = ()=> {
-				senderElement.innerHTML += sigilImg;
-			}
+			senderElement.insertAdjacentElement("beforeend",sigilImg);
 		}
 
 		senderElement.innerHTML += sender + ": ";
@@ -2791,7 +2792,7 @@ const IdleAgain = {
 
 	toggleSigilDiv() {
 		let sigilsDiv = document.getElementById("div-sigils");
-		sigilsDiv.style.display = sigilsDiv.style.display === "none" ? "block" : "none";
+		sigilsDiv.style.display = sigilsDiv.style.display === "none" ? "flex" : "none";
 	},
 
 	setWatchers() {
